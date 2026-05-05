@@ -27,3 +27,9 @@ class DartClient:
     def find_corp_code(self, company_name: str) -> str | None:
         result = self.dart.find_corp_code(company_name)
         return result
+
+    def get_listed_corp_codes(self) -> "pd.DataFrame":
+        """stock_code가 있는 상장 종목만 반환 (KOSPI + KOSDAQ)"""
+        import pandas as pd
+        df = self.dart.corp_codes
+        return df[df["stock_code"].notna() & (df["stock_code"].str.strip() != "")].reset_index(drop=True)
