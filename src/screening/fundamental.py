@@ -81,7 +81,7 @@ class FundamentalScreener:
             and cf_ok
         )
 
-    def screen_all(self, year: str, market: str = "KOSPI", workers: int = 3) -> pd.DataFrame:
+    def screen_all(self, year: str, market: str = "KOSPI", workers: int = 1) -> pd.DataFrame:
         """상장 종목 병렬 스크리닝
         market: 'KOSPI' | 'KOSDAQ' | None(전체)
         """

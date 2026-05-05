@@ -1,4 +1,5 @@
 import os
+import time
 import OpenDartReader
 from dotenv import load_dotenv
 
@@ -18,13 +19,12 @@ class DartClient:
     def get_financial_statements(self, corp_code: str, year: str, report_type: str = "11011") -> object:
         """
         report_type: 11011=사업보고서, 11012=반기보고서, 11013=1분기, 11014=3분기
-        DART API rate limit 대응: 실패 시 최대 3회 재시도 (backoff)
         """
-        import time
+        time.sleep(0.7)  # 분당 ~85건으로 제한 (DART 한도 100건/분)
         for attempt in range(3):
             try:
                 return self.dart.finstate(corp_code, year, report_type)
-            except Exception as e:
+            except Exception:
                 if attempt == 2:
                     raise
                 time.sleep(2 ** attempt)  # 1s, 2s
