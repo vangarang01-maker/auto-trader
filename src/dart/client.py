@@ -18,8 +18,16 @@ class DartClient:
     def get_financial_statements(self, corp_code: str, year: str, report_type: str = "11011") -> object:
         """
         report_type: 11011=사업보고서, 11012=반기보고서, 11013=1분기, 11014=3분기
+        DART API rate limit 대응: 실패 시 최대 3회 재시도 (backoff)
         """
-        return self.dart.finstate(corp_code, year, report_type)
+        import time
+        for attempt in range(3):
+            try:
+                return self.dart.finstate(corp_code, year, report_type)
+            except Exception as e:
+                if attempt == 2:
+                    raise
+                time.sleep(2 ** attempt)  # 1s, 2s
 
     def search_disclosures(self, corp_code: str, start_date: str, end_date: str) -> object:
         return self.dart.list(corp_code, start=start_date, end=end_date)
@@ -28,8 +36,21 @@ class DartClient:
         result = self.dart.find_corp_code(company_name)
         return result
 
-    def get_listed_corp_codes(self) -> "pd.DataFrame":
-        """stock_code가 있는 상장 종목만 반환 (KOSPI + KOSDAQ)"""
-        import pandas as pd
-        df = self.dart.corp_codes
-        return df[df["stock_code"].notna() & (df["stock_code"].str.strip() != "")].reset_index(drop=True)
+    def get_listed_corp_codes(self, market: str | None = None) -> "pd.DataFrame":
+        """상장 종목 목록 반환
+        market: 'KOSPI' | 'KOSDAQ' | None(전체)
+        KOSPI/KOSDAQ 지정 시 FinanceDataReader로 시장 필터링
+        """
+        import ssl, certifi, pandas as pd
+        ssl._create_default_https_context = lambda: ssl.create_default_context(cafile=certifi.where())
+
+        all_corps = self.dart.corp_codes
+        all_corps = all_corps[all_corps["stock_code"].notna() & (all_corps["stock_code"].str.strip() != "")].copy()
+        all_corps.loc[:, "stock_code"] = all_corps["stock_code"].str.strip()
+
+        if market in ("KOSPI", "KOSDAQ"):
+            import FinanceDataReader as fdr
+            listing = fdr.StockListing(market)[["Code"]].rename(columns={"Code": "stock_code"})
+            all_corps = all_corps.merge(listing, on="stock_code", how="inner")
+
+        return all_corps.reset_index(drop=True)

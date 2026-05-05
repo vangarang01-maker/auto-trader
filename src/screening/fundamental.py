@@ -81,26 +81,21 @@ class FundamentalScreener:
             and cf_ok
         )
 
-    def screen_all(self, year: str, market: str = "Y", workers: int = 8) -> pd.DataFrame:
+    def screen_all(self, year: str, market: str = "KOSPI", workers: int = 3) -> pd.DataFrame:
         """상장 종목 병렬 스크리닝
-        market: Y=KOSPI, K=KOSDAQ, 빈 문자열=전체
+        market: 'KOSPI' | 'KOSDAQ' | None(전체)
         """
-        listed = self.client.get_listed_corp_codes()
+        listed = self.client.get_listed_corp_codes(market=market)
         total = len(listed)
         corp_names = dict(zip(listed["corp_code"], listed["corp_name"]))
-        stock_codes = dict(zip(listed["corp_code"], listed["stock_code"].str.strip()))
-        market_label = {"Y": "KOSPI", "K": "KOSDAQ"}.get(market, "전체")
-        print(f"  {market_label} 필터 적용 중 ({total}개 후보)...")
+        stock_codes = dict(zip(listed["corp_code"], listed["stock_code"]))
+        print(f"  {market or '전체'} {total}개 종목 조회 시작...")
 
         results = []
         done = 0
 
         def fetch(code):
             try:
-                if market:
-                    info = self.client.get_company_info(code)
-                    if info.get("corp_cls") != market:
-                        return code, {}
                 return code, self.get_key_metrics(code, year)
             except Exception:
                 return code, {}

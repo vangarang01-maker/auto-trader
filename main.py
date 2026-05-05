@@ -2,13 +2,13 @@ from src.screening.fundamental import FundamentalScreener
 
 OUTPUT_FILE = "screening_result.csv"
 YEAR = "2025"
-MARKET = "Y"  # Y=KOSPI, K=KOSDAQ, ""=전체
+MARKET = "KOSPI"  # KOSPI | KOSDAQ | None(전체)
 
 
 def main():
     screener = FundamentalScreener()
 
-    print(f"[피터 린치 스크리닝] {YEAR}년(회계연도) / KOSPI")
+    print(f"[피터 린치 스크리닝] {YEAR}년(회계연도) / {MARKET}")
     print("  1단계(DART): 순이익 흑자, 순이익 성장률 ≥20%, 매출 성장률 ≥10%, 부채비율 ≤50%, 영업CF > 0")
     print("  2단계(KIS):  PEG < 1\n")
 
