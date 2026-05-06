@@ -20,7 +20,7 @@ def main():
     screener = FundamentalScreener()
 
     print("[1단계] DART 재무 스크리닝...")
-    dart_picks = screener.screen_all(year=YEAR, market=MARKET)
+    dart_picks = screener.screen_all(year=YEAR, market=MARKET, workers=32)
     if dart_picks.empty:
         print("  통과 종목 없음. 종료.")
         return
