@@ -1,0 +1,27 @@
+[
+  {
+    "stock_code": "322000",
+    "corp_name": "HD현대에너지솔루션",
+    "peg": 0.0
+  },
+  {
+    "stock_code": "037270",
+    "corp_name": "YG PLUS",
+    "peg": 0.01
+  },
+  {
+    "stock_code": "003610",
+    "corp_name": "방림",
+    "peg": 0.03
+  },
+  {
+    "stock_code": "010400",
+    "corp_name": "우진아이엔에스",
+    "peg": 0.03
+  },
+  {
+    "stock_code": "006650",
+    "corp_name": "대한유화",
+    "peg": 0.05
+  }
+]
