@@ -8,4 +8,5 @@ screening_result.csv
 .kis_token.json
 .kis_token_virtual.json
 portfolio.json
+picks.json
 logs/
