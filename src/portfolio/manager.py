@@ -1,5 +1,6 @@
 import json
 import math
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -72,6 +73,7 @@ class PortfolioManager:
                     self.kis.place_order(code, "sell", qty)
                 except Exception as e:
                     print(f"  [오류] 매도 실패 ({code}): {e}")
+                time.sleep(0.5)
 
         # 균등 매수 (총금액 / 종목 수)
         budget_per = TOTAL // MAX_HOLD
@@ -92,6 +94,7 @@ class PortfolioManager:
                     self.kis.place_order(code, "buy", qty)
                 except Exception as e:
                     print(f"  [오류] 매수 실패 ({code}): {e}")
+                time.sleep(0.5)
 
         self._state["last_picks"] = list(new_codes)
         self._state["last_run"]   = datetime.now().isoformat()

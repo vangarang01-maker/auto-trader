@@ -12,7 +12,7 @@ load_dotenv()
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 REAL_URL    = "https://openapi.koreainvestment.com:9443"
-VIRTUAL_URL = "https://openapivts.koreainvestment.com:9443"
+VIRTUAL_URL = "https://openapivts.koreainvestment.com:29443"
 
 
 class KISClient:
