@@ -64,7 +64,7 @@ class KISClient:
         resp = requests.post(
             f"{self.base_url}/oauth2/tokenP",
             json={"grant_type": "client_credentials", "appkey": self.app_key, "appsecret": self.app_secret},
-            timeout=10,
+            timeout=30,
             verify=False,
         )
         resp.raise_for_status()
@@ -87,19 +87,26 @@ class KISClient:
 
     def get_stock_quote(self, stock_code: str) -> dict:
         """현재가·EPS·PER 조회"""
-        resp = requests.get(
-            f"{REAL_URL}/uapi/domestic-stock/v1/quotations/inquire-price",
-            headers={
-                "authorization": f"Bearer {self._get_token()}",
-                "appkey": self.app_key,
-                "appsecret": self.app_secret,
-                "tr_id": "FHKST01010100",
-                "custtype": "P",
-            },
-            params={"FID_COND_MRKT_DIV_CODE": "J", "FID_INPUT_ISCD": stock_code},
-            timeout=10,
-            verify=False,
-        )
+        for attempt in range(2):
+            try:
+                resp = requests.get(
+                    f"{REAL_URL}/uapi/domestic-stock/v1/quotations/inquire-price",
+                    headers={
+                        "authorization": f"Bearer {self._get_token()}",
+                        "appkey": self.app_key,
+                        "appsecret": self.app_secret,
+                        "tr_id": "FHKST01010100",
+                        "custtype": "P",
+                    },
+                    params={"FID_COND_MRKT_DIV_CODE": "J", "FID_INPUT_ISCD": stock_code},
+                    timeout=30,
+                    verify=False,
+                )
+                break
+            except requests.exceptions.Timeout:
+                if attempt == 1:
+                    raise
+                time.sleep(2)
         resp.raise_for_status()
         data = resp.json()
         if data.get("rt_cd") != "0":
@@ -119,26 +126,33 @@ class KISClient:
         from datetime import datetime, timedelta
         end   = datetime.now().strftime("%Y%m%d")
         start = (datetime.now() - timedelta(days=count * 2)).strftime("%Y%m%d")
-        resp = requests.get(
-            f"{REAL_URL}/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice",
-            headers={
-                "authorization": f"Bearer {self._get_token()}",
-                "appkey": self.app_key,
-                "appsecret": self.app_secret,
-                "tr_id": "FHKST03010100",
-                "custtype": "P",
-            },
-            params={
-                "FID_COND_MRKT_DIV_CODE": "J",
-                "FID_INPUT_ISCD": stock_code,
-                "FID_INPUT_DATE_1": start,
-                "FID_INPUT_DATE_2": end,
-                "FID_PERIOD_DIV_CODE": "D",
-                "FID_ORG_ADJ_PRC": "1",
-            },
-            timeout=10,
-            verify=False,
-        )
+        for attempt in range(2):
+            try:
+                resp = requests.get(
+                    f"{REAL_URL}/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice",
+                    headers={
+                        "authorization": f"Bearer {self._get_token()}",
+                        "appkey": self.app_key,
+                        "appsecret": self.app_secret,
+                        "tr_id": "FHKST03010100",
+                        "custtype": "P",
+                    },
+                    params={
+                        "FID_COND_MRKT_DIV_CODE": "J",
+                        "FID_INPUT_ISCD": stock_code,
+                        "FID_INPUT_DATE_1": start,
+                        "FID_INPUT_DATE_2": end,
+                        "FID_PERIOD_DIV_CODE": "D",
+                        "FID_ORG_ADJ_PRC": "1",
+                    },
+                    timeout=30,
+                    verify=False,
+                )
+                break
+            except requests.exceptions.Timeout:
+                if attempt == 1:
+                    raise
+                time.sleep(2)
         resp.raise_for_status()
         data = resp.json()
         if data.get("rt_cd") != "0":
@@ -168,7 +182,7 @@ class KISClient:
                 "CTX_AREA_FK100": "",
                 "CTX_AREA_NK100": "",
             },
-            timeout=10,
+            timeout=30,
             verify=False,
         )
         data = resp.json()
@@ -204,7 +218,7 @@ class KISClient:
                 "ORD_QTY": str(qty),
                 "ORD_UNPR": "0",
             },
-            timeout=10,
+            timeout=30,
             verify=False,
         )
         data = resp.json()
