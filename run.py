@@ -42,12 +42,8 @@ def main():
     for p in picks:
         print(f"  {p['corp_name']}({p['stock_code']})  PEG={p['peg']}  현재가={p['current_price']:,.0f}원")
 
-    # 3단계: 리밸런싱
-    if not pm.needs_rebalance(picks):
-        print("\n[리밸런싱] 보유 종목 변동 없음. 스킵.")
-        return
-
-    print("\n[리밸런싱] 종목 변경 감지 → 매매 실행")
+    # 3단계: RSI 신호 기반 매매
+    print("\n[RSI 매매] 신호 확인 및 주문 실행")
     pm.rebalance(picks)
     print("\n완료.")
 

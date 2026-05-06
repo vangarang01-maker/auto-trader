@@ -7,6 +7,7 @@ from pathlib import Path
 import pandas as pd
 
 from src.broker.kis_client import KISClient
+from src.indicators.rsi import calc_rsi
 
 STATE_FILE = "portfolio.json"
 TOTAL       = 10_000_000  # 총 투자금액
@@ -42,12 +43,26 @@ class PortfolioManager:
         old_codes = set(self._state.get("last_picks", []))
         return new_codes != old_codes
 
+    # ── RSI 조회 ───────────────────────────────────────────
+
+    def _fetch_rsi_map(self, codes: set) -> dict:
+        rsi_map = {}
+        for code in codes:
+            try:
+                prices = self.kis.get_daily_prices(code)
+                rsi_map[code] = calc_rsi(prices)
+            except Exception as e:
+                print(f"  [RSI 오류] {code}: {e}")
+                rsi_map[code] = float("nan")
+        return rsi_map
+
     # ── 리밸런싱 ───────────────────────────────────────────
 
     def rebalance(self, picks: list[dict]):
-        new_codes  = {p["stock_code"] for p in picks}
-        price_map  = {p["stock_code"]: p["current_price"] for p in picks}
-        name_map   = {p["stock_code"]: p["corp_name"] for p in picks}
+        """매도: 후보 제외 OR RSI ≥ 75  /  매수: 후보 포함 AND RSI < 30"""
+        new_codes = {p["stock_code"] for p in picks}
+        price_map = {p["stock_code"]: p["current_price"] for p in picks}
+        name_map  = {p["stock_code"]: p["corp_name"] for p in picks}
 
         if self.dry_run:
             holdings = {}
@@ -59,37 +74,59 @@ class PortfolioManager:
                 print(f"  [오류] 잔고 조회 실패: {e}")
                 return
 
-        to_sell = [c for c in holdings if c not in new_codes]
-        to_buy  = [c for c in new_codes if c not in holdings]
+        # RSI 계산 (보유 + 후보 전체)
+        print("  RSI 계산 중...")
+        rsi_map = self._fetch_rsi_map(set(holdings.keys()) | new_codes)
 
-        # 매도 먼저
-        for code in to_sell:
-            qty = holdings[code]
-            if self.dry_run:
-                print(f"  [DRY-RUN 매도] {code} {qty}주")
+        # ── 매도 ──────────────────────────────────────────
+        for code, qty in holdings.items():
+            rsi = rsi_map.get(code, float("nan"))
+            rsi_str = f"{rsi:.1f}" if rsi == rsi else "N/A"
+
+            if code not in new_codes:
+                reason = "후보 제외"
+            elif rsi == rsi and rsi >= 75:
+                reason = f"RSI={rsi_str} ≥ 75"
             else:
-                print(f"  [매도] {code} {qty}주")
+                print(f"  [홀드] {name_map.get(code, code)}({code}) RSI={rsi_str}")
+                continue
+
+            if self.dry_run:
+                print(f"  [DRY-RUN 매도] {name_map.get(code, code)}({code}) {qty}주  ({reason})")
+            else:
+                print(f"  [매도] {name_map.get(code, code)}({code}) {qty}주  ({reason})")
                 try:
                     self.kis.place_order(code, "sell", qty)
                 except Exception as e:
                     print(f"  [오류] 매도 실패 ({code}): {e}")
                 time.sleep(0.5)
 
-        # 균등 매수 (총금액 / 종목 수)
+        # ── 매수 (미보유 + RSI < 30) ──────────────────────
         budget_per = TOTAL // MAX_HOLD
-        for code in to_buy:
+        for p in picks:
+            code = p["stock_code"]
+            if code in holdings:
+                continue
+            rsi = rsi_map.get(code, float("nan"))
+            rsi_str = f"{rsi:.1f}" if rsi == rsi else "N/A"
+
+            if rsi != rsi or rsi >= 30:
+                print(f"  [대기] {p['corp_name']}({code}) RSI={rsi_str}  (매수 신호 없음, 기준 < 30)")
+                continue
+
             price = price_map.get(code)
             if not price or price <= 0:
-                print(f"  [스킵] {name_map.get(code, code)} 가격 없음")
+                print(f"  [스킵] {p['corp_name']}({code}) 가격 없음")
                 continue
             qty = math.floor(budget_per / price)
             if qty <= 0:
-                print(f"  [스킵] {name_map.get(code, code)} 예산 부족 (주가 {price:,}원)")
+                print(f"  [스킵] {p['corp_name']}({code}) 예산 부족 (주가 {price:,}원)")
                 continue
+
             if self.dry_run:
-                print(f"  [DRY-RUN 매수] {name_map.get(code, code)}({code}) {qty}주 × {price:,}원 = {qty*price:,.0f}원")
+                print(f"  [DRY-RUN 매수] {p['corp_name']}({code}) RSI={rsi_str} < 30  {qty}주 × {price:,}원 = {qty*price:,.0f}원")
             else:
-                print(f"  [매수] {name_map.get(code, code)}({code}) {qty}주 × {price:,}원")
+                print(f"  [매수] {p['corp_name']}({code}) RSI={rsi_str} < 30  {qty}주 × {price:,}원")
                 try:
                     self.kis.place_order(code, "buy", qty)
                 except Exception as e:
