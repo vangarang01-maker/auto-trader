@@ -5,7 +5,9 @@ from datetime import datetime
 from src.screening.fundamental import FundamentalScreener
 from src.portfolio.manager import PortfolioManager
 
-YEAR   = "2025"
+# 사업보고서는 전년도 실적 → 3월 이후 전년도 데이터 사용 가능
+# ex) 2026년 4월 이후 → 2025년 사업보고서 확정 공시
+YEAR   = str(datetime.now().year - 1) if datetime.now().month >= 4 else str(datetime.now().year - 2)
 MARKET = "KOSPI"
 
 
