@@ -1,0 +1,30 @@
+name: RSI 매매 (09:00~15:00 KST 매 시간)
+
+on:
+  schedule:
+    - cron: "0 0-6 * * 1-5"  # KST 09:00~15:00 평일 (UTC 00:00~06:00 월~금)
+  workflow_dispatch:           # 수동 실행 버튼
+
+jobs:
+  trade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: 의존성 설치
+        run: pip install -r requirements.txt
+
+      - name: RSI 매매 실행
+        env:
+          DART_API_KEY:           ${{ secrets.DART_API_KEY }}
+          KIS_APP_KEY:            ${{ secrets.KIS_APP_KEY }}
+          KIS_APP_SECRET:         ${{ secrets.KIS_APP_SECRET }}
+          KIS_VIRTUAL_APP_KEY:    ${{ secrets.KIS_VIRTUAL_APP_KEY }}
+          KIS_VIRTUAL_APP_SECRET: ${{ secrets.KIS_VIRTUAL_APP_SECRET }}
+          KIS_ACCOUNT:            ${{ secrets.KIS_ACCOUNT }}
+        run: python run_trade.py

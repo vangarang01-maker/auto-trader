@@ -1,0 +1,38 @@
+name: 종목 스크리닝 (07:30 KST)
+
+on:
+  schedule:
+    - cron: "30 22 * * 0-4"  # KST 07:30 평일 (UTC 22:30 일~목)
+  workflow_dispatch:           # 수동 실행 버튼
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: 의존성 설치
+        run: pip install -r requirements.txt
+
+      - name: 스크리닝 실행
+        env:
+          DART_API_KEY:           ${{ secrets.DART_API_KEY }}
+          KIS_APP_KEY:            ${{ secrets.KIS_APP_KEY }}
+          KIS_APP_SECRET:         ${{ secrets.KIS_APP_SECRET }}
+          KIS_VIRTUAL_APP_KEY:    ${{ secrets.KIS_VIRTUAL_APP_KEY }}
+          KIS_VIRTUAL_APP_SECRET: ${{ secrets.KIS_VIRTUAL_APP_SECRET }}
+          KIS_ACCOUNT:            ${{ secrets.KIS_ACCOUNT }}
+        run: python run_screen.py
+
+      - name: picks.json 커밋 & 푸시
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add picks.json
+          git diff --cached --quiet || git commit -m "chore: picks.json 업데이트 $(date +'%Y-%m-%d')"
+          git push
