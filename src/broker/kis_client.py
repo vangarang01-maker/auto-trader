@@ -103,7 +103,7 @@ class KISClient:
                     verify=False,
                 )
                 break
-            except requests.exceptions.Timeout:
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
                 if attempt == 1:
                     raise
                 time.sleep(2)
@@ -149,7 +149,7 @@ class KISClient:
                     verify=False,
                 )
                 break
-            except requests.exceptions.Timeout:
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
                 if attempt == 1:
                     raise
                 time.sleep(2)
