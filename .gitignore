@@ -5,3 +5,4 @@ __pycache__/
 .DS_Store
 docs_cache/
 screening_result.csv
+.kis_token.json

@@ -112,9 +112,9 @@ class FundamentalScreener:
         return pd.DataFrame(results)
 
     def apply_peg_filter(self, df: pd.DataFrame, max_peg: float = 1.0) -> pd.DataFrame:
-        """KIS 현재가로 PEG 계산 후 필터링
-        PEG = (현재가 / EPS) / 순이익성장률
-        EPS 또는 현재가 조회 실패 종목은 통과 처리
+        """KIS PER 기반 PEG 계산 후 필터링
+        PEG = PER / 순이익성장률(%)
+        KIS 조회 실패 종목은 통과 처리
         """
         from src.broker.kis_client import KISClient
         kis = KISClient()
@@ -122,21 +122,24 @@ class FundamentalScreener:
         rows = []
         for _, row in df.iterrows():
             stock_code = row.get("stock_code", "")
-            eps = row.get("eps", 0)
             growth = row.get("net_income_growth", 0)
 
-            if not stock_code or not eps or eps <= 0 or not growth or growth <= 0:
+            if not stock_code or not growth or growth <= 0:
                 rows.append(row)
                 continue
 
             try:
-                price = kis.get_current_price(stock_code)
-                pe = price / eps
-                peg = round(pe / growth, 2)
+                quote = kis.get_stock_quote(stock_code)
+                per = quote["per"]
+                if not per or per <= 0:
+                    rows.append(row)
+                    continue
+                peg = round(per / growth, 2)
                 row = row.copy()
-                row["current_price"] = price
-                row["pe_ratio"] = round(pe, 2)
-                row["peg_ratio"] = peg
+                row["current_price"] = quote["price"]
+                row["eps"] = quote["eps"]
+                row["per"] = per
+                row["peg"] = peg
                 if peg <= max_peg:
                     rows.append(row)
             except Exception:

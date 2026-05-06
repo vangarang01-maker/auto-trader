@@ -27,10 +27,10 @@ def main():
         print("최종 통과 종목이 없습니다.")
         return
 
-    display_cols = ["corp_name", "peg_ratio", "pe_ratio", "net_income_growth", "revenue_growth", "debt_ratio", "current_price"]
+    display_cols = ["corp_name", "peg", "per", "net_income_growth", "revenue_growth", "debt_ratio", "current_price"]
     available_cols = [c for c in display_cols if c in result.columns]
 
-    sort_col = "peg_ratio" if "peg_ratio" in result.columns else "net_income_growth"
+    sort_col = "peg" if "peg" in result.columns else "net_income_growth"
     result = result.sort_values(sort_col, ascending=True).reset_index(drop=True)
     result.to_csv(OUTPUT_FILE, index=False, encoding="utf-8-sig")
 
