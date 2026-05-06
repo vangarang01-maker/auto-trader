@@ -116,8 +116,10 @@ class FundamentalScreener:
         PEG = PER / 순이익성장률(%)
         KIS 조회 실패 종목은 통과 처리
         """
+        import os
         from src.broker.kis_client import KISClient
-        kis = KISClient()
+        virtual = not os.getenv("KIS_APP_KEY")
+        kis = KISClient(virtual=virtual)
 
         rows = []
         for _, row in df.iterrows():
@@ -142,7 +144,13 @@ class FundamentalScreener:
                 row["peg"] = peg
                 if peg <= max_peg:
                     rows.append(row)
-            except Exception:
+            except Exception as e:
+                print(f"  [KIS 오류] {stock_code}: {e}")
                 rows.append(row)  # KIS 오류 시 통과
 
-        return pd.DataFrame(rows)
+        result = pd.DataFrame(rows)
+        if "peg" not in result.columns:
+            result["peg"] = float("nan")
+        if "current_price" not in result.columns:
+            result["current_price"] = float("nan")
+        return result

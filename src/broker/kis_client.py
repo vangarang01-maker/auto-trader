@@ -1,10 +1,15 @@
 import os
 import json
 import time
+import warnings
 import requests
+import urllib3
 from dotenv import load_dotenv
 
 load_dotenv()
+
+# KIS 모의투자 서버 SSL 인증서 호스트명 불일치 문제 우회
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 REAL_URL    = "https://openapi.koreainvestment.com:9443"
 VIRTUAL_URL = "https://openapivts.koreainvestment.com:9443"
@@ -60,6 +65,7 @@ class KISClient:
             f"{self.base_url}/oauth2/tokenP",
             json={"grant_type": "client_credentials", "appkey": self.app_key, "appsecret": self.app_secret},
             timeout=10,
+            verify=False,
         )
         resp.raise_for_status()
         data = resp.json()
@@ -85,13 +91,14 @@ class KISClient:
             f"{REAL_URL}/uapi/domestic-stock/v1/quotations/inquire-price",
             headers={
                 "authorization": f"Bearer {self._get_token()}",
-                "appkey": os.getenv("KIS_APP_KEY", self.app_key),
-                "appsecret": os.getenv("KIS_APP_SECRET", self.app_secret),
+                "appkey": self.app_key,
+                "appsecret": self.app_secret,
                 "tr_id": "FHKST01010100",
                 "custtype": "P",
             },
             params={"FID_COND_MRKT_DIV_CODE": "J", "FID_INPUT_ISCD": stock_code},
             timeout=10,
+            verify=False,
         )
         resp.raise_for_status()
         data = resp.json()
@@ -129,11 +136,11 @@ class KISClient:
                 "CTX_AREA_NK100": "",
             },
             timeout=10,
+            verify=False,
         )
-        resp.raise_for_status()
         data = resp.json()
         if data.get("rt_cd") != "0":
-            raise ValueError(f"잔고 조회 오류: {data.get('msg1')}")
+            raise ValueError(f"잔고 조회 오류: {data.get('msg1')} (HTTP {resp.status_code})")
         return [
             {
                 "stock_code": item["pdno"],
@@ -165,9 +172,9 @@ class KISClient:
                 "ORD_UNPR": "0",
             },
             timeout=10,
+            verify=False,
         )
-        resp.raise_for_status()
         data = resp.json()
         if data.get("rt_cd") != "0":
-            raise ValueError(f"주문 오류({side} {stock_code} {qty}주): {data.get('msg1')}")
+            raise ValueError(f"주문 오류({side} {stock_code} {qty}주): {data.get('msg1')} (HTTP {resp.status_code})")
         return data
