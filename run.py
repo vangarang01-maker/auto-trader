@@ -29,7 +29,7 @@ def main():
     result = screener.apply_peg_filter(dart_picks)
 
     # 2단계: 종목 선정
-    pm = PortfolioManager()
+    pm = PortfolioManager(dry_run=True)
     picks = pm.select_picks(result)
 
     if not picks:
