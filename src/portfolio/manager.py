@@ -110,8 +110,8 @@ class PortfolioManager:
             rsi = rsi_map.get(code, float("nan"))
             rsi_str = f"{rsi:.1f}" if rsi == rsi else "N/A"
 
-            if rsi != rsi or rsi >= 30:
-                print(f"  [대기] {p['corp_name']}({code}) RSI={rsi_str}  (매수 신호 없음, 기준 < 30)")
+            if rsi != rsi or rsi >= 35:
+                print(f"  [대기] {p['corp_name']}({code}) RSI={rsi_str}  (매수 신호 없음, 기준 < 35)")
                 continue
 
             price = price_map.get(code)
