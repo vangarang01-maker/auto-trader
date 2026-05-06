@@ -21,36 +21,32 @@ class FundamentalScreener:
             except (ValueError, TypeError):
                 return 0
 
-        target_accounts = {
-            "매출액": "revenue",
-            "영업이익": "operating_profit",
-            "당기순이익": "net_income",
-            "자산총계": "total_assets",
-            "부채총계": "total_liabilities",
-            "자본총계": "equity",
+        # 연결재무제표 우선, 없으면 별도재무제표 사용
+        if "연결재무제표" in df["fs_nm"].values:
+            df = df[df["fs_nm"] == "연결재무제표"]
+        df = df.drop_duplicates(subset=["account_nm"], keep="first")
+
+        # 계정명 후보 목록 (기업·회계기준마다 다름)
+        account_candidates = {
+            "revenue":     ["매출액"],
+            "operating_profit": ["영업이익"],
+            "net_income":  ["당기순이익(손실)", "당기순이익"],
+            "total_assets": ["자산총계"],
+            "total_liabilities": ["부채총계"],
+            "equity":      ["자본총계"],
+            "operating_cf": ["영업활동으로 인한 현금흐름", "영업활동현금흐름"],
+            "eps":         ["기본주당순이익(원)", "기본주당순이익", "주당순이익"],
         }
-        # 현금흐름표 계정명은 회계기준(IFRS/K-GAAP)에 따라 다름
-        cf_account_candidates = ["영업활동으로 인한 현금흐름", "영업활동현금흐름"]
 
         metrics: dict = {}
-        for kor, eng in target_accounts.items():
-            row = df[df["account_nm"] == kor]
-            if not row.empty:
-                metrics[eng] = to_int(row.iloc[0].get("thstrm_amount", 0))
-                metrics[f"{eng}_prev"] = to_int(row.iloc[0].get("frmtrm_amount", 0))
-
-        for cf_name in cf_account_candidates:
-            row = df[df["account_nm"] == cf_name]
-            if not row.empty:
-                metrics["operating_cf"] = to_int(row.iloc[0].get("thstrm_amount", 0))
-                break
-
-        # EPS - 계정명이 기업마다 다를 수 있음
-        for eps_name in ("기본주당순이익(원)", "기본주당순이익", "주당순이익"):
-            row = df[df["account_nm"] == eps_name]
-            if not row.empty:
-                metrics["eps"] = to_int(row.iloc[0].get("thstrm_amount", 0))
-                break
+        for eng, candidates in account_candidates.items():
+            for name in candidates:
+                row = df[df["account_nm"] == name]
+                if not row.empty:
+                    metrics[eng] = to_int(row.iloc[0].get("thstrm_amount", 0))
+                    if eng not in ("operating_cf", "eps"):
+                        metrics[f"{eng}_prev"] = to_int(row.iloc[0].get("frmtrm_amount", 0))
+                    break
 
         if metrics.get("equity"):
             metrics["debt_ratio"] = round(
@@ -81,7 +77,7 @@ class FundamentalScreener:
             and cf_ok
         )
 
-    def screen_all(self, year: str, market: str = "KOSPI", workers: int = 1) -> pd.DataFrame:
+    def screen_all(self, year: str, market: str = "KOSPI", workers: int = 8) -> pd.DataFrame:
         """상장 종목 병렬 스크리닝
         market: 'KOSPI' | 'KOSDAQ' | None(전체)
         """
