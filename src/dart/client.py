@@ -49,7 +49,14 @@ class DartClient:
 
         if market in ("KOSPI", "KOSDAQ"):
             import FinanceDataReader as fdr
-            listing = fdr.StockListing(market)[["Code"]].rename(columns={"Code": "stock_code"})
+            for attempt in range(3):
+                try:
+                    listing = fdr.StockListing(market)[["Code"]].rename(columns={"Code": "stock_code"})
+                    break
+                except Exception:
+                    if attempt == 2:
+                        raise
+                    time.sleep(2 ** attempt)
             all_corps = all_corps.merge(listing, on="stock_code", how="inner")
 
         return all_corps.reset_index(drop=True)

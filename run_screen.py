@@ -77,4 +77,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        ts = datetime.now().strftime("%Y-%m-%d %H:%M")
+        send_message(f"[{ts}] 스크리닝 실패\n\n{type(e).__name__}: {e}")
+        raise
