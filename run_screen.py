@@ -39,6 +39,7 @@ def main():
     result = screener.apply_kospi_outperformance_filter(result)
     if result.empty:
         print("  KOSPI 초과성과 종목 없음. 종료.")
+        send_message(f"[{ts}] 오늘의 자동매매 후보 종목\n\n3단계(KOSPI 초과성과) 통과 종목이 없습니다.")
         return
 
     print(f"  3단계 통과: {len(result)}개\n")
@@ -47,6 +48,7 @@ def main():
     picks = pm.select_picks(result)
     if not picks:
         print("  PEG 계산된 종목 없음. 종료.")
+        send_message(f"[{ts}] 오늘의 자동매매 후보 종목\n\nPEG 계산 가능한 종목이 없습니다.")
         return
 
     print(f"\n[선정 종목] PEG 기준 상위 {len(picks)}개")

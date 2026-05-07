@@ -151,7 +151,7 @@ class FundamentalScreener:
                     return None
                 up_cap = s[up].mean() / k[up].mean() * 100
                 dn_cap = s[dn].mean() / k[dn].mean() * 100
-                if up_cap > 100 and dn_cap < 100:
+                if up_cap > dn_cap:
                     r = row.copy()
                     r["upside_capture"] = round(up_cap, 1)
                     r["downside_capture"] = round(dn_cap, 1)
