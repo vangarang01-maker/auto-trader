@@ -27,6 +27,14 @@ def main():
         print("최종 통과 종목이 없습니다.")
         return
 
+    # 3단계: KOSPI 초과성과 필터
+    print("  3단계(KOSPI 초과성과) 필터 적용 중...")
+    result = screener.apply_kospi_outperformance_filter(result)
+
+    if result.empty:
+        print("최종 통과 종목이 없습니다.")
+        return
+
     display_cols = ["corp_name", "peg", "per", "net_income_growth", "revenue_growth", "debt_ratio", "current_price"]
     available_cols = [c for c in display_cols if c in result.columns]
 

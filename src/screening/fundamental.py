@@ -111,6 +111,72 @@ class FundamentalScreener:
         print()
         return pd.DataFrame(results)
 
+    def apply_kospi_outperformance_filter(self, df: pd.DataFrame, months: int = 6) -> pd.DataFrame:
+        """KOSPI 대비 초과성과 종목만 통과
+        upside capture > 100%  : KOSPI 상승일에 더 많이 오름
+        downside capture < 100%: KOSPI 하락일에 덜 떨어짐
+        데이터 부족(공통 20일 미만) 또는 조회 실패 시 제외.
+        """
+        import FinanceDataReader as fdr
+        from datetime import datetime, timedelta
+
+        end_dt = datetime.now()
+        start_str = (end_dt - timedelta(days=months * 31)).strftime("%Y-%m-%d")
+        end_str = end_dt.strftime("%Y-%m-%d")
+
+        try:
+            kospi = fdr.DataReader("KS11", start_str, end_str)
+            kospi_ret = kospi["Close"].pct_change().dropna()
+        except Exception as e:
+            print(f"  [KOSPI 조회 오류] {e} → 필터 생략")
+            return df
+
+        def check_stock(row):
+            code = row.get("stock_code", "")
+            if not code:
+                return None
+            try:
+                stock = fdr.DataReader(code, start_str, end_str)
+                if stock.empty:
+                    return None
+                stock_ret = stock["Close"].pct_change().dropna()
+                common = kospi_ret.index.intersection(stock_ret.index)
+                if len(common) < 20:
+                    return None
+                k = kospi_ret.loc[common]
+                s = stock_ret.loc[common]
+                up = k > 0
+                dn = k < 0
+                if up.sum() < 5 or dn.sum() < 5:
+                    return None
+                up_cap = s[up].mean() / k[up].mean() * 100
+                dn_cap = s[dn].mean() / k[dn].mean() * 100
+                if up_cap > 100 and dn_cap < 100:
+                    r = row.copy()
+                    r["upside_capture"] = round(up_cap, 1)
+                    r["downside_capture"] = round(dn_cap, 1)
+                    return r
+            except Exception as e:
+                print(f"  [KOSPI 비교 오류] {code}: {e}")
+            return None
+
+        rows_input = [row for _, row in df.iterrows()]
+        results = []
+        total = len(rows_input)
+        done = 0
+
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            futures = {executor.submit(check_stock, row): row for row in rows_input}
+            for future in as_completed(futures):
+                done += 1
+                print(f"\r  진행: {done}/{total}", end="", flush=True)
+                result = future.result()
+                if result is not None:
+                    results.append(result)
+
+        print()
+        return pd.DataFrame(results)
+
     def apply_peg_filter(self, df: pd.DataFrame, max_peg: float = 1.0) -> pd.DataFrame:
         """KIS PER 기반 PEG 계산 후 필터링
         PEG = PER / 순이익성장률(%)

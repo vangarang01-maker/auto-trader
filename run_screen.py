@@ -28,6 +28,19 @@ def main():
 
     print("[2단계] KIS PEG 필터...")
     result = screener.apply_peg_filter(dart_picks)
+    if result.empty:
+        print("  PEG 통과 종목 없음. 종료.")
+        return
+
+    print(f"  2단계 통과: {len(result)}개\n")
+
+    print("[3단계] KOSPI 초과성과 필터...")
+    result = screener.apply_kospi_outperformance_filter(result)
+    if result.empty:
+        print("  KOSPI 초과성과 종목 없음. 종료.")
+        return
+
+    print(f"  3단계 통과: {len(result)}개\n")
 
     pm = PortfolioManager(dry_run=True)
     picks = pm.select_picks(result)

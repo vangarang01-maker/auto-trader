@@ -59,7 +59,7 @@ class PortfolioManager:
     # ── 리밸런싱 ───────────────────────────────────────────
 
     def rebalance(self, picks: list[dict]):
-        """매도: 후보 제외 OR RSI ≥ 75  /  매수: 후보 포함 AND RSI < 30"""
+        """매도: 후보 제외 OR RSI ≥ 75  /  매수: 후보 포함 AND RSI < 35"""
         new_codes = {p["stock_code"] for p in picks}
         price_map = {p["stock_code"]: p["current_price"] for p in picks}
         name_map  = {p["stock_code"]: p["corp_name"] for p in picks}
