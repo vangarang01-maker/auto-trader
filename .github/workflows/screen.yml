@@ -29,6 +29,8 @@ jobs:
           KIS_VIRTUAL_APP_KEY:    ${{ secrets.KIS_VIRTUAL_APP_KEY }}
           KIS_VIRTUAL_APP_SECRET: ${{ secrets.KIS_VIRTUAL_APP_SECRET }}
           KIS_ACCOUNT:            ${{ secrets.KIS_ACCOUNT }}
+          TELEGRAM_BOT_TOKEN:     ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:       ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python run_screen.py
 
       - name: picks.json 커밋 & 푸시
