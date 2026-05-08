@@ -8,6 +8,7 @@ import exchange_calendars as xcals
 from src.screening.fundamental import FundamentalScreener
 from src.portfolio.manager import PortfolioManager
 from src.notify.telegram import send_message
+from src.notify.ai_summary import summarize_pick
 
 YEAR     = str(datetime.now().year - 1) if datetime.now().month >= 4 else str(datetime.now().year - 2)
 MARKET   = "KOSPI"
@@ -61,18 +62,21 @@ def main():
     for p in picks:
         print(f"  {p['corp_name']}({p['stock_code']})  PEG={p['peg']}  현재가={p['current_price']:,.0f}원")
 
-    # 텔레그램 알림
+    # 텔레그램 알림 (Gemini 요약 포함)
+    print("\n[AI 요약] Gemini 종목 분석 중...")
     lines = [f"[{ts}] 오늘의 자동매매 후보 종목 ({len(picks)}개)\n"]
     for i, p in enumerate(picks, 1):
-        up  = p.get("upside_capture", "-")
-        dn  = p.get("downside_capture", "-")
-        up_str = f"{up}%" if isinstance(up, float) else up
-        dn_str = f"{dn}%" if isinstance(dn, float) else dn
-        lines.append(
+        up_str = f"{p['upside_capture']}%" if isinstance(p.get('upside_capture'), float) else "-"
+        dn_str = f"{p['downside_capture']}%" if isinstance(p.get('downside_capture'), float) else "-"
+        summary = summarize_pick(p)
+        block = (
             f"{i}. {p['corp_name']} ({p['stock_code']})\n"
             f"   PEG={p['peg']}  현재가={p['current_price']:,.0f}원\n"
             f"   상승포착={up_str}  하락포착={dn_str}"
         )
+        if summary:
+            block += f"\n   {summary}"
+        lines.append(block)
     lines.append("\n관심종목에 추가 후 RSI 신호를 기다리세요.")
     send_message("\n".join(lines))
 

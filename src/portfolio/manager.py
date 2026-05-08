@@ -36,7 +36,11 @@ class PortfolioManager:
     def select_picks(self, df: pd.DataFrame) -> list[dict]:
         """PEG 오름차순 상위 MAX_HOLD개. NaN 제외."""
         valid = df[df["peg"].notna()].sort_values("peg").head(MAX_HOLD)
-        return valid[["stock_code", "corp_name", "peg", "current_price"]].to_dict("records")
+        cols = ["stock_code", "corp_name", "peg", "current_price",
+                "net_income_growth", "revenue_growth", "debt_ratio",
+                "upside_capture", "downside_capture"]
+        available = [c for c in cols if c in valid.columns]
+        return valid[available].to_dict("records")
 
     def needs_rebalance(self, picks: list[dict]) -> bool:
         new_codes = {p["stock_code"] for p in picks}
