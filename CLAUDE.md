@@ -72,20 +72,24 @@ PEG = PER(KIS 실시간) / 순이익성장률(%)
 
 ### 3단계 — KOSPI 초과성과 필터 (`FundamentalScreener.apply_kospi_outperformance_filter`)
 
-최근 6개월 일봉 기준으로 KOSPI 지수 대비 초과성과 종목만 통과.
+최근 **3개월(약 60 거래일)** 일봉 기준으로 KOSPI 지수 대비 초과성과 종목만 통과.
 
-- **Upside Capture > 100%**: KOSPI 상승일에 평균적으로 더 많이 오른 종목
-- **Downside Capture < 100%**: KOSPI 하락일에 평균적으로 덜 떨어진 종목
+**계산 방식 — 1일 단위 등락률 비교:**
 
-계산 방식:
+60 거래일을 두 그룹으로 분류한 뒤, 각 그룹에서 평균 등락률 비율을 계산한다.
+
 ```
-upside_capture  = mean(종목 수익률 | KOSPI > 0) / mean(KOSPI 수익률 | KOSPI > 0) × 100
-downside_capture = mean(종목 수익률 | KOSPI < 0) / mean(KOSPI 수익률 | KOSPI < 0) × 100
+상승포착률 = mean(종목 일별 등락률 | KOSPI 상승일) / mean(KOSPI 일별 등락률 | KOSPI 상승일) × 100
+하락포착률 = mean(종목 일별 등락률 | KOSPI 하락일) / mean(KOSPI 일별 등락률 | KOSPI 하락일) × 100
 ```
+
+예) 상승포착 130%, 하락포착 80% → KOSPI 오를 때 1.3배 따라 오르고, 내릴 때는 0.8배만 따라 내림.
+
+통과 조건: **상승포착률 > 하락포착률**
 
 - 데이터 소스: `FinanceDataReader` (`KS11` = KOSPI 지수, 종목별 일봉)
-- 공통 거래일 20일 미만 또는 상승/하락일 5일 미만이면 제외
-- FDR 조회 실패 시도 제외 (PEG 필터와 달리 통과 처리 없음)
+- 공통 거래일 20일 미만 또는 상승/하락일 각 5일 미만이면 제외
+- FDR 조회 실패 시 제외 (PEG 필터와 달리 통과 처리 없음)
 - ThreadPoolExecutor(workers=4)로 병렬 조회
 - 통과 종목에 `upside_capture`, `downside_capture` 컬럼 추가
 
@@ -173,6 +177,10 @@ pandas==2.2.3
 python-dotenv==1.0.1
 requests==2.32.3
 finance-datareader>=0.9.110
+exchange-calendars>=4.5
+google-generativeai>=0.8.0
+supabase>=2.3.0
+beautifulsoup4>=4.12.0
 ```
 
 ---
