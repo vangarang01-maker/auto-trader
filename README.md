@@ -1,7 +1,7 @@
 # auto-trader
 
 DART 전자공시 + KIS Open API 기반 자동 매매 시스템.
-피터 린치 펀더멘털 스크리닝 → PEG 필터 → RSI 매매 신호의 3단계 파이프라인으로 동작한다.
+피터 린치 펀더멘털 스크리닝 → PEG 필터 → KOSPI 초과성과 필터 → RSI 매매 신호의 4단계 파이프라인으로 동작한다.
 
 ---
 
@@ -10,7 +10,8 @@ DART 전자공시 + KIS Open API 기반 자동 매매 시스템.
 ### 전체 흐름
 
 ```
-[07:30 KST] DART 재무 스크리닝 → KIS PEG 필터 → 후보 5종목 저장 (picks.json)
+[07:30 KST] DART 재무 스크리닝 → KIS PEG 필터 → KOSPI 초과성과 필터 → 후보 5종목 저장 (picks.json)
+                                                                              ↓ 텔레그램 알림 (Gemini AI 요약 포함)
 [09:00~15:00 KST, 매 시간] picks.json 읽기 → 현재가 재조회 → RSI 계산 → 매수/매도 실행
 ```
 
@@ -20,7 +21,9 @@ DART 전자공시 + KIS Open API 기반 자동 매매 시스템.
 
 ### 매도 조건
 - 후보 종목에서 제외되었거나 (스크리닝 탈락)
-- RSI-14 ≥ 75 (과매수 구간)
+- RSI-14 ≥ 75 (과매수 구간), 또는
+- 수익률 +15% 이상 (익절), 또는
+- 수익률 -7% 이하 (손절)
 
 ### 포지션 관리
 - 최대 보유 종목: 5개
@@ -56,26 +59,37 @@ PEG = PER(현재 시장가 기준) / 순이익성장률(%)
 - PEG ≤ 1.0인 종목만 통과 (성장성 대비 저평가)
 - KIS 조회 실패 시 통과 처리
 
-### 3단계 — 상위 5개 선정
+### 3단계 — KOSPI 초과성과 필터
 
-PEG 오름차순 정렬 후 상위 5개 선정.  
+최근 **3개월(약 60 거래일)** 일봉 기준으로 KOSPI 지수 대비 초과성과 종목만 통과한다.
+
+**계산 방식 — 1일 단위 등락률 비교:**
+
+60 거래일을 두 그룹으로 분류한 뒤, 각 그룹에서 평균 등락률 비율을 계산한다.
+
+```
+상승포착률 = mean(종목 일별 등락률 | KOSPI 상승일) / mean(KOSPI 일별 등락률 | KOSPI 상승일) × 100
+하락포착률 = mean(종목 일별 등락률 | KOSPI 하락일) / mean(KOSPI 일별 등락률 | KOSPI 하락일) × 100
+```
+
+예) 상승포착 130%, 하락포착 80% → KOSPI 오를 때 1.3배 따라 오르고, 내릴 때는 0.8배만 따라 내림.
+
+통과 조건: **상승포착률 > 하락포착률**
+
+### 4단계 — 최종 5개 선정
+
+PEG 오름차순 정렬 후 상위 5개 선정.
 PEG가 낮을수록 성장 대비 주가가 저렴한 종목.
 
 ---
 
-## 향후 스크리닝 전략 (예정)
+## 텔레그램 알림 & AI 요약
 
-### KOSPI 지수 초과 수익 전략
+스크리닝 완료 후 텔레그램으로 후보 종목 리포트를 전송한다.  
+각 종목마다 DART 공시 + 네이버 금융 뉴스를 수집해 Gemini AI가 투자포인트와 리스크를 요약한다.
 
-현재 전략은 절대적 재무 기준으로만 필터링한다. 향후에는 KOSPI 지수 대비 상대 수익률 관점의 조건을 추가할 예정이다.
-
-| 항목 | 내용 |
-|------|------|
-| 모멘텀 필터 | 최근 3~6개월 수익률이 KOSPI 수익률을 초과한 종목 우선 |
-| ROE 기준 강화 | ROE ≥ 15% (자기자본 효율성) |
-| PBR 조건 추가 | PBR ≤ 1.5 (자산 대비 저평가) |
-| 섹터 분산 | 동일 섹터 최대 2종목으로 집중 리스크 제한 |
-| 백테스팅 | KOSPI 지수 대비 초과 수익 검증 후 전략 편입 |
+- Gemini 모델: `gemini-3.1-flash-lite` 우선, 실패 시 `gemini-3-flash-preview` 폴백
+- 뉴스는 Supabase DB에 저장해 중복 크롤링을 방지한다 (7일 내 5건 이상이면 재크롤링 생략)
 
 ---
 
@@ -115,14 +129,23 @@ auto-trader/
 ├── picks.json                 # 당일 선정 종목 (run_screen이 갱신)
 ├── portfolio.json             # 보유 종목 상태
 ├── src/
+│   ├── dart/
+│   │   └── client.py         # DART API 클라이언트 (재무제표, 공시, 기업 컨텍스트)
 │   ├── screening/
-│   │   └── fundamental.py    # DART 재무 스크리닝 + PEG 필터
+│   │   └── fundamental.py    # DART 재무 스크리닝 + PEG 필터 + KOSPI 초과성과 필터
 │   ├── broker/
 │   │   └── kis_client.py     # KIS API 클라이언트 (시세·잔고·주문)
 │   ├── portfolio/
-│   │   └── manager.py        # 종목 선정, RSI 계산, 매매 실행
-│   └── indicators/
-│       └── rsi.py            # RSI-14 계산 (Wilder 방식)
+│   │   └── manager.py        # 종목 선정, RSI 계산, 매매 실행 (익절/손절 포함)
+│   ├── indicators/
+│   │   └── rsi.py            # RSI-14 계산 (Wilder 방식)
+│   ├── notify/
+│   │   ├── telegram.py       # 텔레그램 메시지 전송
+│   │   └── ai_summary.py     # Gemini AI 종목 요약
+│   ├── db/
+│   │   └── client.py         # Supabase 클라이언트 (뉴스·스크리닝 결과 저장)
+│   └── news/
+│       └── crawler.py        # 네이버 금융 뉴스 크롤러
 └── .github/workflows/
     ├── screen.yml            # 평일 07:30 KST 스크리닝
     └── trade.yml             # 평일 09:00~15:00 KST 매 시간 매매
@@ -142,12 +165,20 @@ auto-trader/
 | `KIS_VIRTUAL_APP_KEY` | KIS 모의투자 앱키 |
 | `KIS_VIRTUAL_APP_SECRET` | KIS 모의투자 시크릿 |
 | `KIS_ACCOUNT` | 계좌번호 (모의: 모의계좌, 실전: 실계좌) |
+| `TELEGRAM_BOT_TOKEN` | 텔레그램 봇 토큰 |
+| `TELEGRAM_CHAT_ID` | 텔레그램 수신 채팅 ID |
+| `GEMINI_API_KEY` | Google Gemini API 키 |
+| `SUPABASE_URL` | Supabase 프로젝트 URL |
+| `SUPABASE_KEY` | Supabase Secret 키 |
 
 ---
 
 ## 기술 스택
 
 - **언어**: Python 3.11+
-- **데이터**: DART Open API, KIS Open API
-- **라이브러리**: pandas, requests, opendartreader, python-dotenv
+- **데이터**: DART Open API, KIS Open API, FinanceDataReader
+- **AI**: Google Gemini (종목 요약)
+- **알림**: Telegram Bot API
+- **DB**: Supabase (PostgreSQL) — 뉴스 캐시, 스크리닝 이력
+- **라이브러리**: pandas, requests, opendartreader, python-dotenv, exchange-calendars, beautifulsoup4
 - **자동화**: GitHub Actions (cron)
