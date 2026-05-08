@@ -81,7 +81,13 @@ class DartClient:
             import FinanceDataReader as fdr
             for attempt in range(3):
                 try:
-                    listing = fdr.StockListing(market)[["Code"]].rename(columns={"Code": "stock_code"})
+                    raw = fdr.StockListing(market)
+                    cols = {"Code": "stock_code"}
+                    if "Sector" in raw.columns:
+                        cols["Sector"] = "sector"
+                    elif "Industry" in raw.columns:
+                        cols["Industry"] = "sector"
+                    listing = raw[list(cols.keys())].rename(columns=cols)
                     break
                 except Exception:
                     if attempt == 2:

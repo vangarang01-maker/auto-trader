@@ -38,7 +38,7 @@ class PortfolioManager:
     def select_picks(self, df: pd.DataFrame) -> list[dict]:
         """PEG 오름차순 상위 MAX_HOLD개. NaN 제외."""
         valid = df[df["peg"].notna()].sort_values("peg").head(MAX_HOLD)
-        cols = ["corp_code", "stock_code", "corp_name", "peg", "current_price",
+        cols = ["corp_code", "stock_code", "corp_name", "sector", "peg", "current_price",
                 "net_income_growth", "revenue_growth", "debt_ratio",
                 "upside_capture", "downside_capture"]
         available = [c for c in cols if c in valid.columns]

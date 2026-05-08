@@ -64,10 +64,13 @@ def main():
 
     # 텔레그램 알림 (DART 컨텍스트 + Gemini 요약 포함)
     print("\n[AI 요약] DART 공시 수집 및 Gemini 분석 중...")
-    lines = [f"[{ts}] 오늘의 자동매매 후보 종목 ({len(picks)}개)\n"]
+    DIV = "─" * 28
+    lines = [f"[{ts}] 자동매매 후보 종목 {len(picks)}개"]
     for i, p in enumerate(picks, 1):
-        up_str = f"{p['upside_capture']}%" if isinstance(p.get('upside_capture'), float) else "-"
-        dn_str = f"{p['downside_capture']}%" if isinstance(p.get('downside_capture'), float) else "-"
+        up_str = f"{p['upside_capture']:.1f}%" if isinstance(p.get('upside_capture'), float) else "-"
+        dn_str = f"{p['downside_capture']:.1f}%" if isinstance(p.get('downside_capture'), float) else "-"
+        sector = p.get('sector') or ""
+        sector_str = f"  |  {sector}" if sector else ""
 
         context = ""
         if p.get("corp_code"):
@@ -77,15 +80,18 @@ def main():
                 print(f"  [컨텍스트 오류] {p['corp_name']}: {e}")
 
         summary = summarize_pick(p, context)
-        block = (
-            f"{i}. {p['corp_name']} ({p['stock_code']})\n"
-            f"   PEG={p['peg']}  현재가={p['current_price']:,.0f}원\n"
-            f"   상승포착={up_str}  하락포착={dn_str}"
-        )
+
+        lines.append(f"\n{DIV}")
+        lines.append(f"{i}. {p['corp_name']} ({p['stock_code']}){sector_str}")
+        lines.append(f"   PEG {p['peg']}  |  현재가 {p['current_price']:,.0f}원")
+        lines.append(f"   상승포착 {up_str}  |  하락포착 {dn_str}")
         if summary:
-            block += f"\n   {summary}"
-        lines.append(block)
-    lines.append("\n관심종목에 추가 후 RSI 신호를 기다리세요.")
+            lines.append("")
+            for line in summary.splitlines():
+                lines.append(f"   {line}")
+
+    lines.append(f"\n{DIV}")
+    lines.append("관심종목 추가 후 RSI 신호 대기")
     send_message("\n".join(lines))
 
     # stock_code, corp_name, peg 만 저장 (current_price는 trade 시점에 재조회)
