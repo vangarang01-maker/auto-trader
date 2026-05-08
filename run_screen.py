@@ -94,7 +94,7 @@ def main():
 
     # AI 요약 (DART 공시 + 뉴스 컨텍스트 포함)
     print("\n[AI 요약] DART 공시·뉴스 수집 및 Gemini 분석 중...")
-    DIV = "─" * 28
+    DIV = "─" * 12
     lines = [f"[{ts}] 자동매매 후보 종목 {len(picks)}개"]
     for i, p in enumerate(picks, 1):
         up_str = f"{p['upside_capture']:.1f}%" if isinstance(p.get('upside_capture'), float) else "-"
