@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-_MODEL = "gemini-3-flash-preview"
+_MODELS = ["gemini-3.1-flash-lite", "gemini-3-flash-preview"]
 
 
 def _format_val(val, suffix="") -> str:
@@ -15,14 +15,14 @@ def _format_val(val, suffix="") -> str:
 
 def summarize_pick(pick: dict) -> str:
     """종목 재무 지표를 Gemini에게 전달해 투자 포인트 요약을 받아온다.
-    API 키 미설정 또는 호출 실패 시 빈 문자열 반환.
+    gemini-3.1-flash-lite 우선 시도, 실패 시 gemini-3-flash-preview로 폴백.
+    API 키 미설정 또는 전체 실패 시 빈 문자열 반환.
     """
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         return ""
 
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel(_MODEL)
 
     prompt = f"""다음 종목의 정량 지표를 바탕으로, 개인 투자자에게 2~3줄로 핵심 투자 포인트와 주의사항을 한국어로 요약해줘.
 숫자를 단순 나열하지 말고 의미 위주로 써줘. 불필요한 인사말 없이 바로 본문만 작성해.
@@ -35,9 +35,11 @@ PEG: {_format_val(pick.get('peg'))}
 KOSPI 상승포착률: {_format_val(pick.get('upside_capture'), '%')}
 KOSPI 하락포착률: {_format_val(pick.get('downside_capture'), '%')}"""
 
-    try:
-        response = model.generate_content(prompt)
-        return response.text.strip()
-    except Exception as e:
-        print(f"  [Gemini 오류] {pick.get('corp_name', '')}: {e}")
-        return ""
+    for model_name in _MODELS:
+        try:
+            response = genai.GenerativeModel(model_name).generate_content(prompt)
+            return response.text.strip()
+        except Exception as e:
+            print(f"  [Gemini 오류] {model_name} / {pick.get('corp_name', '')}: {e}")
+
+    return ""
