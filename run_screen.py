@@ -62,13 +62,21 @@ def main():
     for p in picks:
         print(f"  {p['corp_name']}({p['stock_code']})  PEG={p['peg']}  현재가={p['current_price']:,.0f}원")
 
-    # 텔레그램 알림 (Gemini 요약 포함)
-    print("\n[AI 요약] Gemini 종목 분석 중...")
+    # 텔레그램 알림 (DART 컨텍스트 + Gemini 요약 포함)
+    print("\n[AI 요약] DART 공시 수집 및 Gemini 분석 중...")
     lines = [f"[{ts}] 오늘의 자동매매 후보 종목 ({len(picks)}개)\n"]
     for i, p in enumerate(picks, 1):
         up_str = f"{p['upside_capture']}%" if isinstance(p.get('upside_capture'), float) else "-"
         dn_str = f"{p['downside_capture']}%" if isinstance(p.get('downside_capture'), float) else "-"
-        summary = summarize_pick(p)
+
+        context = ""
+        if p.get("corp_code"):
+            try:
+                context = screener.client.get_company_context(p["corp_code"])
+            except Exception as e:
+                print(f"  [컨텍스트 오류] {p['corp_name']}: {e}")
+
+        summary = summarize_pick(p, context)
         block = (
             f"{i}. {p['corp_name']} ({p['stock_code']})\n"
             f"   PEG={p['peg']}  현재가={p['current_price']:,.0f}원\n"

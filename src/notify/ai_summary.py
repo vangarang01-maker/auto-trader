@@ -13,8 +13,8 @@ def _format_val(val, suffix="") -> str:
     return f"{val}{suffix}"
 
 
-def summarize_pick(pick: dict) -> str:
-    """종목 재무 지표를 Gemini에게 전달해 투자 포인트 요약을 받아온다.
+def summarize_pick(pick: dict, context: str = "") -> str:
+    """재무 지표 + 기업 컨텍스트(공시·업종)를 Gemini에 전달해 분석을 받아온다.
     gemini-3.1-flash-lite 우선 시도, 실패 시 gemini-3-flash-preview로 폴백.
     API 키 미설정 또는 전체 실패 시 빈 문자열 반환.
     """
@@ -24,16 +24,23 @@ def summarize_pick(pick: dict) -> str:
 
     genai.configure(api_key=api_key)
 
-    prompt = f"""다음 종목의 정량 지표를 바탕으로, 개인 투자자에게 2~3줄로 핵심 투자 포인트와 주의사항을 한국어로 요약해줘.
-숫자를 단순 나열하지 말고 의미 위주로 써줘. 불필요한 인사말 없이 바로 본문만 작성해.
+    context_section = f"\n\n[기업 정보 및 최근 공시]\n{context}" if context else ""
 
+    prompt = f"""다음 종목의 재무 지표{" 및 기업 정보" if context else ""}를 바탕으로, 아래 두 가지를 한국어로 작성해줘.
+숫자를 단순 나열하지 말고 의미 위주로, 불필요한 인사말 없이 바로 본문만 작성해.
+
+[재무 지표]
 종목명: {pick['corp_name']} ({pick['stock_code']})
 PEG: {_format_val(pick.get('peg'))}
 순이익 성장률: {_format_val(pick.get('net_income_growth'), '%')}
 매출 성장률: {_format_val(pick.get('revenue_growth'), '%')}
 부채비율: {_format_val(pick.get('debt_ratio'), '%')}
 KOSPI 상승포착률: {_format_val(pick.get('upside_capture'), '%')}
-KOSPI 하락포착률: {_format_val(pick.get('downside_capture'), '%')}"""
+KOSPI 하락포착률: {_format_val(pick.get('downside_capture'), '%')}{context_section}
+
+답변 형식:
+투자포인트: (1~2줄)
+리스크: (1~2줄)"""
 
     for model_name in _MODELS:
         try:

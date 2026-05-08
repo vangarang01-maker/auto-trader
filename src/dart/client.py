@@ -35,6 +35,36 @@ class DartClient:
         result = self.dart.find_corp_code(company_name)
         return result
 
+    def get_company_context(self, corp_code: str) -> str:
+        """AI 분석용 기업 컨텍스트: 기업 개요 + 최근 6개월 공시 목록"""
+        from datetime import datetime, timedelta
+        lines = []
+
+        try:
+            info = self.dart.company(corp_code)
+            if info is not None:
+                prd = getattr(info, "get", lambda k, d=None: info[k] if k in info else d)
+                if info.get("prd_nm"):
+                    lines.append(f"주요제품/서비스: {str(info['prd_nm'])[:200]}")
+                if info.get("induty_code"):
+                    lines.append(f"업종코드: {info['induty_code']}")
+        except Exception:
+            pass
+
+        try:
+            end   = datetime.now().strftime("%Y%m%d")
+            start = (datetime.now() - timedelta(days=180)).strftime("%Y%m%d")
+            disc  = self.dart.list(corp_code, start=start, end=end)
+            if disc is not None and not disc.empty:
+                col = "report_nm" if "report_nm" in disc.columns else disc.columns[2]
+                titles = disc[col].dropna().head(10).tolist()
+                lines.append("최근 6개월 공시:")
+                lines.extend(f"- {t}" for t in titles)
+        except Exception:
+            pass
+
+        return "\n".join(lines)
+
     def get_listed_corp_codes(self, market: str | None = None) -> "pd.DataFrame":
         """상장 종목 목록 반환
         market: 'KOSPI' | 'KOSDAQ' | None(전체)
