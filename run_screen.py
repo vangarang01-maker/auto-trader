@@ -1,7 +1,9 @@
 """매일 07:30 1회 실행 — 종목 스크리닝 후 picks.json 저장"""
 import json
-from datetime import datetime
+from datetime import datetime, date
 from pathlib import Path
+
+import exchange_calendars as xcals
 
 from src.screening.fundamental import FundamentalScreener
 from src.portfolio.manager import PortfolioManager
@@ -17,6 +19,10 @@ def main():
     print(f"\n{'='*50}")
     print(f"[{ts}] 스크리닝 시작 (기준연도: {YEAR})")
     print(f"{'='*50}\n")
+
+    if not xcals.get_calendar("XKRX").is_session(str(date.today())):
+        print("  오늘은 KRX 휴장일입니다. 스크리닝을 건너뜁니다.")
+        return
 
     screener = FundamentalScreener()
 
