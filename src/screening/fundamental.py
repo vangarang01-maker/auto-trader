@@ -111,7 +111,7 @@ class FundamentalScreener:
         print()
         return pd.DataFrame(results)
 
-    def apply_kospi_outperformance_filter(self, df: pd.DataFrame, months: int = 6) -> pd.DataFrame:
+    def apply_kospi_outperformance_filter(self, df: pd.DataFrame, months: int = 3) -> pd.DataFrame:
         """KOSPI 대비 초과성과 종목만 통과
         upside capture > 100%  : KOSPI 상승일에 더 많이 오름
         downside capture < 100%: KOSPI 하락일에 덜 떨어짐
