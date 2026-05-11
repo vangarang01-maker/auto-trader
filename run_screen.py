@@ -100,6 +100,17 @@ def main():
         except Exception as e:
             print(f"  [뉴스 크롤링 오류] {e}\n")
 
+    # 뉴스 감성 맵 로드 (stock_code → [{label, reason, headline}, ...])
+    sentiment_map: dict[str, list[dict]] = {}
+    try:
+        from src.db.client import get_news_sentiment
+        for r in get_news_sentiment(today):
+            sentiment_map.setdefault(r["stock_code"], []).append(r)
+        if sentiment_map:
+            print(f"  감성 데이터: {sum(len(v) for v in sentiment_map.values())}건 ({len(sentiment_map)}개 종목)\n")
+    except Exception as e:
+        print(f"  [감성 로드 오류] {e}\n")
+
     screener = FundamentalScreener()
 
     print("[1단계] DART 재무 스크리닝...")
@@ -187,6 +198,18 @@ def main():
 
     # ── 텔레그램 메시지 조립 ────────────────────────────────
     SEP = "─" * 8
+    _SENT_EMOJI = {"호재": "✅", "악재": "❌", "혼조": "⚠️"}
+
+    def _dominant_label(records: list[dict]) -> str:
+        labels = {r.get("label") for r in records}
+        if "호재" in labels and "악재" in labels:
+            return "혼조"
+        if "호재" in labels:
+            return "호재"
+        if "악재" in labels:
+            return "악재"
+        return "혼조"
+
     lines = [f"[{ts}] 자동매매 후보 종목 {len(picks)}개", ""]
 
     # 상단: 종목 리스트 표
@@ -199,7 +222,9 @@ def main():
         signal = " ◀매수" if rsi is not None and rsi < 35 else (" ▶매도" if rsi is not None and rsi >= 75 else "")
         hs_str = f"{p['health_score']:.0f}점" if p.get("health_score") is not None else "-"
         news_tag = " 📰" if p["stock_code"] in news_codes_set else ""
-        lines.append(f"{p['corp_name']}{signal}{news_tag} | {rsi_str} | {hs_str}")
+        sent_records = sentiment_map.get(p["stock_code"], [])
+        sent_tag = f" {_SENT_EMOJI[_dominant_label(sent_records)]}" if sent_records else ""
+        lines.append(f"{p['corp_name']}{sent_tag}{signal}{news_tag} | {rsi_str} | {hs_str}")
 
     # 중단: 시장 테마
     lines.append("")
@@ -220,6 +245,12 @@ def main():
         lines.append(SEP)
         news_tag = " 📰" if p["stock_code"] in news_codes_set else ""
         lines.append(f"{i}. {p['corp_name']} ({p['stock_code']}){news_tag}")
+        sent_records = sentiment_map.get(p["stock_code"], [])
+        if sent_records:
+            label = _dominant_label(sent_records)
+            lines.append(f"[뉴스 감성] {_SENT_EMOJI[label]} {label}")
+            for r in sent_records[:3]:
+                lines.append(f"• {r.get('reason', '')}")
         summary = summaries.get(p["stock_code"], "")
         if summary:
             for line in summary.splitlines():

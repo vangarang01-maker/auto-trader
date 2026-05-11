@@ -117,6 +117,35 @@ def get_latest_market_news(crawled_at: str) -> dict | None:
         return None
 
 
+def save_news_sentiment(date: str, records: list[dict]) -> None:
+    """당일 뉴스 감성 분석 결과 저장 (날짜 기준 전체 교체)."""
+    if not records:
+        return
+    try:
+        client = _get_client()
+        client.table("news_sentiment").delete().eq("crawled_at", date).execute()
+        rows = [{"crawled_at": date, **r} for r in records]
+        client.table("news_sentiment").insert(rows).execute()
+    except Exception as e:
+        print(f"  [DB 오류] 뉴스 감성 저장 실패: {e}")
+
+
+def get_news_sentiment(date: str) -> list[dict]:
+    """당일 뉴스 감성 분석 결과 조회."""
+    try:
+        res = (
+            _get_client()
+            .table("news_sentiment")
+            .select("headline, stock_code, corp_name, label, reason")
+            .eq("crawled_at", date)
+            .execute()
+        )
+        return res.data or []
+    except Exception as e:
+        print(f"  [DB 오류] 뉴스 감성 조회 실패: {e}")
+        return []
+
+
 def save_screening_result(picks: list[dict], screened_date: str) -> None:
     """스크리닝 결과를 screening_history 테이블에 저장."""
     if not picks:

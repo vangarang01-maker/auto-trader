@@ -9,7 +9,7 @@ from datetime import date, datetime
 from pathlib import Path
 
 from src.news.market_news import get_market_news
-from src.notify.ai_summary import analyze_market_themes
+from src.notify.ai_summary import analyze_market_themes, analyze_news_sentiment
 
 NEWS_FILE = "news.json"
 
@@ -39,11 +39,29 @@ def main():
     else:
         print("  (GEMINI_API_KEY 미설정 또는 분석 실패)")
 
+    # 뉴스 감성 분석
+    print("\n[뉴스 감성 분석 중...]")
+    sentiment_records: list[dict] = []
+    try:
+        sentiment_records = analyze_news_sentiment(headlines, stock_codes)
+        if sentiment_records:
+            _EMOJI = {"호재": "✅", "악재": "❌", "혼조": "⚠️"}
+            for s in sentiment_records:
+                emoji = _EMOJI.get(s.get("label", ""), "")
+                print(f"  {emoji} {s.get('label')} — {s.get('corp_name')}({s.get('stock_code')}): {s.get('reason')}")
+        else:
+            print("  (관련 종목 없음 또는 분석 실패)")
+    except Exception as e:
+        print(f"  [감성 분석 오류] {e}")
+
     # DB 저장
     try:
-        from src.db.client import save_market_news
+        from src.db.client import save_market_news, save_news_sentiment
         save_market_news(today, headlines, stock_codes, theme_analysis)
         print(f"\n→ DB 저장 완료 (market_news / {today})")
+        if sentiment_records:
+            save_news_sentiment(today, sentiment_records)
+            print(f"→ DB 저장 완료 (news_sentiment / {len(sentiment_records)}건)")
     except Exception as e:
         print(f"\n  [DB 오류] {e}")
 

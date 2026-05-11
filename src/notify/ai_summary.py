@@ -1,3 +1,4 @@
+import json
 import os
 from google import genai
 from google.genai import types
@@ -85,3 +86,47 @@ def analyze_market_themes(headlines: list[str]) -> str:
             print(f"  [Gemini 오류] {model_name}: {e}")
 
     return ""
+
+
+def analyze_news_sentiment(headlines: list[str], stock_codes: list[str]) -> list[dict]:
+    """헤드라인 목록과 관련 종목코드를 받아 각 (헤드라인, 종목) 쌍의 호재/악재/혼조를 판단.
+
+    반환: [{"headline", "stock_code", "corp_name", "label", "reason"}, ...]
+    """
+    if not headlines or not stock_codes:
+        return []
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return []
+
+    client = genai.Client(api_key=api_key)
+    joined_headlines = "\n".join(f"{i+1}. {h}" for i, h in enumerate(headlines))
+    joined_codes = ", ".join(stock_codes)
+
+    prompt = f"""한국 주식 시장 뉴스 헤드라인 목록과 관련 종목코드가 있습니다.
+각 헤드라인에서 아래 종목코드 목록의 종목과 직접 관련된 것을 찾아,
+해당 종목에 '호재', '악재', '혼조' 중 하나로 판단하고 근거를 한 줄로 설명하세요.
+관련 없는 헤드라인은 건너뛰고, 확실하지 않으면 포함하지 마세요.
+
+[헤드라인]
+{joined_headlines}
+
+[관련 종목코드]
+{joined_codes}
+
+JSON 배열만 출력 (마크다운 코드블록 없이):
+[{{"headline":"원문그대로","stock_code":"6자리코드","corp_name":"기업명","label":"호재 또는 악재 또는 혼조","reason":"판단근거한줄"}}]"""
+
+    for model_name in _MODELS:
+        try:
+            resp = client.models.generate_content(model=model_name, contents=prompt)
+            text = resp.text.strip()
+            # 마크다운 펜스 제거
+            if "```" in text:
+                start = text.find("[")
+                end = text.rfind("]") + 1
+                text = text[start:end]
+            return json.loads(text)
+        except Exception as e:
+            print(f"  [감성분석 오류] {model_name}: {e}")
+    return []
