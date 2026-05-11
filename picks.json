@@ -1,18 +1,8 @@
 [
   {
-    "stock_code": "322000",
-    "corp_name": "HD현대에너지솔루션",
-    "peg": 0.0
-  },
-  {
-    "stock_code": "483650",
-    "corp_name": "달바글로벌",
-    "peg": 0.08
-  },
-  {
-    "stock_code": "003000",
-    "corp_name": "부광약품",
-    "peg": 0.09
+    "stock_code": "439260",
+    "corp_name": "대한조선",
+    "peg": 0.25
   },
   {
     "stock_code": "017550",
@@ -20,8 +10,18 @@
     "peg": 0.18
   },
   {
+    "stock_code": "000660",
+    "corp_name": "SK하이닉스",
+    "peg": 0.27
+  },
+  {
     "stock_code": "009140",
     "corp_name": "경인전자",
     "peg": 0.25
+  },
+  {
+    "stock_code": "483650",
+    "corp_name": "달바글로벌",
+    "peg": 0.08
   }
 ]
