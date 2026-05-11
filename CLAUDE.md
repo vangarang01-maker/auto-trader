@@ -8,17 +8,33 @@ Python 3.11+, GitHub Actions cron으로 동작.
 ## 실행 흐름
 
 ```
-[07:25 KST] run_news.py   →  네이버 금융 + 한국경제 크롤링 → Gemini 테마 분석 → news.json 저장
-                                                                                    ↓ git commit & push (Actions)
-[07:30 KST] run_screen.py →  news.json 읽기 → DART 재무 스크리닝 → PEG 필터 → picks.json 저장
-                                                                                  ↓ git commit & push (Actions)
-[09:00~15:00 KST, 매 시간] run_trade.py  →  picks.json 읽기 → 현재가 재조회 → RSI 계산 → 주문
+[07:25 KST] run_news.py
+  네이버 금융 + 한국경제 크롤링
+  → Gemini 테마 분석 → DB(market_news) + news.json 저장
+  → Gemini 감성 분석 → DB(news_sentiment) 저장
+
+[07:30 KST] run_screen.py   (V1 — 피터 린치)
+  0단계 DB 뉴스 + 감성맵 로드
+  1단계 DART 재무 스크리닝 (피터 린치 5조건)
+  2단계 KIS PEG 필터 (PEG ≤ 1.0)
+  3단계 KOSPI 초과성과 필터
+  건강검진 7개 지표 → 상위 5개 → picks.json 저장
+
+[07:30 KST] run_screen_v2.py   (V2 — 고배당-저PBR-고ROE, 병렬 실행)
+  0단계 DB 뉴스 + 감성맵 로드
+  1단계 DART 필터 (ROE≥10 / 부채비율≤150 / 이자보상배율≥3)
+  2단계 KIS 밸류에이션 (PBR 0.8~1.2 / 배당수익률≥3.5%)
+  3단계 FDR 6개월 모멘텀 (상위 20%)
+  건강검진 7개 지표 → 상위 5개 → picks_v2.json 저장
+
+[09:00~15:00 KST, 매 시간] run_trade.py  →  picks.json 읽기 → RSI 계산 → 주문
 ```
 
-- `run_news.py`: 뉴스 크롤링 + Gemini 테마 분석 + Gemini 감성 분석(호재/악재/혼조). news.json 생성 (스크리닝과 분리)
-- `run_screen.py`: news.json 우선 읽기, 없으면 live 크롤링 fallback. 감성맵(news_sentiment) 로드. `PortfolioManager(dry_run=True)` — 주문 없이 종목만 선정
-- `run_trade.py`: `PortfolioManager(dry_run=False)` — 실제 주문 실행
-- `main.py`: 스크리닝 + 매매를 한 번에 실행하는 수동 실행용 스크립트 (개발/테스트용)
+- `run_news.py`: 뉴스 크롤링 + Gemini 테마·감성 분석 → DB 저장
+- `run_screen.py`: V1 스크리닝 → picks.json. `PortfolioManager(dry_run=True)`
+- `run_screen_v2.py`: V2 스크리닝 → picks_v2.json. screen.yml과 동시 실행
+- `run_trade.py`: picks.json 읽어 실제 주문. `PortfolioManager(dry_run=False)`
+- `main.py`: 수동 실행용 (스크리닝+매매 통합, 개발/테스트용)
 
 ---
 
@@ -26,32 +42,38 @@ Python 3.11+, GitHub Actions cron으로 동작.
 
 ```
 auto-trader/
-├── run_news.py                # 07:25 뉴스 크롤링 → DB + news.json 저장
-├── run_screen.py              # 07:30 스크리닝 진입점 → picks.json 저장
-├── run_trade.py               # 매 시간 RSI 매매 진입점
-├── main.py                    # 수동 실행용 (스크리닝+매매 통합)
-├── picks.json                 # 당일 선정 종목 (screen이 갱신, trade가 소비)
-├── portfolio.json             # 보유 종목 상태 (last_picks, last_run)
-├── requirements.txt
+├── run_news.py                # 07:25 뉴스 크롤링 + 테마·감성 분석 → DB 저장
+├── run_screen.py              # 07:30 V1 스크리닝 → picks.json
+├── run_screen_v2.py           # 07:30 V2 스크리닝 → picks_v2.json (병렬 실행)
+├── run_trade.py               # 매 시간 RSI 매매 (picks.json 소비)
+├── main.py                    # 수동 실행용
+├── picks.json                 # V1 당일 선정 종목
+├── picks_v2.json              # V2 당일 선정 종목
+├── portfolio.json             # 보유 종목 상태
+├── docs/
+│   ├── strategy_v1.md         # V1 전략 설계 문서
+│   └── strategy_v2.md         # V2 전략 설계 문서 (미구현 항목 포함)
 ├── src/
 │   ├── dart/client.py         # DartClient: OpenDartReader 래퍼
 │   ├── screening/
-│   │   ├── fundamental.py     # FundamentalScreener: DART 스크리닝 + PEG + KOSPI 필터
-│   │   └── health_check.py    # 기업 건강검진 7개 지표 점수화 + DB 7일 캐시
-│   ├── broker/kis_client.py   # KISClient: 시세·잔고·주문·밸류에이션(PER/PBR/배당)
-│   ├── portfolio/manager.py   # PortfolioManager: 종목 선정, RSI 계산, 매매 실행
+│   │   ├── fundamental.py     # FundamentalScreener: V1 (피터 린치·PEG·KOSPI 필터)
+│   │   ├── strategy_v2.py     # ValueDividendScreener: V2 (ROE·PBR·배당·모멘텀)
+│   │   └── health_check.py    # 건강검진 7개 지표 점수화 + DB 7일 캐시 (공통)
+│   ├── broker/kis_client.py   # KISClient: 시세·잔고·주문·밸류에이션
+│   ├── portfolio/manager.py   # PortfolioManager: RSI 계산·매매 실행
 │   ├── indicators/rsi.py      # calc_rsi(): Wilder 방식 RSI-14
 │   ├── notify/
 │   │   ├── telegram.py        # 텔레그램 전송
-│   │   └── ai_summary.py      # Gemini 종목 요약 + 시장 테마 분석 + 뉴스 감성 분석
-│   ├── db/client.py           # Supabase 클라이언트 (news, market_news, company_health, news_sentiment, screening_history)
+│   │   └── ai_summary.py      # Gemini 종목 요약·시장 테마·뉴스 감성 분석
+│   ├── db/client.py           # Supabase (news, market_news, company_health, news_sentiment, screening_history)
 │   └── news/
-│       ├── crawler.py         # 종목별 뉴스 크롤러 (네이버)
+│       ├── crawler.py         # 종목별 뉴스 크롤러
 │       └── market_news.py     # 시장 뉴스 크롤러 (네이버 금융 + 한국경제)
 └── .github/workflows/
-    ├── news.yml               # cron: "25 22 * * 0-4" (UTC) = KST 07:25 평일
-    ├── screen.yml             # cron: "30 22 * * 0-4" (UTC) = KST 07:30 평일
-    └── trade.yml              # cron: "0 0-6 * * 1-5"  (UTC) = KST 09:00~15:00 평일
+    ├── news.yml               # cron: "25 22 * * 0-4" = KST 07:25 평일
+    ├── screen.yml             # cron: "30 22 * * 0-4" = KST 07:30 평일 (V1)
+    ├── screen_v2.yml          # cron: "30 22 * * 0-4" = KST 07:30 평일 (V2)
+    └── trade.yml              # cron: "0 0-6 * * 1-5" = KST 09:00~15:00 평일
 ```
 
 ---
@@ -106,6 +128,20 @@ PEG = PER(KIS 실시간) / 순이익성장률(%)
 - FDR 조회 실패 시 제외 (PEG 필터와 달리 통과 처리 없음)
 - ThreadPoolExecutor(workers=4)로 병렬 조회
 - 통과 종목에 `upside_capture`, `downside_capture` 컬럼 추가
+
+### 전략 V1 vs V2 비교
+
+| 항목 | V1 피터 린치 | V2 고배당-저PBR-ROE |
+|------|------------|-------------------|
+| 스크리너 | `FundamentalScreener` | `ValueDividendScreener` |
+| 부채비율 | ≤ 50% | ≤ 150% |
+| 성장 지표 | 순이익성장률 ≥ 20% | ROE ≥ 10% |
+| 밸류에이션 | PEG ≤ 1.0 | PBR 0.8~1.2 |
+| 배당 역할 | 건강검진 가중치만 | 핵심 필터 (≥ 3.5%) |
+| 모멘텀 | KOSPI 대비 초과성과 | 6개월 절대 수익률 상위 20% |
+| 출력 | picks.json | picks_v2.json |
+
+V2 미구현(추후): 밸류업 공시, 외국인 수급 추세, 선행 EPS, 거래대금 급증, 주도 업종 가중치
 
 ### 뉴스 감성 분석 (`ai_summary.py` → `analyze_news_sentiment()`)
 
@@ -255,14 +291,12 @@ beautifulsoup4>=4.12.0
 
 ## GitHub Actions
 
-| 워크플로우 | cron (UTC) | KST | 실행 스크립트 |
-|-----------|------------|-----|--------------|
-| news.yml   | `25 22 * * 0-4` | 평일 07:25 | `run_news.py` |
-| screen.yml | `30 22 * * 0-4` | 평일 07:30 | `run_screen.py` |
-| trade.yml  | `0 0-6 * * 1-5` | 평일 09:00~15:00 | `run_trade.py` |
+| 워크플로우 | cron (UTC) | KST | 실행 스크립트 | 커밋 파일 |
+|-----------|------------|-----|--------------|---------|
+| news.yml      | `25 22 * * 0-4` | 평일 07:25 | `run_news.py`      | `news.json` |
+| screen.yml    | `30 22 * * 0-4` | 평일 07:30 | `run_screen.py`    | `picks.json` |
+| screen_v2.yml | `30 22 * * 0-4` | 평일 07:30 | `run_screen_v2.py` | `picks_v2.json` |
+| trade.yml     | `0 0-6 * * 1-5` | 평일 09:00~15:00 | `run_trade.py` | 없음 |
 
-news.yml은 `news.json`을 자동 커밋.
-screen.yml은 `picks.json`을 자동 커밋.
-trade.yml은 커밋 없이 실행만.
-
-스크리닝 전략 교체 시 `run_screen.py`만 수정하거나, `screen_v2.yml` + `run_screen_v2.py`를 추가해 A/B 비교 가능.
+screen.yml·screen_v2.yml은 같은 시각에 독립 실행 (병렬 Actions job).
+추후 A 방식(통합)으로 전환 시 `run_screen.py`에서 두 전략 결과를 병합.
