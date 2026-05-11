@@ -275,7 +275,12 @@ def main():
 
     # picks_v2.json 저장
     save_data = [
-        {"stock_code": p["stock_code"], "corp_name": p["corp_name"], "div_yield": p.get("div_yield")}
+        {
+            "stock_code":   p["stock_code"],
+            "corp_name":    p["corp_name"],
+            "div_yield":    p.get("div_yield"),
+            "health_score": p.get("health_score"),
+        }
         for p in picks
     ]
     Path(PICKS_FILE).write_text(json.dumps(save_data, ensure_ascii=False, indent=2))

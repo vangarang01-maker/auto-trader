@@ -16,7 +16,7 @@ from src.notify.ai_summary import summarize_pick
 
 YEAR     = str(datetime.now().year - 1) if datetime.now().month >= 4 else str(datetime.now().year - 2)
 MARKET   = "KOSPI"
-PICKS_FILE = "picks.json"
+PICKS_FILE = "picks_v1.json"
 NEWS_FILE  = "news.json"
 SENTIMENT_BONUS = 10  # 호재 +10점, 악재 -10점 (건강검진 점수 조정)
 
@@ -279,8 +279,15 @@ def main():
     except Exception as e:
         print(f"\n  [DB 오류] 스크리닝 결과 저장 실패: {e}")
 
-    # stock_code, corp_name, peg 만 저장 (current_price는 trade 시점에 재조회)
-    save_data = [{"stock_code": p["stock_code"], "corp_name": p["corp_name"], "peg": p["peg"]} for p in picks]
+    save_data = [
+        {
+            "stock_code":   p["stock_code"],
+            "corp_name":    p["corp_name"],
+            "peg":          p.get("peg"),
+            "health_score": p.get("health_score"),
+        }
+        for p in picks
+    ]
     Path(PICKS_FILE).write_text(json.dumps(save_data, ensure_ascii=False, indent=2))
     print(f"\n→ {PICKS_FILE} 저장 완료.")
 
