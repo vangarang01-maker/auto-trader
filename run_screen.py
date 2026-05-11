@@ -60,23 +60,39 @@ def main():
     news_headlines: list[str] = []
     news_codes_set: set[str] = set()
     news_theme_analysis: str = ""
-    news_path = Path(NEWS_FILE)
-    if news_path.exists():
-        try:
-            data = json.loads(news_path.read_text())
-            news_headlines = data.get("headlines", [])
-            news_codes_set = set(data.get("stock_codes", []))
-            news_theme_analysis = data.get("theme_analysis", "")
-            print(f"  {NEWS_FILE} 로드 (수집 시각: {data.get('crawled_at', '?')})")
-            print(f"  헤드라인 {len(news_headlines)}건, 관련주 {len(news_codes_set)}개\n")
-        except Exception as e:
-            print(f"  [news.json 로드 오류] {e} — live 크롤링으로 대체\n")
+
+    # 1순위: DB
+    try:
+        from src.db.client import get_latest_market_news
+        row = get_latest_market_news(today)
+        if row:
+            news_headlines = row.get("headlines") or []
+            news_codes_set = set(row.get("stock_codes") or [])
+            news_theme_analysis = row.get("theme_analysis") or ""
+            print(f"  DB 로드: 헤드라인 {len(news_headlines)}건, 관련주 {len(news_codes_set)}개\n")
+    except Exception as e:
+        print(f"  [DB 조회 오류] {e}")
+
+    # 2순위: news.json 로컬 캐시
+    if not news_headlines:
+        news_path = Path(NEWS_FILE)
+        if news_path.exists():
+            try:
+                data = json.loads(news_path.read_text())
+                news_headlines = data.get("headlines", [])
+                news_codes_set = set(data.get("stock_codes", []))
+                news_theme_analysis = data.get("theme_analysis", "")
+                print(f"  {NEWS_FILE} 로드: 헤드라인 {len(news_headlines)}건\n")
+            except Exception as e:
+                print(f"  [news.json 로드 오류] {e}")
+
+    # 3순위: live 크롤링
     if not news_headlines:
         try:
             from src.news.market_news import get_market_news
             news_headlines, news_codes = get_market_news()
             news_codes_set = set(news_codes)
-            print(f"  헤드라인 {len(news_headlines)}건, 관련주 {len(news_codes_set)}개\n")
+            print(f"  live 크롤링: 헤드라인 {len(news_headlines)}건, 관련주 {len(news_codes_set)}개\n")
         except Exception as e:
             print(f"  [뉴스 크롤링 오류] {e}\n")
 

@@ -59,6 +59,37 @@ def get_recent_news(stock_code: str, days: int = 7) -> list[dict]:
         return []
 
 
+def save_market_news(crawled_at: str, headlines: list[str], stock_codes: list[str], theme_analysis: str) -> None:
+    """시장 뉴스 저장 (날짜 기준 upsert)."""
+    row = {
+        "crawled_at": crawled_at,
+        "headlines": headlines,
+        "stock_codes": stock_codes,
+        "theme_analysis": theme_analysis,
+    }
+    try:
+        _get_client().table("market_news").upsert(row, on_conflict="crawled_at").execute()
+    except Exception as e:
+        print(f"  [DB 오류] 시장 뉴스 저장 실패: {e}")
+
+
+def get_latest_market_news(crawled_at: str) -> dict | None:
+    """당일 시장 뉴스 조회. 없으면 None."""
+    try:
+        res = (
+            _get_client()
+            .table("market_news")
+            .select("crawled_at, headlines, stock_codes, theme_analysis")
+            .eq("crawled_at", crawled_at)
+            .limit(1)
+            .execute()
+        )
+        return res.data[0] if res.data else None
+    except Exception as e:
+        print(f"  [DB 오류] 시장 뉴스 조회 실패: {e}")
+        return None
+
+
 def save_screening_result(picks: list[dict], screened_date: str) -> None:
     """스크리닝 결과를 screening_history 테이블에 저장."""
     if not picks:
