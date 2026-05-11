@@ -1,11 +1,11 @@
-"""매 시간 실행 — picks.json 읽어서 RSI 신호 기반 매매"""
+"""매 시간 실행 — picks_v2.json 읽어서 RSI 신호 기반 매매"""
 import json
 from datetime import datetime
 from pathlib import Path
 
 from src.portfolio.manager import PortfolioManager
 
-PICKS_FILE = "picks.json"
+PICKS_FILE = "picks_v2.json"
 
 
 def main():
