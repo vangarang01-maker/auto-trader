@@ -18,22 +18,25 @@ Python 3.11+, GitHub Actions cron으로 동작.
   1단계 DART 재무 스크리닝 (피터 린치 5조건)
   2단계 KIS PEG 필터 (PEG ≤ 1.0)
   3단계 KOSPI 초과성과 필터
-  건강검진 7개 지표 → 상위 5개 → picks.json 저장
+  건강검진 + 뉴스 감성 가중치(호재+10/악재-10) → 상위 5개 → picks_v1.json
 
 [07:30 KST] run_screen_v2.py   (V2 — 고배당-저PBR-고ROE, 병렬 실행)
   0단계 DB 뉴스 + 감성맵 로드
   1단계 DART 필터 (ROE≥10 / 부채비율≤150 / 이자보상배율≥3)
   2단계 KIS 밸류에이션 (PBR 0.8~1.2 / 배당수익률≥3.5%)
   3단계 FDR 6개월 모멘텀 (상위 20%)
-  건강검진 7개 지표 → 상위 5개 → picks_v2.json 저장
+  건강검진 + 뉴스 감성 가중치(호재+10/악재-10) → 상위 5개 → picks_v2.json
 
-[09:00~15:00 KST, 매 시간] run_trade.py  →  picks.json 읽기 → RSI 계산 → 주문
+[09:00~15:00 KST, 매 시간] run_trade.py   (V1+V2 통합 매매)
+  picks_v1.json + picks_v2.json 로드
+  공통 종목 → health_score + CROSS_BONUS(10점)
+  adjusted_score 내림차순 상위 5개 → RSI 매매
 ```
 
 - `run_news.py`: 뉴스 크롤링 + Gemini 테마·감성 분석 → DB 저장
-- `run_screen.py`: V1 스크리닝 → picks.json. `PortfolioManager(dry_run=True)`
-- `run_screen_v2.py`: V2 스크리닝 → picks_v2.json. screen.yml과 동시 실행
-- `run_trade.py`: picks.json 읽어 실제 주문. `PortfolioManager(dry_run=False)`
+- `run_screen.py`: V1 스크리닝 → picks_v1.json (health_score 포함)
+- `run_screen_v2.py`: V2 스크리닝 → picks_v2.json (health_score 포함). screen.yml과 동시 실행
+- `run_trade.py`: picks_v1.json + picks_v2.json 통합, CROSS_BONUS=10, adjusted_score 상위 5개 매매
 - `main.py`: 수동 실행용 (스크리닝+매매 통합, 개발/테스트용)
 
 ---
@@ -47,8 +50,8 @@ auto-trader/
 ├── run_screen_v2.py           # 07:30 V2 스크리닝 → picks_v2.json (병렬 실행)
 ├── run_trade.py               # 매 시간 RSI 매매 (picks.json 소비)
 ├── main.py                    # 수동 실행용
-├── picks.json                 # V1 당일 선정 종목
-├── picks_v2.json              # V2 당일 선정 종목
+├── picks_v1.json              # V1 당일 선정 종목 (stock_code, corp_name, peg, health_score)
+├── picks_v2.json              # V2 당일 선정 종목 (stock_code, corp_name, div_yield, health_score)
 ├── portfolio.json             # 보유 종목 상태
 ├── docs/
 │   ├── strategy_v1.md         # V1 전략 설계 문서
@@ -139,9 +142,19 @@ PEG = PER(KIS 실시간) / 순이익성장률(%)
 | 밸류에이션 | PEG ≤ 1.0 | PBR 0.8~1.2 |
 | 배당 역할 | 건강검진 가중치만 | 핵심 필터 (≥ 3.5%) |
 | 모멘텀 | KOSPI 대비 초과성과 | 6개월 절대 수익률 상위 20% |
-| 출력 | picks.json | picks_v2.json |
+| 출력 | picks_v1.json | picks_v2.json |
+| 운영 | 병행 (통합 매매) | 병행 (통합 매매, 주력) |
 
 V2 미구현(추후): 밸류업 공시, 외국인 수급 추세, 선행 EPS, 거래대금 급증, 주도 업종 가중치
+
+**통합 매매 (run_trade.py):**
+- `CROSS_BONUS = 10`: 두 전략 공통 종목 보너스
+- `adjusted_score = max(v1_health, v2_health) + (CROSS_BONUS if 공통 else 0)`
+- 로그: `[V1+V2] ★` / `[V2]` / `[V1]`
+
+**뉴스 감성 가중치:**
+- `SENTIMENT_BONUS = 10` (각 screen 파일 상단)
+- 건강검진 직후 적용: 호재 +10, 악재 -10, 혼조 0 (0~100 clamp)
 
 ### 뉴스 감성 분석 (`ai_summary.py` → `analyze_news_sentiment()`)
 
