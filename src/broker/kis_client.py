@@ -118,6 +118,38 @@ class KISClient:
             "per":   float(out.get("per") or 0),
         }
 
+    def get_stock_valuation(self, stock_code: str) -> dict:
+        """PER·PBR·배당수익률·현재가 조회 (건강검진용)."""
+        for attempt in range(2):
+            try:
+                resp = requests.get(
+                    f"{REAL_URL}/uapi/domestic-stock/v1/quotations/inquire-price",
+                    headers={
+                        "authorization": f"Bearer {self._get_token()}",
+                        "appkey": self.app_key,
+                        "appsecret": self.app_secret,
+                        "tr_id": "FHKST01010100",
+                        "custtype": "P",
+                    },
+                    params={"FID_COND_MRKT_DIV_CODE": "J", "FID_INPUT_ISCD": stock_code},
+                    timeout=30,
+                    verify=False,
+                )
+                break
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
+                if attempt == 1:
+                    raise
+                time.sleep(2)
+        resp.raise_for_status()
+        out = resp.json().get("output", {})
+        div = float(out.get("divi_rate") or 0) or float(out.get("dvol_per") or 0) or None
+        return {
+            "price":     int(out.get("stck_prpr") or 0),
+            "per":       float(out.get("per") or 0) or None,
+            "pbr":       float(out.get("pbr") or 0) or None,
+            "div_yield": div,
+        }
+
     def get_current_price(self, stock_code: str) -> int:
         return self.get_stock_quote(stock_code)["price"]
 

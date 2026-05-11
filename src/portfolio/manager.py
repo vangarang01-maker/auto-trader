@@ -36,13 +36,20 @@ class PortfolioManager:
     # ── 종목 선정 ──────────────────────────────────────────
 
     def select_picks(self, df: pd.DataFrame) -> list[dict]:
-        """PEG 오름차순 상위 MAX_HOLD개. NaN 제외."""
-        valid = df[df["peg"].notna()].sort_values("peg").head(MAX_HOLD)
+        """
+        건강검진 점수(health_score) 있으면 내림차순, 없으면 PEG 오름차순.
+        NaN PEG 제외.
+        """
+        valid = df[df["peg"].notna()].copy()
+        if "health_score" in valid.columns and valid["health_score"].notna().any():
+            valid = valid.sort_values("health_score", ascending=False)
+        else:
+            valid = valid.sort_values("peg")
         cols = ["corp_code", "stock_code", "corp_name", "sector", "peg", "current_price",
                 "net_income_growth", "revenue_growth", "debt_ratio",
-                "upside_capture", "downside_capture"]
+                "upside_capture", "downside_capture", "health_score"]
         available = [c for c in cols if c in valid.columns]
-        return valid[available].to_dict("records")
+        return valid[available].head(MAX_HOLD).to_dict("records")
 
     def needs_rebalance(self, picks: list[dict]) -> bool:
         new_codes = {p["stock_code"] for p in picks}

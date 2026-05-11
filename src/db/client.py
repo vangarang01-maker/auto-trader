@@ -59,6 +59,33 @@ def get_recent_news(stock_code: str, days: int = 7) -> list[dict]:
         return []
 
 
+def get_company_health(stock_code: str) -> dict | None:
+    """7일 이내 캐시된 건강검진 데이터 반환. 없거나 만료면 None."""
+    since = (datetime.now() - timedelta(days=7)).isoformat()
+    try:
+        res = (
+            _get_client()
+            .table("company_health")
+            .select("*")
+            .eq("stock_code", stock_code)
+            .gte("fetched_at", since)
+            .limit(1)
+            .execute()
+        )
+        return res.data[0] if res.data else None
+    except Exception as e:
+        print(f"  [DB 오류] 건강검진 조회 실패 ({stock_code}): {e}")
+        return None
+
+
+def save_company_health(metrics: dict) -> None:
+    """건강검진 데이터 upsert (stock_code PK 기준)."""
+    try:
+        _get_client().table("company_health").upsert(metrics, on_conflict="stock_code").execute()
+    except Exception as e:
+        print(f"  [DB 오류] 건강검진 저장 실패 ({metrics.get('stock_code')}): {e}")
+
+
 def save_market_news(crawled_at: str, headlines: list[str], stock_codes: list[str], theme_analysis: str) -> None:
     """시장 뉴스 저장 (날짜 기준 upsert)."""
     row = {

@@ -122,6 +122,30 @@ def main():
 
     print(f"  3단계 통과: {len(result)}개\n")
 
+    print("[건강검진] 후보 종목 7개 지표 점수 산출...")
+    try:
+        import os
+        import pandas as pd
+        from src.broker.kis_client import KISClient
+        from src.screening.health_check import get_or_fetch_health, score_health
+
+        kis = KISClient(virtual=not os.getenv("KIS_APP_KEY"))
+        health_scores = []
+        for _, row in result.iterrows():
+            health = get_or_fetch_health(
+                stock_code=row["stock_code"],
+                corp_name=row["corp_name"],
+                dart_metrics=row.to_dict(),
+                kis=kis,
+                year=YEAR,
+            )
+            health_scores.append(score_health(health))
+        result = result.copy()
+        result["health_score"] = health_scores
+        print(f"  건강검진 완료: {len(result)}개\n")
+    except Exception as e:
+        print(f"  [건강검진 오류] {e} — PEG 기준으로 대체\n")
+
     pm = PortfolioManager(dry_run=True)
     picks = pm.select_picks(result)
     if not picks:
@@ -171,7 +195,8 @@ def main():
 
         lines.append(f"\n{DIV}")
         lines.append(f"{i}. {p['corp_name']} ({p['stock_code']}){news_tag}{sector_str}")
-        lines.append(f"   PEG {p['peg']}  |  현재가 {p['current_price']:,.0f}원")
+        score_str = f"  |  건강검진 {p['health_score']:.0f}점" if p.get("health_score") else ""
+        lines.append(f"   PEG {p['peg']}  |  현재가 {p['current_price']:,.0f}원{score_str}")
         lines.append(f"   상승포착 {up_str}  |  하락포착 {dn_str}")
         if summary:
             lines.append("")

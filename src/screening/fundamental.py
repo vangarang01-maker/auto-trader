@@ -28,14 +28,15 @@ class FundamentalScreener:
 
         # 계정명 후보 목록 (기업·회계기준마다 다름)
         account_candidates = {
-            "revenue":     ["매출액"],
+            "revenue":          ["매출액"],
             "operating_profit": ["영업이익"],
-            "net_income":  ["당기순이익(손실)", "당기순이익"],
-            "total_assets": ["자산총계"],
-            "total_liabilities": ["부채총계"],
-            "equity":      ["자본총계"],
-            "operating_cf": ["영업활동으로 인한 현금흐름", "영업활동현금흐름"],
-            "eps":         ["기본주당순이익(원)", "기본주당순이익", "주당순이익"],
+            "net_income":       ["당기순이익(손실)", "당기순이익"],
+            "total_assets":     ["자산총계"],
+            "total_liabilities":["부채총계"],
+            "current_liab":     ["유동부채"],
+            "equity":           ["자본총계"],
+            "operating_cf":     ["영업활동으로 인한 현금흐름", "영업활동현금흐름"],
+            "eps":              ["기본주당순이익(원)", "기본주당순이익", "주당순이익"],
         }
 
         metrics: dict = {}
