@@ -140,7 +140,7 @@ def main():
                 year=YEAR,
             )
             health_scores.append(score_health(health))
-        result = result.copy()
+        result = result.reset_index(drop=True).copy()
         result["health_score"] = health_scores
         print(f"  건강검진 완료: {len(result)}개\n")
     except Exception as e:
@@ -153,7 +153,8 @@ def main():
         send_message(f"[{ts}] 오늘의 자동매매 후보 종목\n\nPEG 계산 가능한 종목이 없습니다.")
         return
 
-    print(f"\n[선정 종목] PEG 기준 상위 {len(picks)}개")
+    sort_by = "건강검진 점수" if picks and picks[0].get("health_score") is not None else "PEG"
+    print(f"\n[선정 종목] {sort_by} 기준 상위 {len(picks)}개")
     for p in picks:
         print(f"  {p['corp_name']}({p['stock_code']})  PEG={p['peg']}  현재가={p['current_price']:,.0f}원")
 
@@ -195,7 +196,7 @@ def main():
 
         lines.append(f"\n{DIV}")
         lines.append(f"{i}. {p['corp_name']} ({p['stock_code']}){news_tag}{sector_str}")
-        score_str = f"  |  건강검진 {p['health_score']:.0f}점" if p.get("health_score") else ""
+        score_str = f"  |  건강검진 {p['health_score']:.0f}점" if p.get("health_score") is not None else ""
         lines.append(f"   PEG {p['peg']}  |  현재가 {p['current_price']:,.0f}원{score_str}")
         lines.append(f"   상승포착 {up_str}  |  하락포착 {dn_str}")
         if summary:
