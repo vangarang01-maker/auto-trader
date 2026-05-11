@@ -18,6 +18,16 @@ YEAR     = str(datetime.now().year - 1) if datetime.now().month >= 4 else str(da
 MARKET   = "KOSPI"
 PICKS_FILE = "picks.json"
 NEWS_FILE  = "news.json"
+SENTIMENT_BONUS = 10  # 호재 +10점, 악재 -10점 (건강검진 점수 조정)
+
+_SENT_EMOJI = {"호재": "✅", "악재": "❌", "혼조": "⚠️"}
+
+
+def _dominant_label(records: list[dict]) -> str:
+    labels = {r.get("label") for r in records}
+    if "호재" in labels and "악재" in labels:
+        return "혼조"
+    return "호재" if "호재" in labels else ("악재" if "악재" in labels else "혼조")
 
 
 def _get_news_context(stock_code: str, corp_name: str) -> str:
@@ -155,6 +165,19 @@ def main():
             health_scores.append(score_health(health))
         result = result.reset_index(drop=True).copy()
         result["health_score"] = health_scores
+        # 뉴스 감성 가중치 반영 (호재 +BONUS, 악재 -BONUS)
+        for i in result.index:
+            recs = sentiment_map.get(result.at[i, "stock_code"], [])
+            if not recs:
+                continue
+            label = _dominant_label(recs)
+            bonus = SENTIMENT_BONUS if label == "호재" else (-SENTIMENT_BONUS if label == "악재" else 0)
+            if bonus:
+                result.at[i, "health_score"] = round(
+                    max(0.0, min(100.0, result.at[i, "health_score"] + bonus)), 1
+                )
+                sign = "+" if bonus > 0 else ""
+                print(f"  [{label}] {result.at[i, 'corp_name']} 건강검진 {sign}{bonus}점 반영")
         print(f"  건강검진 완료: {len(result)}개\n")
     except Exception as e:
         print(f"  [건강검진 오류] {e} — PEG 기준으로 대체\n")
@@ -198,18 +221,6 @@ def main():
 
     # ── 텔레그램 메시지 조립 ────────────────────────────────
     SEP = "─" * 8
-    _SENT_EMOJI = {"호재": "✅", "악재": "❌", "혼조": "⚠️"}
-
-    def _dominant_label(records: list[dict]) -> str:
-        labels = {r.get("label") for r in records}
-        if "호재" in labels and "악재" in labels:
-            return "혼조"
-        if "호재" in labels:
-            return "호재"
-        if "악재" in labels:
-            return "악재"
-        return "혼조"
-
     lines = [f"[{ts}] 자동매매 후보 종목 {len(picks)}개", ""]
 
     # 상단: 종목 리스트 표
