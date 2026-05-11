@@ -186,7 +186,7 @@ def main():
         summaries[p["stock_code"]] = summarize_pick(p, combined_context)
 
     # ── 텔레그램 메시지 조립 ────────────────────────────────
-    SEP = "─" * 20
+    SEP = "─" * 8
     lines = [f"[{ts}] 자동매매 후보 종목 {len(picks)}개", ""]
 
     # 상단: 종목 리스트 표
