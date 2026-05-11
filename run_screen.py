@@ -5,8 +5,12 @@ from pathlib import Path
 
 import exchange_calendars as xcals
 
+import os
+
 from src.screening.fundamental import FundamentalScreener
 from src.portfolio.manager import PortfolioManager
+from src.broker.kis_client import KISClient
+from src.indicators.rsi import calc_rsi
 from src.notify.telegram import send_message
 from src.notify.ai_summary import summarize_pick
 
@@ -122,14 +126,12 @@ def main():
 
     print(f"  3단계 통과: {len(result)}개\n")
 
+    kis = KISClient(virtual=not os.getenv("KIS_APP_KEY"))
+
     print("[건강검진] 후보 종목 7개 지표 점수 산출...")
     try:
-        import os
-        import pandas as pd
-        from src.broker.kis_client import KISClient
         from src.screening.health_check import get_or_fetch_health, score_health
 
-        kis = KISClient(virtual=not os.getenv("KIS_APP_KEY"))
         health_scores = []
         for _, row in result.iterrows():
             health = get_or_fetch_health(
@@ -159,54 +161,72 @@ def main():
         hs = f"  건강검진={p['health_score']:.0f}점" if p.get("health_score") is not None else ""
         print(f"  {p['corp_name']}({p['stock_code']})  PEG={p['peg']}  현재가={p['current_price']:,.0f}원{hs}")
 
-    # AI 요약 (DART 공시 + 뉴스 컨텍스트 포함)
+    # RSI 계산
+    rsi_map: dict[str, float | None] = {}
+    for p in picks:
+        try:
+            prices = kis.get_daily_prices(p["stock_code"], count=60)
+            rsi_map[p["stock_code"]] = calc_rsi(prices) if len(prices) >= 15 else None
+        except Exception:
+            rsi_map[p["stock_code"]] = None
+
+    # AI 요약 수집
     print("\n[AI 요약] DART 공시·뉴스 수집 및 Gemini 분석 중...")
-    DIV = "─" * 12
-    lines = [f"[{ts}] 자동매매 후보 종목 {len(picks)}개"]
-
-    if news_theme_analysis:
-        lines.append(f"\n[오늘의 시장 테마]")
-        for line in news_theme_analysis.splitlines():
-            lines.append(line)
-    elif news_headlines:
-        lines.append(f"\n[오늘 시장 뉴스 상위 {min(5, len(news_headlines))}건]")
-        for h in news_headlines[:5]:
-            lines.append(f"• {h}")
-
-    for i, p in enumerate(picks, 1):
-        up_str = f"{p['upside_capture']:.1f}%" if isinstance(p.get('upside_capture'), float) else "-"
-        dn_str = f"{p['downside_capture']:.1f}%" if isinstance(p.get('downside_capture'), float) else "-"
-        sector = p.get('sector') or ""
-        sector_str = f"  |  {sector}" if sector else ""
-        news_tag = " [뉴스]" if p["stock_code"] in news_codes_set else ""
-
-        # DART 기업 컨텍스트
+    summaries: dict[str, str] = {}
+    for p in picks:
         dart_context = ""
         if p.get("corp_code"):
             try:
                 dart_context = screener.client.get_company_context(p["corp_code"])
             except Exception as e:
                 print(f"  [DART 컨텍스트 오류] {p['corp_name']}: {e}")
-
-        # 뉴스 컨텍스트 (DB 캐시 우선)
         print(f"  뉴스 수집 중: {p['corp_name']}({p['stock_code']})")
         news_context = _get_news_context(p["stock_code"], p["corp_name"])
-
         combined_context = "\n\n".join(filter(None, [dart_context, news_context]))
-        summary = summarize_pick(p, combined_context)
+        summaries[p["stock_code"]] = summarize_pick(p, combined_context)
 
-        lines.append(f"\n{DIV}")
-        lines.append(f"{i}. {p['corp_name']} ({p['stock_code']}){news_tag}{sector_str}")
-        score_str = f"  |  건강검진 {p['health_score']:.0f}점" if p.get("health_score") is not None else ""
-        lines.append(f"   PEG {p['peg']}  |  현재가 {p['current_price']:,.0f}원{score_str}")
-        lines.append(f"   상승포착 {up_str}  |  하락포착 {dn_str}")
+    # ── 텔레그램 메시지 조립 ────────────────────────────────
+    SEP = "─" * 20
+    lines = [f"[{ts}] 자동매매 후보 종목 {len(picks)}개", ""]
+
+    # 상단: 종목 리스트 표
+    lines.append("【 오늘의 후보 종목 】")
+    lines.append("종목 | RSI | 건강검진")
+    lines.append(SEP)
+    for p in picks:
+        rsi = rsi_map.get(p["stock_code"])
+        rsi_str = f"{rsi:.1f}" if rsi is not None else "N/A"
+        signal = " ◀매수" if rsi is not None and rsi < 35 else (" ▶매도" if rsi is not None and rsi >= 75 else "")
+        hs_str = f"{p['health_score']:.0f}점" if p.get("health_score") is not None else "-"
+        news_tag = " 📰" if p["stock_code"] in news_codes_set else ""
+        lines.append(f"{p['corp_name']}{signal}{news_tag} | {rsi_str} | {hs_str}")
+
+    # 중단: 시장 테마
+    lines.append("")
+    lines.append("【 오늘의 시장 테마 】")
+    if news_theme_analysis:
+        for line in news_theme_analysis.splitlines():
+            lines.append(line)
+    elif news_headlines:
+        for h in news_headlines[:3]:
+            lines.append(f"• {h}")
+    else:
+        lines.append("(뉴스 데이터 없음)")
+
+    # 하단: 종목별 추천 이유
+    lines.append("")
+    lines.append("【 종목별 추천 이유 】")
+    for i, p in enumerate(picks, 1):
+        lines.append(SEP)
+        news_tag = " 📰" if p["stock_code"] in news_codes_set else ""
+        lines.append(f"{i}. {p['corp_name']} ({p['stock_code']}){news_tag}")
+        summary = summaries.get(p["stock_code"], "")
         if summary:
-            lines.append("")
             for line in summary.splitlines():
-                lines.append(f"   {line}")
+                lines.append(line)
+        else:
+            lines.append("(AI 요약 없음)")
 
-    lines.append(f"\n{DIV}")
-    lines.append("관심종목 추가 후 RSI 신호 대기")
     send_message("\n".join(lines))
 
     # DB에 스크리닝 결과 저장
