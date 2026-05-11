@@ -15,8 +15,8 @@ Python 3.11+, GitHub Actions cron으로 동작.
 [09:00~15:00 KST, 매 시간] run_trade.py  →  picks.json 읽기 → 현재가 재조회 → RSI 계산 → 주문
 ```
 
-- `run_news.py`: 뉴스 크롤링 + Gemini 테마 분석. news.json 생성 (스크리닝과 분리)
-- `run_screen.py`: news.json 우선 읽기, 없으면 live 크롤링 fallback. `PortfolioManager(dry_run=True)` — 주문 없이 종목만 선정
+- `run_news.py`: 뉴스 크롤링 + Gemini 테마 분석 + Gemini 감성 분석(호재/악재/혼조). news.json 생성 (스크리닝과 분리)
+- `run_screen.py`: news.json 우선 읽기, 없으면 live 크롤링 fallback. 감성맵(news_sentiment) 로드. `PortfolioManager(dry_run=True)` — 주문 없이 종목만 선정
 - `run_trade.py`: `PortfolioManager(dry_run=False)` — 실제 주문 실행
 - `main.py`: 스크리닝 + 매매를 한 번에 실행하는 수동 실행용 스크립트 (개발/테스트용)
 
@@ -43,8 +43,8 @@ auto-trader/
 │   ├── indicators/rsi.py      # calc_rsi(): Wilder 방식 RSI-14
 │   ├── notify/
 │   │   ├── telegram.py        # 텔레그램 전송
-│   │   └── ai_summary.py      # Gemini 종목 요약 + 시장 테마 분석
-│   ├── db/client.py           # Supabase 클라이언트 (news, market_news, company_health, screening_history)
+│   │   └── ai_summary.py      # Gemini 종목 요약 + 시장 테마 분석 + 뉴스 감성 분석
+│   ├── db/client.py           # Supabase 클라이언트 (news, market_news, company_health, news_sentiment, screening_history)
 │   └── news/
 │       ├── crawler.py         # 종목별 뉴스 크롤러 (네이버)
 │       └── market_news.py     # 시장 뉴스 크롤러 (네이버 금융 + 한국경제)
@@ -106,6 +106,34 @@ PEG = PER(KIS 실시간) / 순이익성장률(%)
 - FDR 조회 실패 시 제외 (PEG 필터와 달리 통과 처리 없음)
 - ThreadPoolExecutor(workers=4)로 병렬 조회
 - 통과 종목에 `upside_capture`, `downside_capture` 컬럼 추가
+
+### 뉴스 감성 분석 (`ai_summary.py` → `analyze_news_sentiment()`)
+
+`run_news.py` 실행 시 테마 분석 직후 호출.
+헤드라인 목록 + 관련 종목코드 목록을 Gemini에 넘겨 (헤드라인, 종목) 쌍별로 판단.
+
+- 반환: `[{"headline", "stock_code", "corp_name", "label", "reason"}]`
+- label: `"호재"` / `"악재"` / `"혼조"`
+- 관련 없는 헤드라인은 건너뜀 (Gemini가 판단)
+- DB `news_sentiment` 테이블에 날짜 기준 전체 교체(delete→insert)
+- `run_screen.py`에서 `sentiment_map = {stock_code: [records]}` 형태로 로드
+- 텔레그램 섹션1: 종목명 옆 `✅/❌/⚠️` 이모지 (호재+악재 혼재 → 혼조)
+- 텔레그램 섹션3: `[뉴스 감성] ✅ 호재 / • 근거한줄` 블록 추가
+
+**Supabase `news_sentiment` 테이블:**
+```sql
+CREATE TABLE news_sentiment (
+  id          BIGSERIAL PRIMARY KEY,
+  crawled_at  DATE        NOT NULL,
+  headline    TEXT        NOT NULL,
+  stock_code  TEXT        NOT NULL,
+  corp_name   TEXT,
+  label       TEXT        NOT NULL CHECK (label IN ('호재', '악재', '혼조')),
+  reason      TEXT,
+  created_at  TIMESTAMPTZ DEFAULT now()
+);
+CREATE INDEX ON news_sentiment (crawled_at, stock_code);
+```
 
 ### 건강검진 — 7개 지표 점수화 (`health_check.py`)
 
