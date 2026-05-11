@@ -8,12 +8,15 @@ Python 3.11+, GitHub Actions cron으로 동작.
 ## 실행 흐름
 
 ```
-[07:30 KST] run_screen.py  →  DART 재무 스크리닝 → PEG 필터 → picks.json 저장
-                                                                  ↓ git commit & push (Actions)
+[07:25 KST] run_news.py   →  네이버 금융 + 한국경제 크롤링 → Gemini 테마 분석 → news.json 저장
+                                                                                    ↓ git commit & push (Actions)
+[07:30 KST] run_screen.py →  news.json 읽기 → DART 재무 스크리닝 → PEG 필터 → picks.json 저장
+                                                                                  ↓ git commit & push (Actions)
 [09:00~15:00 KST, 매 시간] run_trade.py  →  picks.json 읽기 → 현재가 재조회 → RSI 계산 → 주문
 ```
 
-- `run_screen.py`: `PortfolioManager(dry_run=True)` — 주문 없이 종목만 선정
+- `run_news.py`: 뉴스 크롤링 + Gemini 테마 분석. news.json 생성 (스크리닝과 분리)
+- `run_screen.py`: news.json 우선 읽기, 없으면 live 크롤링 fallback. `PortfolioManager(dry_run=True)` — 주문 없이 종목만 선정
 - `run_trade.py`: `PortfolioManager(dry_run=False)` — 실제 주문 실행
 - `main.py`: 스크리닝 + 매매를 한 번에 실행하는 수동 실행용 스크립트 (개발/테스트용)
 
@@ -189,8 +192,12 @@ beautifulsoup4>=4.12.0
 
 | 워크플로우 | cron (UTC) | KST | 실행 스크립트 |
 |-----------|------------|-----|--------------|
+| news.yml   | `25 22 * * 0-4` | 평일 07:25 | `run_news.py` |
 | screen.yml | `30 22 * * 0-4` | 평일 07:30 | `run_screen.py` |
-| trade.yml | `0 0-6 * * 1-5` | 평일 09:00~15:00 | `run_trade.py` |
+| trade.yml  | `0 0-6 * * 1-5` | 평일 09:00~15:00 | `run_trade.py` |
 
-screen.yml은 `picks.json`을 자동 커밋(`git add picks.json → git commit → git push`).
+news.yml은 `news.json`을 자동 커밋.
+screen.yml은 `picks.json`을 자동 커밋.
 trade.yml은 커밋 없이 실행만.
+
+스크리닝 전략 교체 시 `run_screen.py`만 수정하거나, `screen_v2.yml` + `run_screen_v2.py`를 추가해 A/B 비교 가능.

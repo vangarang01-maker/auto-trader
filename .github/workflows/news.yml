@@ -1,0 +1,36 @@
+name: 뉴스 크롤링 (07:25 KST)
+
+on:
+  schedule:
+    - cron: "25 22 * * 0-4"  # KST 07:25 평일 (UTC 22:25 일~목)
+  workflow_dispatch:
+
+jobs:
+  news:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: 의존성 설치
+        run: pip install -r requirements.txt
+
+      - name: 뉴스 크롤링 실행
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python run_news.py
+
+      - name: news.json 커밋 & 푸시
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add news.json
+          git diff --cached --quiet || git commit -m "chore: news.json 업데이트 $(date +'%Y-%m-%d')"
+          git pull --rebase origin main
+          git push

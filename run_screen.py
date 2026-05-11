@@ -13,6 +13,7 @@ from src.notify.ai_summary import summarize_pick
 YEAR     = str(datetime.now().year - 1) if datetime.now().month >= 4 else str(datetime.now().year - 2)
 MARKET   = "KOSPI"
 PICKS_FILE = "picks.json"
+NEWS_FILE  = "news.json"
 
 
 def _get_news_context(stock_code: str, corp_name: str) -> str:
@@ -55,6 +56,30 @@ def main():
         print("  오늘은 KRX 휴장일입니다. 스크리닝을 건너뜁니다.")
         return
 
+    print("[0단계] 시장 뉴스 로드...")
+    news_headlines: list[str] = []
+    news_codes_set: set[str] = set()
+    news_theme_analysis: str = ""
+    news_path = Path(NEWS_FILE)
+    if news_path.exists():
+        try:
+            data = json.loads(news_path.read_text())
+            news_headlines = data.get("headlines", [])
+            news_codes_set = set(data.get("stock_codes", []))
+            news_theme_analysis = data.get("theme_analysis", "")
+            print(f"  {NEWS_FILE} 로드 (수집 시각: {data.get('crawled_at', '?')})")
+            print(f"  헤드라인 {len(news_headlines)}건, 관련주 {len(news_codes_set)}개\n")
+        except Exception as e:
+            print(f"  [news.json 로드 오류] {e} — live 크롤링으로 대체\n")
+    if not news_headlines:
+        try:
+            from src.news.market_news import get_market_news
+            news_headlines, news_codes = get_market_news()
+            news_codes_set = set(news_codes)
+            print(f"  헤드라인 {len(news_headlines)}건, 관련주 {len(news_codes_set)}개\n")
+        except Exception as e:
+            print(f"  [뉴스 크롤링 오류] {e}\n")
+
     screener = FundamentalScreener()
 
     print("[1단계] DART 재무 스크리닝...")
@@ -96,11 +121,22 @@ def main():
     print("\n[AI 요약] DART 공시·뉴스 수집 및 Gemini 분석 중...")
     DIV = "─" * 12
     lines = [f"[{ts}] 자동매매 후보 종목 {len(picks)}개"]
+
+    if news_theme_analysis:
+        lines.append(f"\n[오늘의 시장 테마]")
+        for line in news_theme_analysis.splitlines():
+            lines.append(line)
+    elif news_headlines:
+        lines.append(f"\n[오늘 시장 뉴스 상위 {min(5, len(news_headlines))}건]")
+        for h in news_headlines[:5]:
+            lines.append(f"• {h}")
+
     for i, p in enumerate(picks, 1):
         up_str = f"{p['upside_capture']:.1f}%" if isinstance(p.get('upside_capture'), float) else "-"
         dn_str = f"{p['downside_capture']:.1f}%" if isinstance(p.get('downside_capture'), float) else "-"
         sector = p.get('sector') or ""
         sector_str = f"  |  {sector}" if sector else ""
+        news_tag = " [뉴스]" if p["stock_code"] in news_codes_set else ""
 
         # DART 기업 컨텍스트
         dart_context = ""
@@ -118,7 +154,7 @@ def main():
         summary = summarize_pick(p, combined_context)
 
         lines.append(f"\n{DIV}")
-        lines.append(f"{i}. {p['corp_name']} ({p['stock_code']}){sector_str}")
+        lines.append(f"{i}. {p['corp_name']} ({p['stock_code']}){news_tag}{sector_str}")
         lines.append(f"   PEG {p['peg']}  |  현재가 {p['current_price']:,.0f}원")
         lines.append(f"   상승포착 {up_str}  |  하락포착 {dn_str}")
         if summary:
