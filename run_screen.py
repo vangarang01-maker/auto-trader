@@ -156,7 +156,8 @@ def main():
     sort_by = "건강검진 점수" if picks and picks[0].get("health_score") is not None else "PEG"
     print(f"\n[선정 종목] {sort_by} 기준 상위 {len(picks)}개")
     for p in picks:
-        print(f"  {p['corp_name']}({p['stock_code']})  PEG={p['peg']}  현재가={p['current_price']:,.0f}원")
+        hs = f"  건강검진={p['health_score']:.0f}점" if p.get("health_score") is not None else ""
+        print(f"  {p['corp_name']}({p['stock_code']})  PEG={p['peg']}  현재가={p['current_price']:,.0f}원{hs}")
 
     # AI 요약 (DART 공시 + 뉴스 컨텍스트 포함)
     print("\n[AI 요약] DART 공시·뉴스 수집 및 Gemini 분석 중...")
