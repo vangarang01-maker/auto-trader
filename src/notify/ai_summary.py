@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-_MODELS = ["gemini-2.0-flash-lite", "gemini-2.0-flash"]
+_MODELS = ["gemini-3.1-flash-lite", "gemini-3-flash-preview"]
 
 
 def _format_val(val, suffix="") -> str:
