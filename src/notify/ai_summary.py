@@ -1,10 +1,11 @@
 import os
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from dotenv import load_dotenv
 
 load_dotenv()
 
-_MODELS = ["gemini-3.1-flash-lite", "gemini-3-flash-preview"]
+_MODELS = ["gemini-2.0-flash-lite", "gemini-2.0-flash"]
 
 
 def _format_val(val, suffix="") -> str:
@@ -22,7 +23,7 @@ def summarize_pick(pick: dict, context: str = "") -> str:
     if not api_key:
         return ""
 
-    genai.configure(api_key=api_key)
+    client = genai.Client(api_key=api_key)
 
     context_section = f"\n\n[기업 정보 및 최근 공시]\n{context}" if context else ""
 
@@ -44,7 +45,10 @@ KOSPI 하락포착률: {_format_val(pick.get('downside_capture'), '%')}{context_
 
     for model_name in _MODELS:
         try:
-            response = genai.GenerativeModel(model_name).generate_content(prompt)
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+            )
             return response.text.strip()
         except Exception as e:
             print(f"  [Gemini 오류] {model_name} / {pick.get('corp_name', '')}: {e}")

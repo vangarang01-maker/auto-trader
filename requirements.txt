@@ -4,6 +4,6 @@ python-dotenv==1.0.1
 requests==2.32.3
 finance-datareader>=0.9.110
 exchange-calendars>=4.5
-google-generativeai>=0.8.0
+google-genai>=1.0.0
 supabase>=2.3.0
 beautifulsoup4>=4.12.0
