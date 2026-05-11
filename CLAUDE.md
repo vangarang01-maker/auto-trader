@@ -230,6 +230,12 @@ _METRIC_CONFIG = {
 - `get_financial_statements`: 최대 3회 재시도 (지수 백오프 1s, 2s)
 - `get_listed_corp_codes(market)`: KOSPI/KOSDAQ 필터 시 `FinanceDataReader` 병용
 
+> ⚠️ **DART API 할당량 초과 시 IP 차단**: 단순 rate-limit이 아니라 IP 자체를 차단한다.
+> 로컬에서 `screen_all(workers=32)` 반복 실행 시 빠르게 차단될 수 있음.
+> - 로컬 테스트 시 `workers=4` 이하로 제한하고, 동일 스크립트를 연속 실행하지 않는다.
+> - 실제 스크리닝은 GitHub Actions(1일 1회)에서만 실행하는 것을 원칙으로 한다.
+> - 차단 해제는 DART 고객센터 문의 또는 자연 해제 대기 필요.
+
 ### `src/broker/kis_client.py` — KISClient
 
 - `virtual=True`: 모의투자 서버 (`openapivts.koreainvestment.com:29443`)
