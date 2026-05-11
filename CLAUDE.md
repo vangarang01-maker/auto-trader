@@ -26,6 +26,7 @@ Python 3.11+, GitHub Actions cron으로 동작.
 
 ```
 auto-trader/
+├── run_news.py                # 07:25 뉴스 크롤링 → DB + news.json 저장
 ├── run_screen.py              # 07:30 스크리닝 진입점 → picks.json 저장
 ├── run_trade.py               # 매 시간 RSI 매매 진입점
 ├── main.py                    # 수동 실행용 (스크리닝+매매 통합)
@@ -34,18 +35,28 @@ auto-trader/
 ├── requirements.txt
 ├── src/
 │   ├── dart/client.py         # DartClient: OpenDartReader 래퍼
-│   ├── screening/fundamental.py  # FundamentalScreener: DART 스크리닝 + PEG 필터
-│   ├── broker/kis_client.py   # KISClient: 시세·잔고·주문
+│   ├── screening/
+│   │   ├── fundamental.py     # FundamentalScreener: DART 스크리닝 + PEG + KOSPI 필터
+│   │   └── health_check.py    # 기업 건강검진 7개 지표 점수화 + DB 7일 캐시
+│   ├── broker/kis_client.py   # KISClient: 시세·잔고·주문·밸류에이션(PER/PBR/배당)
 │   ├── portfolio/manager.py   # PortfolioManager: 종목 선정, RSI 계산, 매매 실행
-│   └── indicators/rsi.py      # calc_rsi(): Wilder 방식 RSI-14
+│   ├── indicators/rsi.py      # calc_rsi(): Wilder 방식 RSI-14
+│   ├── notify/
+│   │   ├── telegram.py        # 텔레그램 전송
+│   │   └── ai_summary.py      # Gemini 종목 요약 + 시장 테마 분석
+│   ├── db/client.py           # Supabase 클라이언트 (news, market_news, company_health, screening_history)
+│   └── news/
+│       ├── crawler.py         # 종목별 뉴스 크롤러 (네이버)
+│       └── market_news.py     # 시장 뉴스 크롤러 (네이버 금융 + 한국경제)
 └── .github/workflows/
+    ├── news.yml               # cron: "25 22 * * 0-4" (UTC) = KST 07:25 평일
     ├── screen.yml             # cron: "30 22 * * 0-4" (UTC) = KST 07:30 평일
     └── trade.yml              # cron: "0 0-6 * * 1-5"  (UTC) = KST 09:00~15:00 평일
 ```
 
 ---
 
-## 4단계 매매 파이프라인
+## 5단계 매매 파이프라인
 
 ### 1단계 — DART 재무 스크리닝 (`FundamentalScreener.screen_all`)
 
@@ -96,7 +107,27 @@ PEG = PER(KIS 실시간) / 순이익성장률(%)
 - ThreadPoolExecutor(workers=4)로 병렬 조회
 - 통과 종목에 `upside_capture`, `downside_capture` 컬럼 추가
 
-### 4단계 — RSI 매매 (`PortfolioManager.rebalance`)
+### 건강검진 — 7개 지표 점수화 (`health_check.py`)
+
+3단계 통과 종목에 대해 절대 기준으로 0~100점 산출. DB `company_health` 테이블에 7일 캐시.
+
+```python
+_METRIC_CONFIG = {
+    "per":        (10, 10.0,  50.0,  False),  # (만점, 최적, 최악, 높을수록_좋음)
+    "pbr":        (20,  1.0,   5.0,  False),
+    "roe":        (10, 30.0,   0.0,  True),
+    "roic":       (10, 20.0,   0.0,  True),
+    "op_margin":  (10, 30.0,   0.0,  True),
+    "debt_ratio": (20, 30.0, 200.0,  False),
+    "div_yield":  (20,  4.0,   0.0,  True),
+}
+```
+
+- KIS `get_stock_valuation()`으로 PER/PBR/배당수익률 조회
+- ROIC = NOPAT(영업이익×0.78) / (총자산 - 유동부채)
+- `select_picks`가 health_score 내림차순 정렬 → PEG 오름차순 fallback
+
+### 5단계 — RSI 매매 (`PortfolioManager.rebalance`)
 
 매도 조건:
 - 후보 종목에서 제외 (picks에 없음), 또는
@@ -138,7 +169,8 @@ PEG = PER(KIS 실시간) / 순이익성장률(%)
 
 - 상태 파일 `portfolio.json`: `last_picks`(종목코드 목록), `last_run`(ISO 타임스탬프)
 - `dry_run=True`면 잔고 조회/주문 없이 로그만 출력
-- `select_picks`: PEG 오름차순 상위 5개, NaN 제외
+- `select_picks`: health_score 내림차순 우선, 없으면 PEG 오름차순. NaN PEG 제외
+- 익절/손절 조건 추가: +15% 익절(`TAKE_PROFIT=0.15`), -7% 손절(`STOP_LOSS=0.07`)
 
 ### `src/indicators/rsi.py` — calc_rsi
 
@@ -158,6 +190,11 @@ PEG = PER(KIS 실시간) / 순이익성장률(%)
 | `KIS_VIRTUAL_APP_KEY` | KIS 모의투자 앱키 |
 | `KIS_VIRTUAL_APP_SECRET` | KIS 모의투자 시크릿 |
 | `KIS_ACCOUNT` | 계좌번호 (하이픈 포함/미포함 모두 가능, 앞 8자리=cano, 나머지=acnt_cd) |
+| `GEMINI_API_KEY` | Google Gemini API 키 (종목 요약, 시장 테마 분석) |
+| `TELEGRAM_BOT_TOKEN` | 텔레그램 봇 토큰 |
+| `TELEGRAM_CHAT_ID` | 텔레그램 수신 채팅 ID |
+| `SUPABASE_URL` | Supabase 프로젝트 URL |
+| `SUPABASE_KEY` | Supabase Secret 키 |
 
 `KIS_APP_KEY` 미설정 시 `apply_peg_filter`가 자동으로 virtual 모드 사용.
 
