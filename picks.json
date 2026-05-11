@@ -5,16 +5,6 @@
     "peg": 0.0
   },
   {
-    "stock_code": "010400",
-    "corp_name": "우진아이엔에스",
-    "peg": 0.03
-  },
-  {
-    "stock_code": "003610",
-    "corp_name": "방림",
-    "peg": 0.03
-  },
-  {
     "stock_code": "483650",
     "corp_name": "달바글로벌",
     "peg": 0.08
@@ -23,5 +13,15 @@
     "stock_code": "003000",
     "corp_name": "부광약품",
     "peg": 0.09
+  },
+  {
+    "stock_code": "017550",
+    "corp_name": "수산세보틱스",
+    "peg": 0.18
+  },
+  {
+    "stock_code": "009140",
+    "corp_name": "경인전자",
+    "peg": 0.25
   }
 ]
