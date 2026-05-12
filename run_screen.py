@@ -42,14 +42,14 @@ def _get_news_context(stock_code: str, corp_name: str) -> str:
             articles = cached
         else:
             from src.news.crawler import crawl_naver_news
-            articles = crawl_naver_news(stock_code)
+            articles = crawl_naver_news(corp_name)
             if articles:
                 save_news(stock_code, corp_name, articles)
     except Exception:
         # Supabase 미설정 시 바로 크롤링
         try:
             from src.news.crawler import crawl_naver_news
-            articles = crawl_naver_news(stock_code)
+            articles = crawl_naver_news(corp_name)
         except Exception as e:
             print(f"  [뉴스 오류] {stock_code}: {e}")
 
