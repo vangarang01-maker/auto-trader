@@ -34,8 +34,6 @@ jobs:
           GEMINI_API_KEY:         ${{ secrets.GEMINI_API_KEY }}
           SUPABASE_URL:           ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY:           ${{ secrets.SUPABASE_KEY }}
-          KRX_ID:                 ${{ secrets.KRX_ID }}
-          KRX_PW:                 ${{ secrets.KRX_PW }}
         run: python run_screen_v2.py
 
       - name: picks_v2.json 커밋 & 푸시

@@ -124,17 +124,11 @@ class ValueDividendScreener:
 
     @staticmethod
     def fetch_div_map(market: str = "KOSPI") -> dict[str, float]:
-        """pykrx로 시장 전체 배당수익률(DIV) 일괄 조회.
+        """pykrx로 시장 전체 배당수익률(DIV) 일괄 조회 (로그인 불필요).
 
-        KRX_ID / KRX_PW 환경변수가 설정되어 있어야 한다.
+        pykrx==1.0.51 사용. alternative=True로 휴장일이면 직전 영업일 기준 반환.
         실패 시 빈 dict 반환 → apply_valuation_filter에서 DART fallback 사용.
         """
-        import os
-        krx_id = os.getenv("KRX_ID")
-        krx_pw = os.getenv("KRX_PW")
-        if not krx_id or not krx_pw:
-            print("  [pykrx] KRX_ID/KRX_PW 미설정 → 배당수익률 조회 건너뜀")
-            return {}
         try:
             from pykrx import stock as krx_stock
             from datetime import date as _date
