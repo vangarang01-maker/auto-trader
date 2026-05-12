@@ -120,32 +120,83 @@ class ValueDividendScreener:
         print()
         return pd.DataFrame(results) if results else pd.DataFrame()
 
-    # ── pykrx 배당수익률 일괄 조회 ──────────────────────────
+    # ── 네이버 금융 배당수익률 per-stock 조회 ────────────────
+
+    @staticmethod
+    def fetch_div_naver(
+        stock_codes: list[str],
+        workers: int = 5,
+    ) -> dict[str, float]:
+        """네이버 금융 per-stock 배당수익률 스크래핑 (로그인 불필요).
+
+        DART 필터 통과 종목(~100-200개)에 대해서만 호출.
+        실패 종목은 건너뜀 → apply_valuation_filter에서 div=None 통과 처리.
+        """
+        import requests
+        from bs4 import BeautifulSoup
+
+        def fetch_one(code: str) -> tuple[str, float | None]:
+            try:
+                r = requests.get(
+                    f"https://finance.naver.com/item/main.naver?code={code}",
+                    headers={"User-Agent": "Mozilla/5.0"},
+                    timeout=5,
+                )
+                r.encoding = "euc-kr"
+                dvr = BeautifulSoup(r.text, "html.parser").find(id="_dvr")
+                if dvr:
+                    return code, round(float(dvr.get_text(strip=True)), 2)
+            except Exception:
+                pass
+            return code, None
+
+        result: dict[str, float] = {}
+        total = len(stock_codes)
+        done  = 0
+
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            futures = {executor.submit(fetch_one, c): c for c in stock_codes}
+            for future in as_completed(futures):
+                done += 1
+                if done % 20 == 0 or done == total:
+                    print(f"\r  [Naver DIV] {done}/{total}", end="", flush=True)
+                code, div = future.result()
+                if div is not None and div > 0:
+                    result[code] = div
+        print()
+        print(f"  [Naver DIV] {len(result)}개 종목 배당수익률 수신")
+        return result
+
+    # ── pykrx 배당수익률 일괄 조회 (KRX 로그인 필요, 현재 미사용) ──
 
     @staticmethod
     def fetch_div_map(market: str = "KOSPI") -> dict[str, float]:
-        """pykrx로 시장 전체 배당수익률(DIV) 일괄 조회 (로그인 불필요).
+        """pykrx로 시장 전체 배당수익률 일괄 조회 시도.
 
-        pykrx==1.0.51 사용. alternative=True로 휴장일이면 직전 영업일 기준 반환.
-        실패 시 빈 dict 반환 → apply_valuation_filter에서 DART fallback 사용.
+        ⚠️ data.krx.co.kr가 인증 없이 MDCSTAT03501 블록을 거부(400 LOGOUT)하므로
+        pykrx 1.0.51·1.2.x 모두 빈 DataFrame 반환. 항상 {} 반환 예상.
+        DIV 조회는 fetch_div_naver()를 대신 사용할 것.
         """
         try:
+            import sys
+            if "pkg_resources" not in sys.modules:
+                import types, importlib.metadata
+                _pkg = types.ModuleType("pkg_resources")
+                _pkg.get_distribution = lambda n: type("D", (), {"version": importlib.metadata.version(n)})()
+                sys.modules["pkg_resources"] = _pkg
+
             from pykrx import stock as krx_stock
             from datetime import date as _date
             today = _date.today().strftime("%Y%m%d")
             df = krx_stock.get_market_fundamental_by_ticker(today, market=market, alternative=True)
             if df is None or df.empty or "DIV" not in df.columns:
-                print("  [pykrx] 빈 응답 → 건너뜀")
                 return {}
-            result = {
+            return {
                 str(ticker).zfill(6): round(float(div), 2)
                 for ticker, div in df["DIV"].items()
                 if float(div) > 0
             }
-            print(f"  [pykrx] {len(result)}개 종목 배당수익률 수신")
-            return result
-        except Exception as e:
-            print(f"  [pykrx] 오류: {e}")
+        except Exception:
             return {}
 
     # ── 2단계: KIS 밸류에이션 필터 ────────────────────────
