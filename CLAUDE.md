@@ -278,6 +278,8 @@ _METRIC_CONFIG = {
 | `TELEGRAM_CHAT_ID` | 텔레그램 수신 채팅 ID |
 | `SUPABASE_URL` | Supabase 프로젝트 URL |
 | `SUPABASE_KEY` | Supabase Secret 키 |
+| `KRX_ID` | KRX 웹사이트 로그인 ID (pykrx 배당수익률 조회용) |
+| `KRX_PW` | KRX 웹사이트 로그인 PW (pykrx 배당수익률 조회용) |
 
 `KIS_APP_KEY` 미설정 시 `apply_peg_filter`가 자동으로 virtual 모드 사용.
 

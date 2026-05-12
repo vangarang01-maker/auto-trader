@@ -8,3 +8,4 @@ google-genai>=1.0.0
 supabase>=2.3.0
 beautifulsoup4>=4.12.0
 feedparser>=6.0.0
+pykrx>=1.0.51

@@ -126,7 +126,11 @@ def main():
     dart_result = result.copy()  # 섹터 모멘텀 계산용 보존
 
     print("[2단계] KIS 밸류에이션 필터 (PBR 0.3~1.2 / 배당수익률 ≥ 2.5%, 데이터 없으면 통과)...")
-    result = screener.apply_valuation_filter(result, kis)
+    print("  pykrx 배당수익률 일괄 조회 중...")
+    div_map = screener.fetch_div_map(MARKET)
+    if not div_map:
+        print("  → pykrx 실패. DART finstate_all fallback 사용\n")
+    result = screener.apply_valuation_filter(result, kis, div_map=div_map)
     if result.empty:
         print("  통과 종목 없음. 종료.")
         send_message(f"[{ts}] [V2] 오늘의 후보 종목\n\n2단계(밸류에이션) 통과 종목이 없습니다.")
