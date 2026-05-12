@@ -128,7 +128,7 @@ class ValueDividendScreener:
         kis,
         pbr_lo: float = 0.3,
         pbr_hi: float = 1.2,
-        min_div: float = 3.5,
+        min_div: float = 2.5,
     ) -> pd.DataFrame:
         """PBR 범위 + 배당수익률 최소치 필터."""
         rows = []
