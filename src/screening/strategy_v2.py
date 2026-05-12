@@ -141,12 +141,12 @@ class ValueDividendScreener:
                 div = val.get("div_yield")
                 if pbr is None or not (pbr_lo <= pbr <= pbr_hi):
                     continue
-                if div is None or div < min_div:
+                if div is not None and div < min_div:
                     continue
                 rows.append({
                     **row.to_dict(),
                     "pbr":           pbr,
-                    "div_yield":     div,
+                    "div_yield":     div if div is not None else 0.0,
                     "current_price": val.get("price"),
                 })
             except Exception:

@@ -124,7 +124,7 @@ def main():
         return
     print(f"  1단계 통과: {len(result)}개\n")
 
-    print("[2단계] KIS 밸류에이션 필터 (PBR 0.8~1.2 / 배당수익률 ≥ 3.5%)...")
+    print("[2단계] KIS 밸류에이션 필터 (PBR 0.3~1.2 / 배당수익률 ≥ 2.5%, 데이터 없으면 통과)...")
     result = screener.apply_valuation_filter(result, kis)
     if result.empty:
         print("  통과 종목 없음. 종료.")
