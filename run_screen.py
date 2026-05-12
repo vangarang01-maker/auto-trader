@@ -1,6 +1,6 @@
 """매일 07:30 1회 실행 — 종목 스크리닝 후 picks.json 저장"""
 import json
-from datetime import datetime, date
+from datetime import datetime, date, timezone, timedelta
 from pathlib import Path
 
 import exchange_calendars as xcals
@@ -60,7 +60,7 @@ def _get_news_context(stock_code: str, corp_name: str) -> str:
 
 
 def main():
-    ts = datetime.now().strftime("%Y-%m-%d %H:%M")
+    ts = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M")
     today = str(date.today())
     print(f"\n{'='*50}")
     print(f"[{ts}] 스크리닝 시작 (기준연도: {YEAR})")
@@ -221,7 +221,7 @@ def main():
 
     # ── 텔레그램 메시지 조립 ────────────────────────────────
     SEP = "─" * 8
-    lines = [f"[{ts}] 자동매매 후보 종목 {len(picks)}개", ""]
+    lines = [f"[{ts}] [V1 피터 린치] 후보 {len(picks)}개", ""]
 
     # 상단: 종목 리스트 표
     lines.append("【 오늘의 후보 종목 】")
@@ -296,6 +296,6 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        ts = datetime.now().strftime("%Y-%m-%d %H:%M")
+        ts = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M")
         send_message(f"[{ts}] 스크리닝 실패\n\n{type(e).__name__}: {e}")
         raise

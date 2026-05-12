@@ -1,7 +1,7 @@
 """[V2] 고배당-저PBR-고ROE 전략 스크리닝 — 매일 07:30 1회 실행"""
 import json
 import os
-from datetime import datetime, date
+from datetime import datetime, date, timezone, timedelta
 from pathlib import Path
 
 import exchange_calendars as xcals
@@ -55,7 +55,7 @@ def _get_news_context(stock_code: str, corp_name: str) -> str:
 
 
 def main():
-    ts    = datetime.now().strftime("%Y-%m-%d %H:%M")
+    ts    = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M")
     today = str(date.today())
     print(f"\n{'='*50}")
     print(f"[{ts}] [V2] 스크리닝 시작 (기준연도: {YEAR})")
@@ -291,6 +291,6 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        ts = datetime.now().strftime("%Y-%m-%d %H:%M")
+        ts = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M")
         send_message(f"[{ts}] [V2] 스크리닝 실패\n\n{type(e).__name__}: {e}")
         raise
