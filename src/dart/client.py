@@ -16,6 +16,20 @@ class DartClient:
     def get_company_info(self, corp_code: str) -> dict:
         return self.dart.company(corp_code)
 
+    def get_dividends_paid(self, corp_code: str, year: str) -> int:
+        """DART 현금흐름표 '배당금의지급' 조회 (배당수익률 계산용)."""
+        try:
+            df = self.dart.finstate_all(corp_code, int(year), "11011")
+            if df is None or df.empty:
+                return 0
+            row = df[df["account_nm"] == "배당금의지급"]
+            if row.empty:
+                return 0
+            val = str(row.iloc[0].get("thstrm_amount", "0")).replace(",", "").strip()
+            return abs(int(val or 0))
+        except Exception:
+            return 0
+
     def get_financial_statements(self, corp_code: str, year: str, report_type: str = "11011") -> object:
         """
         report_type: 11011=사업보고서, 11012=반기보고서, 11013=1분기, 11014=3분기

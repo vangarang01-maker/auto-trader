@@ -148,6 +148,7 @@ class KISClient:
             "per":       float(out.get("per") or 0) or None,
             "pbr":       float(out.get("pbr") or 0) or None,
             "div_yield": div,
+            "shares":    int(out.get("lstn_stcn") or 0),
         }
 
     def get_current_price(self, stock_code: str) -> int:

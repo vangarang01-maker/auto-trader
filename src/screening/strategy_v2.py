@@ -118,6 +118,23 @@ class ValueDividendScreener:
                     })
 
         print()
+        if not results:
+            return pd.DataFrame()
+
+        # Phase 2: DART finstate_all로 배당금의지급 조회 (생존 종목만)
+        print("  배당 데이터 조회 중...")
+        survivor_codes = [r["corp_code"] for r in results]
+
+        def fetch_div(code):
+            return code, self.client.get_dividends_paid(code, year)
+
+        div_map: dict[str, int] = {}
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            for code, div in executor.map(fetch_div, survivor_codes):
+                div_map[code] = div
+        for r in results:
+            r["total_div_paid"] = div_map.get(r["corp_code"], 0)
+
         return pd.DataFrame(results)
 
     # ── 2단계: KIS 밸류에이션 필터 ────────────────────────
@@ -137,8 +154,17 @@ class ValueDividendScreener:
             print(f"\r  진행: {i}/{total}", end="", flush=True)
             try:
                 val = kis.get_stock_valuation(row["stock_code"])
-                pbr = val.get("pbr")
-                div = val.get("div_yield")
+                pbr    = val.get("pbr")
+                shares = val.get("shares", 0)
+                price  = val.get("price") or 0
+                div    = val.get("div_yield")
+
+                # KIS에 배당수익률 없으면 DART 배당금/시가총액으로 계산
+                if div is None:
+                    total_div = row.get("total_div_paid", 0)
+                    if total_div > 0 and shares > 0 and price > 0:
+                        div = round(total_div / (shares * price) * 100, 2)
+
                 if pbr is None or not (pbr_lo <= pbr <= pbr_hi):
                     continue
                 if div is not None and div < min_div:
@@ -147,7 +173,7 @@ class ValueDividendScreener:
                     **row.to_dict(),
                     "pbr":           pbr,
                     "div_yield":     div if div is not None else 0.0,
-                    "current_price": val.get("price"),
+                    "current_price": price,
                 })
             except Exception:
                 continue
