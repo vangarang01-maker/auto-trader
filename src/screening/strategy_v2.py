@@ -126,7 +126,7 @@ class ValueDividendScreener:
         self,
         df: pd.DataFrame,
         kis,
-        pbr_lo: float = 0.8,
+        pbr_lo: float = 0.3,
         pbr_hi: float = 1.2,
         min_div: float = 3.5,
     ) -> pd.DataFrame:
