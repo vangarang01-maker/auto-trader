@@ -147,6 +147,15 @@ def main():
 
     print(f"  3단계 통과: {len(result)}개\n")
 
+    print("[섹터 모멘텀] 최근 1개월 상위 섹터 필터...")
+    try:
+        from src.screening.sector_momentum import get_top_sectors, apply_sector_filter
+        top_sectors = get_top_sectors(dart_picks, months=1, top_n=3)
+        result = apply_sector_filter(result, top_sectors, min_keep=5)
+        print()
+    except Exception as e:
+        print(f"  [섹터 모멘텀 오류] {e} — 생략\n")
+
     kis = KISClient(virtual=not os.getenv("KIS_APP_KEY"))
 
     print("[건강검진] 후보 종목 7개 지표 점수 산출...")
@@ -178,6 +187,19 @@ def main():
                 )
                 sign = "+" if bonus > 0 else ""
                 print(f"  [{label}] {result.at[i, 'corp_name']} 건강검진 {sign}{bonus}점 반영")
+        # 테마 섹터 보너스 반영
+        try:
+            from src.screening.sector_momentum import calc_theme_bonus
+            THEME_BONUS = 10
+            for i in result.index:
+                bonus = calc_theme_bonus(result.at[i, "sector"], news_theme_analysis, THEME_BONUS)
+                if bonus:
+                    result.at[i, "health_score"] = round(
+                        min(100.0, result.at[i, "health_score"] + bonus), 1
+                    )
+                    print(f"  [테마 보너스] {result.at[i, 'corp_name']} +{bonus:.0f}점 (섹터: {result.at[i, 'sector']})")
+        except Exception:
+            pass
         print(f"  건강검진 완료: {len(result)}개\n")
     except Exception as e:
         print(f"  [건강검진 오류] {e} — PEG 기준으로 대체\n")

@@ -123,6 +123,7 @@ def main():
         print("  통과 종목 없음. 종료.")
         return
     print(f"  1단계 통과: {len(result)}개\n")
+    dart_result = result.copy()  # 섹터 모멘텀 계산용 보존
 
     print("[2단계] KIS 밸류에이션 필터 (PBR 0.3~1.2 / 배당수익률 ≥ 2.5%, 데이터 없으면 통과)...")
     result = screener.apply_valuation_filter(result, kis)
@@ -139,6 +140,15 @@ def main():
         send_message(f"[{ts}] [V2] 오늘의 후보 종목\n\n3단계(모멘텀) 통과 종목이 없습니다.")
         return
     print(f"  3단계 통과: {len(result)}개\n")
+
+    print("[섹터 모멘텀] 최근 1개월 상위 섹터 필터...")
+    try:
+        from src.screening.sector_momentum import get_top_sectors, apply_sector_filter
+        top_sectors = get_top_sectors(dart_result, months=1, top_n=3)
+        result = apply_sector_filter(result, top_sectors, min_keep=5)
+        print()
+    except Exception as e:
+        print(f"  [섹터 모멘텀 오류] {e} — 생략\n")
 
     # ── 건강검진 ────────────────────────────────────────────
     print("[건강검진] 7개 지표 점수 산출...")
@@ -168,6 +178,19 @@ def main():
                 )
                 sign = "+" if bonus > 0 else ""
                 print(f"  [{label}] {result.at[i, 'corp_name']} 건강검진 {sign}{bonus}점 반영")
+        # 테마 섹터 보너스 반영
+        try:
+            from src.screening.sector_momentum import calc_theme_bonus
+            THEME_BONUS = 10
+            for i in result.index:
+                bonus = calc_theme_bonus(result.at[i, "sector"], news_theme_analysis, THEME_BONUS)
+                if bonus:
+                    result.at[i, "health_score"] = round(
+                        min(100.0, result.at[i, "health_score"] + bonus), 1
+                    )
+                    print(f"  [테마 보너스] {result.at[i, 'corp_name']} +{bonus:.0f}점 (섹터: {result.at[i, 'sector']})")
+        except Exception:
+            pass
         print(f"  건강검진 완료: {len(result)}개\n")
     except Exception as e:
         print(f"  [건강검진 오류] {e} — 배당수익률 기준으로 대체\n")
