@@ -198,7 +198,7 @@ def main():
         print(f"  [건강검진 오류] {e} — 배당수익률 기준으로 대체\n")
 
     # ── 종목 선정 ────────────────────────────────────────────
-    valid = result.copy()
+    valid = result[result["div_yield"] > 0].copy()
     if "health_score" in valid.columns and valid["health_score"].notna().any():
         picks_df = valid.sort_values("health_score", ascending=False)
     else:
