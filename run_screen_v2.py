@@ -30,28 +30,17 @@ def _dominant_label(records: list[dict]) -> str:
 
 
 def _get_news_context(stock_code: str, corp_name: str) -> str:
-    """DB 캐시 우선으로 네이버 뉴스를 텍스트로 반환."""
-    articles = []
+    """DB에서 당일 뉴스를 가져와 텍스트로 반환. (크롤링 없음 — run_news.py 전담)"""
     try:
-        from src.db.client import get_recent_news, save_news
-        cached = get_recent_news(stock_code, days=7)
-        if len(cached) >= 5:
-            articles = cached
-        else:
-            from src.news.crawler import crawl_naver_news
-            articles = crawl_naver_news(stock_code)
-            if articles:
-                save_news(stock_code, corp_name, articles)
-    except Exception:
-        try:
-            from src.news.crawler import crawl_naver_news
-            articles = crawl_naver_news(stock_code)
-        except Exception as e:
-            print(f"  [뉴스 오류] {stock_code}: {e}")
-    if not articles:
+        from src.db.client import get_recent_news
+        articles = get_recent_news(stock_code, days=1)
+        if not articles:
+            return ""
+        titles = [a.get("title", "") for a in articles[:10] if a.get("title")]
+        return "최근 뉴스:\n" + "\n".join(f"- {t}" for t in titles)
+    except Exception as e:
+        print(f"  [뉴스 DB 오류] {stock_code}: {e}")
         return ""
-    titles = [a.get("title", "") for a in articles[:10] if a.get("title")]
-    return "최근 뉴스:\n" + "\n".join(f"- {t}" for t in titles)
 
 
 def main():

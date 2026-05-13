@@ -1,0 +1,43 @@
+name: 스크리닝 V3 뉴스 모멘텀 (07:35 KST)
+
+on:
+  schedule:
+    - cron: "35 22 * * 0-4"  # KST 07:35 평일 (UTC 22:35 일~목)
+  workflow_dispatch:
+
+jobs:
+  screen_v3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: 의존성 설치
+        run: pip install -r requirements.txt
+
+      - name: V3 스크리닝 실행
+        env:
+          DART_API_KEY:        ${{ secrets.DART_API_KEY }}
+          KIS_APP_KEY:         ${{ secrets.KIS_APP_KEY }}
+          KIS_APP_SECRET:      ${{ secrets.KIS_APP_SECRET }}
+          KIS_VIRTUAL_APP_KEY: ${{ secrets.KIS_VIRTUAL_APP_KEY }}
+          KIS_VIRTUAL_APP_SECRET: ${{ secrets.KIS_VIRTUAL_APP_SECRET }}
+          KIS_ACCOUNT:         ${{ secrets.KIS_ACCOUNT }}
+          GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
+          SUPABASE_URL:        ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY:        ${{ secrets.SUPABASE_KEY }}
+          TELEGRAM_BOT_TOKEN:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:    ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python run_screen_v3.py
+
+      - name: picks_v3.json 커밋
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add picks_v3.json 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "chore: picks_v3.json 업데이트 [skip ci]"
+          git pull --rebase origin main && git push || true

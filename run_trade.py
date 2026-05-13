@@ -15,8 +15,9 @@ from src.portfolio.manager import PortfolioManager
 
 PICKS_V1_FILE = "picks_v1.json"
 PICKS_V2_FILE = "picks_v2.json"
+PICKS_V3_FILE = "picks_v3.json"
 MAX_HOLD      = 5
-CROSS_BONUS   = 10  # 두 전략 모두 선정 시 추가 점수
+CROSS_BONUS   = 10  # 2개 이상 전략 공통 선정 시 추가 점수
 
 
 def _load_picks(path: str) -> list[dict]:
@@ -29,27 +30,27 @@ def _load_picks(path: str) -> list[dict]:
         return []
 
 
-def _merge_picks(v1: list[dict], v2: list[dict]) -> list[dict]:
-    """V1·V2 후보를 통합해 조정 점수 기준 상위 MAX_HOLD개 반환."""
-    v1_map = {p["stock_code"]: p for p in v1}
-    v2_map = {p["stock_code"]: p for p in v2}
+def _merge_picks(v1: list[dict], v2: list[dict], v3: list[dict]) -> list[dict]:
+    """V1·V2·V3 후보를 통합해 조정 점수 기준 상위 MAX_HOLD개 반환."""
+    maps = {"V1": {p["stock_code"]: p for p in v1},
+            "V2": {p["stock_code"]: p for p in v2},
+            "V3": {p["stock_code"]: p for p in v3}}
 
+    all_codes = set(maps["V1"]) | set(maps["V2"]) | set(maps["V3"])
     merged = []
-    for code in set(v1_map) | set(v2_map):
-        in_v1 = code in v1_map
-        in_v2 = code in v2_map
-        base  = (v2_map if in_v2 else v1_map)[code].copy()
+    for code in all_codes:
+        sources = [name for name, m in maps.items() if code in m]
+        base    = maps[sources[-1]][code].copy()
 
         scores = [
-            p.get("health_score") or 0
-            for p in [v1_map.get(code), v2_map.get(code)]
-            if p is not None
+            maps[s][code].get("health_score") or 0
+            for s in sources
         ]
         base_score = max(scores) if scores else 0
-        bonus      = CROSS_BONUS if (in_v1 and in_v2) else 0
+        bonus      = CROSS_BONUS if len(sources) >= 2 else 0
 
         base["adjusted_score"] = round(min(100.0, base_score + bonus), 1)
-        base["strategies"]     = "V1+V2" if (in_v1 and in_v2) else ("V1" if in_v1 else "V2")
+        base["strategies"]     = "+".join(sources)
         merged.append(base)
 
     merged.sort(key=lambda x: x["adjusted_score"], reverse=True)
@@ -79,13 +80,14 @@ def main():
 
     v1_picks = _load_picks(PICKS_V1_FILE)
     v2_picks = _load_picks(PICKS_V2_FILE)
+    v3_picks = _load_picks(PICKS_V3_FILE)
 
-    if not v1_picks and not v2_picks:
-        print(f"  {PICKS_V1_FILE}·{PICKS_V2_FILE} 모두 없음. 스크리닝을 먼저 실행하세요.")
+    if not v1_picks and not v2_picks and not v3_picks:
+        print(f"  picks 파일 없음. 스크리닝을 먼저 실행하세요.")
         return
 
-    print(f"  V1 후보: {len(v1_picks)}개  /  V2 후보: {len(v2_picks)}개")
-    picks_raw = _merge_picks(v1_picks, v2_picks)
+    print(f"  V1 후보: {len(v1_picks)}개  /  V2 후보: {len(v2_picks)}개  /  V3 후보: {len(v3_picks)}개")
+    picks_raw = _merge_picks(v1_picks, v2_picks, v3_picks)
 
     print("\n  [통합 후보]")
     for p in picks_raw:

@@ -88,6 +88,52 @@ def analyze_market_themes(headlines: list[str]) -> str:
     return ""
 
 
+def analyze_stock_news_batch(
+    stock_news: list[tuple[str, str, list[str]]],
+    batch_size: int = 15,
+) -> dict[str, str]:
+    """종목별 뉴스 헤드라인 배치 감성 분석.
+
+    stock_news: [(stock_code, corp_name, [headlines]), ...]
+    Returns: {stock_code: "호재" | "악재" | "혼조" | "중립"}
+    """
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key or not stock_news:
+        return {}
+
+    client = genai.Client(api_key=api_key)
+    result: dict[str, str] = {}
+
+    for i in range(0, len(stock_news), batch_size):
+        batch = stock_news[i : i + batch_size]
+        sections = []
+        for code, name, headlines in batch:
+            h_text = "\n".join(f"  - {h}" for h in headlines[:5])
+            sections.append(f"[{name}({code})]\n{h_text}")
+
+        prompt = f"""아래 종목들의 최근 뉴스 헤드라인을 투자 관점에서 분석하세요.
+각 종목에 대해 '호재', '악재', '혼조', '중립' 중 하나로 판단하세요.
+
+{chr(10).join(sections)}
+
+JSON 배열만 출력 (마크다운 없이):
+[{{"stock_code":"6자리코드","label":"호재 또는 악재 또는 혼조 또는 중립"}}]"""
+
+        for model_name in _MODELS:
+            try:
+                resp = client.models.generate_content(model=model_name, contents=prompt)
+                text = resp.text.strip()
+                if "```" in text:
+                    text = text[text.find("[") : text.rfind("]") + 1]
+                for item in json.loads(text):
+                    result[item["stock_code"]] = item["label"]
+                break
+            except Exception as e:
+                print(f"  [배치감성 오류] {model_name}: {e}")
+
+    return result
+
+
 def analyze_news_sentiment(headlines: list[str], stock_codes: list[str]) -> list[dict]:
     """헤드라인 목록과 관련 종목코드를 받아 각 (헤드라인, 종목) 쌍의 호재/악재/혼조를 판단.
 

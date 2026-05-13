@@ -39,6 +39,28 @@ def save_news(stock_code: str, corp_name: str, articles: list[dict]) -> int:
         return 0
 
 
+def get_news_bulk(stock_codes: list[str], days: int = 1) -> dict[str, list[dict]]:
+    """여러 종목의 최근 N일 뉴스를 한 번에 조회. {stock_code: [articles]}"""
+    since = (datetime.now() - timedelta(days=days)).isoformat()
+    try:
+        res = (
+            _get_client()
+            .table("news")
+            .select("stock_code, title, url, published_at, source")
+            .in_("stock_code", stock_codes)
+            .gte("created_at", since)
+            .order("created_at", desc=True)
+            .execute()
+        )
+        result: dict[str, list[dict]] = {}
+        for row in (res.data or []):
+            result.setdefault(row["stock_code"], []).append(row)
+        return result
+    except Exception as e:
+        print(f"  [DB 오류] 뉴스 일괄 조회 실패: {e}")
+        return {}
+
+
 def get_recent_news(stock_code: str, days: int = 7) -> list[dict]:
     """최근 N일 DB 뉴스 반환."""
     since = (datetime.now() - timedelta(days=days)).isoformat()

@@ -66,6 +66,44 @@ def main():
     except Exception as e:
         print(f"\n  [DB 오류] {e}")
 
+    # 종목별 뉴스 크롤링 (KOSPI 시총 상위 100 + 당일 언급 종목)
+    print("\n[종목별 뉴스 크롤링] KOSPI 시총 상위 100 + 당일 언급 종목...")
+    try:
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        import FinanceDataReader as fdr
+        from src.news.crawler import crawl_naver_news
+        from src.db.client import save_news
+
+        listing    = fdr.StockListing("KOSPI")
+        marcap_col = next((c for c in ["Marcap", "MarketCap"] if c in listing.columns), None)
+        top100     = listing.nlargest(100, marcap_col) if marcap_col else listing.head(100)
+        code_to_name = dict(zip(listing["Code"], listing["Name"]))
+
+        universe_codes = set(top100["Code"].tolist()) | set(stock_codes)
+        universe = [(c, code_to_name[c]) for c in universe_codes if c in code_to_name]
+        print(f"  유니버스: {len(universe)}개 종목")
+
+        total_saved = 0
+        done        = 0
+        total       = len(universe)
+
+        def _crawl(code, name):
+            arts = crawl_naver_news(name, max_articles=5)
+            if arts:
+                save_news(code, name, arts)
+            return len(arts)
+
+        with ThreadPoolExecutor(max_workers=10) as ex:
+            futs = {ex.submit(_crawl, c, n): c for c, n in universe}
+            for f in as_completed(futs):
+                done += 1
+                if done % 20 == 0 or done == total:
+                    print(f"\r  진행: {done}/{total}", end="", flush=True)
+                total_saved += f.result()
+        print(f"\n  완료: {total_saved}건 저장")
+    except Exception as e:
+        print(f"  [종목별 뉴스 오류] {e}")
+
     # 로컬 캐시 (로컬 개발 시 run_screen.py fallback용)
     data = {
         "crawled_at": ts,
