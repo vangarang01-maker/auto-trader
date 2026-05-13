@@ -1,15 +1,15 @@
 """[V3] 섹터 주도주 전략 스크리닝 — 07:35 KST 실행
 
 파이프라인:
-  0단계: KOSPI 전 종목 로드 (FDR) — 시총 3,000억↑, 섹터 있는 종목만
-  1단계: 전 종목 5일 수익률·거래량 배율 병렬 계산 (FDR, workers=8)
-         → 섹터별 평균 수익률 → 주도 섹터 TOP_N_SECTORS 선정
-  2단계: 주도 섹터 내 종목 복합 점수 산출
-         모멘텀(35%) + 거래량(25%) + 건강검진(30%) + 뉴스감성(10%)
-  3단계: 상위 MAX_HOLD개 → RSI + AI요약 → 텔레그램
+  0단계: 네이버 금융 업종 시세 → 당일 상승 상위 섹터 TOP_N_SECTORS 선정
+  1단계: 해당 섹터 종목 코드 수집 (네이버 업종 상세)
+  2단계: 종목별 5일 수익률·거래량 배율 병렬 계산 (FDR, workers=8)
+  3단계: 복합 점수 (모멘텀 35% + 거래량 25% + 건강검진 30% + 뉴스감성 10%)
+  4단계: 상위 MAX_HOLD개 → RSI + AI요약 → 텔레그램
 """
 import json
 import os
+import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, date, timezone, timedelta
 from pathlib import Path
@@ -17,6 +17,8 @@ from pathlib import Path
 import exchange_calendars as xcals
 import FinanceDataReader as fdr
 import pandas as pd
+import requests
+from bs4 import BeautifulSoup
 
 from src.broker.kis_client import KISClient
 from src.indicators.rsi import calc_rsi
@@ -31,8 +33,69 @@ MOMENTUM_DAYS   = 5
 VOLUME_LOOKBACK = 20
 MIN_MARCAP      = 300_000_000_000  # 3,000억
 
+_HEADERS    = {"User-Agent": "Mozilla/5.0"}
 _SENT_EMOJI = {"호재": "✅", "악재": "❌", "혼조": "⚠️"}
 
+
+# ── 네이버 금융 업종 스크래퍼 ──────────────────────────────
+
+def _get_sector_rankings() -> list[dict]:
+    """네이버 금융 업종 시세에서 당일 등락률 순 섹터 목록 반환."""
+    url = "https://finance.naver.com/sise/sise_group.naver?type=upjong"
+    r = requests.get(url, headers=_HEADERS, timeout=10)
+    r.encoding = "euc-kr"
+    soup = BeautifulSoup(r.text, "html.parser")
+
+    sectors = []
+    for row in soup.select("table.type_1 tr"):
+        tds = row.select("td")
+        if len(tds) < 4:
+            continue
+        a = tds[0].select_one("a")
+        if not a:
+            continue
+        name = a.get_text(strip=True)
+        m = re.search(r"no=(\d+)", a.get("href", ""))
+        if not m:
+            continue
+        try:
+            pct = float(
+                tds[2].get_text(strip=True)
+                .replace("+", "").replace("%", "").replace(",", "")
+            )
+        except ValueError:
+            continue
+        sectors.append({"name": name, "no": m.group(1), "change_pct": pct})
+
+    return sorted(sectors, key=lambda x: x["change_pct"], reverse=True)
+
+
+def _get_sector_stocks(sector_no: str) -> list[str]:
+    """네이버 금융 업종 상세에서 종목 코드 목록 반환 (페이지 순회)."""
+    codes: list[str] = []
+    page = 1
+    while True:
+        url = (
+            f"https://finance.naver.com/sise/sise_group_detail.naver"
+            f"?type=upjong&no={sector_no}&page={page}"
+        )
+        r = requests.get(url, headers=_HEADERS, timeout=10)
+        r.encoding = "euc-kr"
+        soup = BeautifulSoup(r.text, "html.parser")
+        new = [
+            a["href"].split("code=")[1][:6]
+            for a in soup.select("table.type_5 a[href*='code=']")
+        ]
+        if not new:
+            break
+        codes.extend(new)
+        if not soup.select_one("a.pgRR"):
+            break
+        page += 1
+    return list(set(codes))
+
+
+# ── 유틸 ──────────────────────────────────────────────────
 
 def _dominant_label(records: list[dict]) -> str:
     labels = {r.get("label") for r in records}
@@ -40,6 +103,8 @@ def _dominant_label(records: list[dict]) -> str:
         return "혼조"
     return "호재" if "호재" in labels else ("악재" if "악재" in labels else "혼조")
 
+
+# ── 메인 ──────────────────────────────────────────────────
 
 def main():
     ts    = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M")
@@ -69,31 +134,61 @@ def main():
     except Exception as e:
         print(f"  [DB 오류] {e}\n")
 
-    # ── 0단계: KOSPI 전 종목 로드 ─────────────────────────────
-    print("[0단계] KOSPI 전 종목 로드...")
-    listing = fdr.StockListing("KOSPI")
+    # ── 0단계: 네이버 업종 시세 → 주도 섹터 선정 ─────────────
+    print("[0단계] 네이버 금융 업종 시세 조회...")
+    try:
+        sector_rankings = _get_sector_rankings()
+    except Exception as e:
+        send_message(f"[{ts}] [V3] 업종 시세 조회 실패: {e}")
+        return
 
-    marcap_col = next((c for c in ["Marcap", "MarketCap"] if c in listing.columns), None)
-    if marcap_col:
-        listing = listing[listing[marcap_col] >= MIN_MARCAP]
+    if not sector_rankings:
+        send_message(f"[{ts}] [V3] 업종 시세 데이터 없음.")
+        return
 
-    sector_col = next((c for c in ["Sector", "Industry"] if c in listing.columns), None)
-    if sector_col:
-        listing = listing[
-            listing[sector_col].notna() & (listing[sector_col].str.strip() != "")
-        ].copy()
-        listing.rename(columns={sector_col: "Sector"}, inplace=True)
-    else:
-        listing = listing.copy()
-        listing["Sector"] = "전체"
+    top_sectors = sector_rankings[:TOP_N_SECTORS]
+    print(f"  전체 {len(sector_rankings)}개 업종 중 상위 {TOP_N_SECTORS}개 선정")
+    for s in top_sectors:
+        print(f"  {s['name']}: {s['change_pct']:+.2f}%")
+    print()
 
-    code_to_name   = dict(zip(listing["Code"], listing["Name"]))
-    code_to_sector = dict(zip(listing["Code"], listing["Sector"]))
-    codes = listing["Code"].tolist()
-    print(f"  {len(codes)}개 종목 (시총 {MIN_MARCAP // 100_000_000:,}억↑)\n")
+    # ── 1단계: 해당 섹터 종목 코드 수집 ──────────────────────
+    print("[1단계] 주도 섹터 종목 수집...")
+    universe_codes: dict[str, str] = {}  # code → sector_name
+    for s in top_sectors:
+        codes = _get_sector_stocks(s["no"])
+        for c in codes:
+            universe_codes[c] = s["name"]
+        print(f"  {s['name']}: {len(codes)}개 종목")
+    print(f"  총 유니버스: {len(universe_codes)}개\n")
 
-    # ── 1단계: 5일 수익률·거래량 배율 병렬 계산 ──────────────
-    print("[1단계] 5일 수익률·거래량 배율 계산 중...")
+    if not universe_codes:
+        send_message(f"[{ts}] [V3] 유니버스 종목 없음.")
+        return
+
+    # 시총 필터 (FDR StockListing)
+    try:
+        listing = fdr.StockListing("KOSPI")
+        marcap_col = next((c for c in ["Marcap", "MarketCap"] if c in listing.columns), None)
+        if marcap_col:
+            valid_codes = set(
+                listing.loc[listing[marcap_col] >= MIN_MARCAP, "Code"].tolist()
+            )
+            before = len(universe_codes)
+            universe_codes = {c: s for c, s in universe_codes.items() if c in valid_codes}
+            print(f"  시총 {MIN_MARCAP // 100_000_000:,}억↑ 필터: {before} → {len(universe_codes)}개\n")
+    except Exception:
+        pass
+
+    code_to_name: dict[str, str] = {}
+    try:
+        listing_all = fdr.StockListing("KOSPI")
+        code_to_name = dict(zip(listing_all["Code"], listing_all["Name"]))
+    except Exception:
+        pass
+
+    # ── 2단계: 5일 수익률·거래량 배율 병렬 계산 ──────────────
+    print("[2단계] 5일 수익률·거래량 배율 계산 중...")
     start_date = (date.today() - timedelta(days=40)).strftime("%Y-%m-%d")
 
     def _fetch(code: str) -> tuple[str, dict | None]:
@@ -110,6 +205,7 @@ def main():
         except Exception:
             return code, None
 
+    codes = list(universe_codes.keys())
     stock_data: dict[str, dict] = {}
     done = 0
     total = len(codes)
@@ -117,7 +213,7 @@ def main():
         futures = {ex.submit(_fetch, c): c for c in codes}
         for f in as_completed(futures):
             done += 1
-            if done % 50 == 0 or done == total:
+            if done % 20 == 0 or done == total:
                 print(f"\r  진행: {done}/{total}", end="", flush=True)
             code, data = f.result()
             if data:
@@ -125,37 +221,18 @@ def main():
     print(f"\n  데이터 수신: {len(stock_data)}개\n")
 
     if not stock_data:
-        send_message(f"[{ts}] [V3] 가격 데이터 없음. FDR 연결 확인 필요.")
+        send_message(f"[{ts}] [V3] 가격 데이터 없음.")
         return
 
-    # ── 섹터별 평균 수익률 → 주도 섹터 선정 ──────────────────
-    df_all = pd.DataFrame([
-        {"stock_code": c, "sector": code_to_sector[c], **stock_data[c]}
-        for c in stock_data if c in code_to_sector
+    # ── 3단계: 복합 점수 산출 ─────────────────────────────────
+    print("[3단계] 복합 점수 산출...")
+    df_univ = pd.DataFrame([
+        {"stock_code": c, "sector": universe_codes[c], **stock_data[c]}
+        for c in stock_data if c in universe_codes
     ])
 
-    sector_avg = (
-        df_all.groupby("sector")["return_5d"]
-        .agg(["mean", "count"])
-        .query("count >= 3")
-        .sort_values("mean", ascending=False)
-    )
-    if sector_avg.empty:
-        send_message(f"[{ts}] [V3] 유효한 섹터 없음.")
-        return
-
-    top_sectors = sector_avg.head(TOP_N_SECTORS).index.tolist()
-    print("[주도 섹터]")
-    for s in top_sectors:
-        print(f"  {s}: {sector_avg.loc[s, 'mean']:+.2f}% ({int(sector_avg.loc[s, 'count'])}개)")
-    print()
-
-    # ── 2단계: 복합 점수 산출 ─────────────────────────────────
-    print("[2단계] 복합 점수 산출...")
-    universe = df_all[df_all["sector"].isin(top_sectors)].copy()
-
-    universe["momentum_score"] = universe["return_5d"].rank(pct=True) * 100
-    universe["volume_score"]   = (universe["volume_ratio"] / 5 * 100).clip(0, 100)
+    df_univ["momentum_score"] = df_univ["return_5d"].rank(pct=True) * 100
+    df_univ["volume_score"]   = (df_univ["volume_ratio"] / 5 * 100).clip(0, 100)
 
     try:
         from src.db.client import get_company_health
@@ -166,23 +243,23 @@ def main():
 
     health_map: dict[str, float] = {}
     bonus_map:  dict[str, float] = {}
-    for code in universe["stock_code"]:
+    for code in df_univ["stock_code"]:
         cached = get_company_health(code)
         health_map[code] = score_health(cached) if cached else 50.0
         recs = sentiment_map.get(code, [])
         label = _dominant_label(recs) if recs else None
         bonus_map[code] = 15.0 if label == "호재" else (-10.0 if label == "악재" else 0.0)
 
-    universe["health_score"] = universe["stock_code"].map(health_map)
-    universe["news_bonus"]   = universe["stock_code"].map(bonus_map)
-    universe["total_score"]  = (
-        universe["momentum_score"] * 0.35
-        + universe["volume_score"]  * 0.25
-        + universe["health_score"]  * 0.30
-        + universe["news_bonus"]    * 0.10
+    df_univ["health_score"] = df_univ["stock_code"].map(health_map)
+    df_univ["news_bonus"]   = df_univ["stock_code"].map(bonus_map)
+    df_univ["total_score"]  = (
+        df_univ["momentum_score"] * 0.35
+        + df_univ["volume_score"]  * 0.25
+        + df_univ["health_score"]  * 0.30
+        + df_univ["news_bonus"]    * 0.10
     ).round(1)
 
-    picks_raw = universe.sort_values("total_score", ascending=False).head(MAX_HOLD).to_dict("records")
+    picks_raw = df_univ.sort_values("total_score", ascending=False).head(MAX_HOLD).to_dict("records")
 
     print(f"\n[선정 종목] 상위 {len(picks_raw)}개")
     for p in picks_raw:
@@ -227,17 +304,21 @@ def main():
     SEP   = "─" * 8
     lines = [f"[{ts}] [V3] 섹터 주도주 후보 {len(picks_raw)}개", ""]
 
-    lines.append(f"【 주도 섹터 】 {' / '.join(top_sectors)}")
+    sector_summary = "  /  ".join(
+        f"{s['name']} ({s['change_pct']:+.2f}%)" for s in top_sectors
+    )
+    lines.append(f"【 주도 섹터 】")
+    lines.append(sector_summary)
     lines.append("")
     lines.append("【 오늘의 후보 종목 】")
     lines.append("종목 | RSI | 5일수익률 | 거래량 | 점수")
     lines.append(SEP)
     for p in picks_raw:
-        name    = code_to_name.get(p["stock_code"], p["stock_code"])
-        rsi     = rsi_map.get(p["stock_code"])
-        rsi_str = f"{rsi:.1f}" if rsi is not None else "N/A"
-        signal  = " ◀매수" if rsi is not None and rsi < 35 else ""
-        recs    = sentiment_map.get(p["stock_code"], [])
+        name     = code_to_name.get(p["stock_code"], p["stock_code"])
+        rsi      = rsi_map.get(p["stock_code"])
+        rsi_str  = f"{rsi:.1f}" if rsi is not None else "N/A"
+        signal   = " ◀매수" if rsi is not None and rsi < 35 else ""
+        recs     = sentiment_map.get(p["stock_code"], [])
         sent_tag = f" {_SENT_EMOJI[_dominant_label(recs)]}" if recs else ""
         lines.append(
             f"{name}{sent_tag}{signal} | {rsi_str} | "
