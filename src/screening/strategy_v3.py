@@ -43,7 +43,7 @@ def get_sector_rankings(top_n: int = 3) -> list[dict]:
             continue
         try:
             pct = float(
-                tds[2].get_text(strip=True)
+                tds[1].get_text(strip=True)
                 .replace("+", "").replace("%", "").replace(",", "")
             )
         except ValueError:
