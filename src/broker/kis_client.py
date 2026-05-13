@@ -194,6 +194,56 @@ class KISClient:
         prices = [float(item["stck_clpr"]) for item in reversed(items) if item.get("stck_clpr")]
         return prices[-count:]
 
+    def get_daily_ohlcv(self, stock_code: str, count: int = 60) -> list[dict]:
+        """최근 N 거래일 OHLCV. [{high, low, close, volume}] 오래된 순. 시세는 항상 실서버."""
+        from datetime import datetime, timedelta
+        end   = datetime.now().strftime("%Y%m%d")
+        start = (datetime.now() - timedelta(days=count * 2)).strftime("%Y%m%d")
+        for attempt in range(2):
+            try:
+                resp = requests.get(
+                    f"{REAL_URL}/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice",
+                    headers={
+                        "authorization": f"Bearer {self._get_token()}",
+                        "appkey": self.app_key,
+                        "appsecret": self.app_secret,
+                        "tr_id": "FHKST03010100",
+                        "custtype": "P",
+                    },
+                    params={
+                        "FID_COND_MRKT_DIV_CODE": "J",
+                        "FID_INPUT_ISCD": stock_code,
+                        "FID_INPUT_DATE_1": start,
+                        "FID_INPUT_DATE_2": end,
+                        "FID_PERIOD_DIV_CODE": "D",
+                        "FID_ORG_ADJ_PRC": "1",
+                    },
+                    timeout=30,
+                    verify=False,
+                )
+                break
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
+                if attempt == 1:
+                    raise
+                time.sleep(2)
+        resp.raise_for_status()
+        data = resp.json()
+        if data.get("rt_cd") != "0":
+            raise ValueError(f"KIS 오류: {data.get('msg1')}")
+        items = data.get("output2", [])
+        result = []
+        for item in reversed(items):
+            c = item.get("stck_clpr")
+            if not c:
+                continue
+            result.append({
+                "close":  float(c),
+                "high":   float(item.get("stck_hgpr") or c),
+                "low":    float(item.get("stck_lwpr") or c),
+                "volume": int(item.get("acml_vol") or 0),
+            })
+        return result[-count:]
+
     # ── 잔고 ──────────────────────────────────────────────
 
     def get_holdings(self) -> list[dict]:

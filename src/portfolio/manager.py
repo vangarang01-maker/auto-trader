@@ -1,7 +1,7 @@
 import json
 import math
 import time
-from datetime import datetime
+from datetime import datetime, date
 from pathlib import Path
 
 import pandas as pd
@@ -9,11 +9,14 @@ import pandas as pd
 from src.broker.kis_client import KISClient
 from src.indicators.rsi import calc_rsi
 
-STATE_FILE  = "portfolio.json"
-TOTAL       = 10_000_000  # 총 투자금액
-MAX_HOLD    = 5           # 보유 종목 수
-TAKE_PROFIT = 0.15        # 매수 평단가 대비 +15% 익절
-STOP_LOSS   = 0.07        # 매수 평단가 대비 -7% 손절
+STATE_FILE         = "portfolio.json"
+TOTAL              = 10_000_000  # 총 투자금액
+MAX_HOLD           = 5           # 보유 종목 수
+TAKE_PROFIT        = 0.15        # ATR 데이터 없을 때 기본 익절 (+15%)
+STOP_LOSS          = 0.07        # ATR 데이터 없을 때 기본 손절 (-7%)
+MAX_HOLD_DAYS      = 30          # 횡보 제한: 30일 내 최소 5% 미달성 시 청산
+STAGNATION_GOAL    = 0.05        # 횡보 제한 기준 수익률
+VOL_SURGE_RATIO    = 1.5         # 거래량 급증 기준 (20일 평균 대비)
 
 
 class PortfolioManager:
@@ -26,9 +29,11 @@ class PortfolioManager:
 
     def _load_state(self) -> dict:
         try:
-            return json.loads(Path(STATE_FILE).read_text())
+            state = json.loads(Path(STATE_FILE).read_text())
+            state.setdefault("buy_dates", {})
+            return state
         except (FileNotFoundError, json.JSONDecodeError):
-            return {"last_picks": [], "last_run": None}
+            return {"last_picks": [], "last_run": None, "buy_dates": {}}
 
     def _save_state(self):
         Path(STATE_FILE).write_text(json.dumps(self._state, ensure_ascii=False, indent=2))
@@ -56,52 +61,78 @@ class PortfolioManager:
         old_codes = set(self._state.get("last_picks", []))
         return new_codes != old_codes
 
-    # ── RSI + 현재가 조회 ──────────────────────────────────
+    # ── 시장 데이터 조회 ────────────────────────────────────
 
-    def _fetch_rsi_map(self, codes: set) -> tuple[dict, dict]:
-        """RSI와 마지막 종가를 함께 반환. (rsi_map, last_price_map)"""
-        rsi_map = {}
-        last_price_map = {}
+    def _fetch_market_data(self, codes: set) -> tuple[dict, dict, dict, dict]:
+        """RSI, 마지막 종가, ATR, 거래량 반환.
+
+        Returns:
+            rsi_map   : {code: float}
+            price_map : {code: float}  — 최근 종가
+            atr_map   : {code: float}  — ATR-14
+            vol_map   : {code: (today_vol, avg_20d_vol)}
+        """
+        from src.indicators.atr import calc_atr
+        rsi_map   = {}
+        price_map = {}
+        atr_map   = {}
+        vol_map   = {}
         for code in codes:
             try:
-                prices = self.kis.get_daily_prices(code)
-                rsi_map[code] = calc_rsi(prices)
-                if prices:
-                    last_price_map[code] = prices[-1]
+                ohlcv = self.kis.get_daily_ohlcv(code, count=60)
+                prices = [d["close"] for d in ohlcv]
+                rsi_map[code]   = calc_rsi(prices)
+                price_map[code] = prices[-1] if prices else 0.0
+                atr_map[code]   = calc_atr(ohlcv)
+                if len(ohlcv) >= 21:
+                    avg_20 = sum(d["volume"] for d in ohlcv[-21:-1]) / 20
+                    vol_map[code] = (ohlcv[-1]["volume"], avg_20)
             except Exception as e:
-                print(f"  [RSI 오류] {code}: {e}")
+                print(f"  [시장데이터 오류] {code}: {e}")
                 rsi_map[code] = float("nan")
-        return rsi_map, last_price_map
+                atr_map[code] = float("nan")
+        return rsi_map, price_map, atr_map, vol_map
 
     # ── 리밸런싱 ───────────────────────────────────────────
 
     def rebalance(self, picks: list[dict], bear_market: bool = False):
-        """매도: 후보 제외 OR RSI ≥ 75 OR 익절(+15%) OR 손절(-7%)
-        매수: 후보 포함 AND RSI < 35 (bear_market=True 시 매수 전면 차단)
+        """매도: 후보 제외 | RSI ≥ 75 | 익절(ATR기반) | 손절(ATR기반) | 횡보 제한(30일)
+        매수: RSI < 35 AND 거래량 급증(1.5x) | bear_market=True 시 전면 차단
         """
-        new_codes = {p["stock_code"] for p in picks}
+        new_codes      = {p["stock_code"] for p in picks}
         pick_price_map = {p["stock_code"]: p["current_price"] for p in picks}
         name_map       = {p["stock_code"]: p["corp_name"] for p in picks}
 
         if self.dry_run:
-            holdings  = {}
+            holdings   = {}
             avg_prices = {}
             print("  [DRY-RUN] 잔고 조회 생략 (보유 없음으로 가정)")
         else:
             try:
-                raw = self.kis.get_holdings()
+                raw        = self.kis.get_holdings()
                 holdings   = {h["stock_code"]: h["qty"]       for h in raw}
                 avg_prices = {h["stock_code"]: h["avg_price"] for h in raw}
             except Exception as e:
                 print(f"  [오류] 잔고 조회 실패: {e}")
                 return
 
-        # RSI + 마지막 종가 (보유 + 후보 전체)
-        print("  RSI 계산 중...")
-        rsi_map, last_price_map = self._fetch_rsi_map(set(holdings.keys()) | new_codes)
+        print("  시장 데이터(OHLCV·RSI·ATR) 수집 중...")
+        rsi_map, last_price_map, atr_map, vol_map = self._fetch_market_data(
+            set(holdings.keys()) | new_codes
+        )
 
-        # 현재가: picks의 실시간 가격 우선, 없으면 일봉 마지막 종가
         full_price_map = {**last_price_map, **pick_price_map}
+        buy_dates      = self._state.setdefault("buy_dates", {})
+
+        def _atr_targets(avg_p: float, code: str) -> tuple[float, float]:
+            """ATR 기반 익절/손절 비율. 데이터 없으면 기본값."""
+            atr = atr_map.get(code, float("nan"))
+            if atr == atr and atr > 0 and avg_p > 0:
+                atr_pct = atr / avg_p
+                tp = max(TAKE_PROFIT, min(0.30, 2.5 * atr_pct))
+                sl = max(0.04,        min(STOP_LOSS, 1.5 * atr_pct))
+                return round(tp, 4), round(sl, 4)
+            return TAKE_PROFIT, STOP_LOSS
 
         # ── 매도 ──────────────────────────────────────────
         for code, qty in holdings.items():
@@ -110,20 +141,32 @@ class PortfolioManager:
             avg_p   = avg_prices.get(code, 0)
             cur_p   = full_price_map.get(code, 0)
             name    = name_map.get(code, code)
+            tp, sl  = _atr_targets(avg_p, code)
 
             if code not in new_codes:
                 reason = "후보 제외"
             elif rsi == rsi and rsi >= 75:
                 reason = f"RSI={rsi_str} ≥ 75"
-            elif avg_p > 0 and cur_p > 0 and cur_p >= avg_p * (1 + TAKE_PROFIT):
-                reason = f"익절 +{(cur_p / avg_p - 1) * 100:.1f}%"
-            elif avg_p > 0 and cur_p > 0 and cur_p <= avg_p * (1 - STOP_LOSS):
-                reason = f"손절 {(cur_p / avg_p - 1) * 100:.1f}%"
+            elif avg_p > 0 and cur_p > 0 and cur_p >= avg_p * (1 + tp):
+                reason = f"익절 +{(cur_p/avg_p-1)*100:.1f}%  (ATR목표 +{tp*100:.1f}%)"
+            elif avg_p > 0 and cur_p > 0 and cur_p <= avg_p * (1 - sl):
+                reason = f"손절 {(cur_p/avg_p-1)*100:.1f}%  (ATR손절 -{sl*100:.1f}%)"
             else:
-                tp_str = f"{int(avg_p * (1 + TAKE_PROFIT)):,}" if avg_p else "-"
-                sl_str = f"{int(avg_p * (1 - STOP_LOSS)):,}"  if avg_p else "-"
-                print(f"  [홀드] {name}({code}) RSI={rsi_str}  익절={tp_str}원  손절={sl_str}원")
-                continue
+                # 횡보 제한 체크
+                buy_date_str = buy_dates.get(code)
+                stagnant = False
+                if buy_date_str and avg_p > 0 and cur_p > 0:
+                    days_held = (date.today() - date.fromisoformat(buy_date_str)).days
+                    progress  = cur_p / avg_p - 1
+                    if days_held > MAX_HOLD_DAYS and progress < STAGNATION_GOAL:
+                        reason   = f"횡보 제한 ({days_held}일, {progress*100:+.1f}%)"
+                        stagnant = True
+                if not stagnant:
+                    tp_price = f"{int(avg_p*(1+tp)):,}" if avg_p else "-"
+                    sl_price = f"{int(avg_p*(1-sl)):,}"  if avg_p else "-"
+                    days_str = f"  보유={( (date.today()-date.fromisoformat(buy_dates[code])).days if buy_dates.get(code) else '?')}일" if buy_dates.get(code) else ""
+                    print(f"  [홀드] {name}({code}) RSI={rsi_str}  익절={tp_price}원  손절={sl_price}원{days_str}")
+                    continue
 
             if self.dry_run:
                 print(f"  [DRY-RUN 매도] {name}({code}) {qty}주  ({reason})")
@@ -131,11 +174,12 @@ class PortfolioManager:
                 print(f"  [매도] {name}({code}) {qty}주  ({reason})")
                 try:
                     self.kis.place_order(code, "sell", qty)
+                    buy_dates.pop(code, None)
                 except Exception as e:
                     print(f"  [오류] 매도 실패 ({code}): {e}")
                 time.sleep(0.5)
 
-        # ── 매수 (미보유 + RSI < 35) ──────────────────────
+        # ── 매수 ──────────────────────────────────────────
         if bear_market:
             print("  [약세장] 신규 매수 전면 차단 (KOSPI < 200MA)")
             self._state["last_picks"] = list(new_codes)
@@ -155,6 +199,13 @@ class PortfolioManager:
                 print(f"  [대기] {p['corp_name']}({code}) RSI={rsi_str}  (매수 신호 없음, 기준 < 35)")
                 continue
 
+            # 거래량 급증 확인 (전일 거래량 > 20일 평균 × 1.5)
+            today_v, avg_v = vol_map.get(code, (0, 0))
+            if avg_v > 0 and today_v < avg_v * VOL_SURGE_RATIO:
+                vol_ratio = today_v / avg_v
+                print(f"  [대기] {p['corp_name']}({code}) RSI={rsi_str}  거래량={vol_ratio:.1f}x  (기준 {VOL_SURGE_RATIO}x 미달)")
+                continue
+
             price = pick_price_map.get(code)
             if not price or price <= 0:
                 print(f"  [스킵] {p['corp_name']}({code}) 가격 없음")
@@ -164,17 +215,20 @@ class PortfolioManager:
                 print(f"  [스킵] {p['corp_name']}({code}) 예산 부족 (주가 {price:,}원)")
                 continue
 
-            tp_price = int(price * (1 + TAKE_PROFIT))
-            sl_price = int(price * (1 - STOP_LOSS))
+            tp, sl   = _atr_targets(price, code)
+            tp_price = int(price * (1 + tp))
+            sl_price = int(price * (1 - sl))
+            vol_str  = f"  거래량={today_v/avg_v:.1f}x" if avg_v > 0 else ""
 
             if self.dry_run:
-                print(f"  [DRY-RUN 매수] {p['corp_name']}({code}) RSI={rsi_str}  {qty}주 × {price:,}원"
-                      f"  → 익절 {tp_price:,}원  손절 {sl_price:,}원")
+                print(f"  [DRY-RUN 매수] {p['corp_name']}({code}) RSI={rsi_str}{vol_str}  {qty}주 × {price:,}원"
+                      f"  → 익절 {tp_price:,}원(+{tp*100:.0f}%)  손절 {sl_price:,}원(-{sl*100:.0f}%)")
             else:
-                print(f"  [매수] {p['corp_name']}({code}) RSI={rsi_str}  {qty}주 × {price:,}원"
-                      f"  → 익절 {tp_price:,}원  손절 {sl_price:,}원")
+                print(f"  [매수] {p['corp_name']}({code}) RSI={rsi_str}{vol_str}  {qty}주 × {price:,}원"
+                      f"  → 익절 {tp_price:,}원(+{tp*100:.0f}%)  손절 {sl_price:,}원(-{sl*100:.0f}%)")
                 try:
                     self.kis.place_order(code, "buy", qty)
+                    buy_dates[code] = date.today().isoformat()
                 except Exception as e:
                     print(f"  [오류] 매수 실패 ({code}): {e}")
                 time.sleep(0.5)
