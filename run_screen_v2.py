@@ -230,6 +230,27 @@ def main():
         print(f"  [외국인 수급 오류] {e} — 생략")
     print()
 
+    # 실적 발표 리스크 체크
+    print("[실적 리스크] 잠정실적 공시 확인...")
+    EARNINGS_PENALTY = 10
+    earnings_tags: dict[str, str] = {}
+    try:
+        from src.indicators.earnings_calendar import get_earnings_risk
+        for p in picks:
+            er = get_earnings_risk(screener.client.dart, p.get("corp_code", ""))
+            earnings_tags[p["stock_code"]] = er["label"]
+            if er["risk"]:
+                p["health_score"] = round(
+                    max(0.0, (p.get("health_score") or 0) - EARNINGS_PENALTY), 1
+                )
+                print(f"  [실적공시] {p['corp_name']} -{EARNINGS_PENALTY}점  ({er['detail']})")
+            else:
+                print(f"  [공시없음] {p['corp_name']}")
+        picks.sort(key=lambda x: x.get("health_score") or 0, reverse=True)
+    except Exception as e:
+        print(f"  [실적 리스크 오류] {e} — 생략")
+    print()
+
     sort_by = "건강검진 점수" if picks[0].get("health_score") is not None else "배당수익률"
     print(f"\n[선정 종목] {sort_by} 기준 상위 {len(picks)}개")
     for p in picks:
@@ -282,9 +303,10 @@ def main():
         news_tag  = " 📰" if p["stock_code"] in news_codes_set else ""
         sent_records = sentiment_map.get(p["stock_code"], [])
         sent_tag  = f" {_SENT_EMOJI[_dominant_label(sent_records)]}" if sent_records else ""
-        frgn_lbl  = foreign_tags.get(p["stock_code"], "")
-        frgn_tag  = " 📈" if frgn_lbl == "외국인순매수" else (" 📉" if frgn_lbl == "외국인대량순매도" else "")
-        lines.append(f"{p['corp_name']}{sent_tag}{signal}{news_tag}{frgn_tag} | {rsi_str} | {div_str} | {hs_str}")
+        frgn_lbl   = foreign_tags.get(p["stock_code"], "")
+        frgn_tag   = " 📈" if frgn_lbl == "외국인순매수" else (" 📉" if frgn_lbl == "외국인대량순매도" else "")
+        earn_tag   = " ⚡" if earnings_tags.get(p["stock_code"]) == "실적공시" else ""
+        lines.append(f"{p['corp_name']}{sent_tag}{signal}{news_tag}{frgn_tag}{earn_tag} | {rsi_str} | {div_str} | {hs_str}")
 
     # 섹션 2: 시장 테마
     lines.append("")
