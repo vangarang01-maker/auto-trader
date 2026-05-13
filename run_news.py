@@ -5,17 +5,18 @@ DB 저장:    market_news 테이블 (날짜 기준 upsert)
 로컬 캐시:  news.json (로컬 개발용 fallback)
 """
 import json
-from datetime import date, datetime
+from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 
 from src.news.market_news import get_market_news
 from src.notify.ai_summary import analyze_market_themes, analyze_news_sentiment
+from src.notify.telegram import send_message
 
 NEWS_FILE = "news.json"
 
 
 def main():
-    ts = datetime.now().strftime("%Y-%m-%d %H:%M")
+    ts = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M")
     today = str(date.today())
     print(f"\n[{ts}] 시장 뉴스 크롤링 시작")
     print("=" * 50)
@@ -74,6 +75,19 @@ def main():
     }
     Path(NEWS_FILE).write_text(json.dumps(data, ensure_ascii=False, indent=2))
 
+    # 텔레그램 완료 알림
+    top3 = "\n".join(f"• {h}" for h in headlines[:3]) if headlines else "(없음)"
+    send_message(
+        f"[{ts}] 뉴스 크롤링 완료\n"
+        f"헤드라인 {len(headlines)}건 / 관련종목 {len(stock_codes)}개\n\n"
+        f"{top3}"
+    )
+
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        ts = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M")
+        send_message(f"[{ts}] 뉴스 크롤링 실패\n\n{type(e).__name__}: {e}")
+        raise
