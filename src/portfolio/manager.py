@@ -75,9 +75,9 @@ class PortfolioManager:
 
     # ── 리밸런싱 ───────────────────────────────────────────
 
-    def rebalance(self, picks: list[dict]):
+    def rebalance(self, picks: list[dict], bear_market: bool = False):
         """매도: 후보 제외 OR RSI ≥ 75 OR 익절(+15%) OR 손절(-7%)
-        매수: 후보 포함 AND RSI < 35
+        매수: 후보 포함 AND RSI < 35 (bear_market=True 시 매수 전면 차단)
         """
         new_codes = {p["stock_code"] for p in picks}
         pick_price_map = {p["stock_code"]: p["current_price"] for p in picks}
@@ -136,6 +136,13 @@ class PortfolioManager:
                 time.sleep(0.5)
 
         # ── 매수 (미보유 + RSI < 35) ──────────────────────
+        if bear_market:
+            print("  [약세장] 신규 매수 전면 차단 (KOSPI < 200MA)")
+            self._state["last_picks"] = list(new_codes)
+            self._state["last_run"]   = datetime.now().isoformat()
+            self._save_state()
+            return
+
         budget_per = TOTAL // MAX_HOLD
         for p in picks:
             code = p["stock_code"]

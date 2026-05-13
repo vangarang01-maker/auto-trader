@@ -7,9 +7,10 @@
   점수 내림차순 상위 MAX_HOLD개 → 리밸런싱
 """
 import json
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
+from src.indicators.market_regime import get_market_regime
 from src.portfolio.manager import PortfolioManager
 
 PICKS_V1_FILE = "picks_v1.json"
@@ -56,10 +57,25 @@ def _merge_picks(v1: list[dict], v2: list[dict]) -> list[dict]:
 
 
 def main():
-    ts = datetime.now().strftime("%Y-%m-%d %H:%M")
+    ts = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M")
     print(f"\n{'='*50}")
     print(f"[{ts}] RSI 매매 신호 점검 (V1+V2 통합)")
     print(f"{'='*50}\n")
+
+    regime_info = get_market_regime()
+    regime      = regime_info["regime"]
+    bear_market = (regime == "bear")
+
+    if regime_info["kospi"]:
+        regime_emoji = "🐂" if not bear_market else "🐻"
+        print(f"  {regime_emoji} 시장 국면: {'강세장' if not bear_market else '약세장'}"
+              f"  KOSPI={regime_info['kospi']:,.2f}"
+              f"  MA200={regime_info['ma200']:,.2f}"
+              f"  ({regime_info['pct_diff']:+.2f}%)")
+    else:
+        print(f"  [시장 국면] 데이터 없음 (unknown) — 매수 허용으로 처리")
+        bear_market = False
+    print()
 
     v1_picks = _load_picks(PICKS_V1_FILE)
     v2_picks = _load_picks(PICKS_V2_FILE)
@@ -91,7 +107,7 @@ def main():
         return
 
     print(f"\n  최종 후보 {len(picks)}개 → 리밸런싱 시작")
-    pm.rebalance(picks)
+    pm.rebalance(picks, bear_market=bear_market)
     print("\n완료.")
 
 
