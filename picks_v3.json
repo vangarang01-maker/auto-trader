@@ -1,37 +1,47 @@
 [
   {
-    "stock_code": "000270",
-    "corp_name": "기아",
-    "health_score": 52.7,
-    "article_count": 5,
-    "news_label": "호재"
+    "stock_code": "012200",
+    "corp_name": "계양전기",
+    "sector": "전체",
+    "return_5d": 81.52,
+    "volume_ratio": 11.79,
+    "health_score": 50.0,
+    "total_score": 74.9
   },
   {
-    "stock_code": "078930",
-    "corp_name": "GS",
+    "stock_code": "092200",
+    "corp_name": "디아이씨",
+    "sector": "전체",
+    "return_5d": 29.53,
+    "volume_ratio": 7.27,
     "health_score": 50.0,
-    "article_count": 5,
-    "news_label": "호재"
+    "total_score": 74.6
   },
   {
-    "stock_code": "000880",
-    "corp_name": "한화",
+    "stock_code": "005250",
+    "corp_name": "녹십자홀딩스",
+    "sector": "전체",
+    "return_5d": 20.71,
+    "volume_ratio": 13.02,
     "health_score": 50.0,
-    "article_count": 5,
-    "news_label": "호재"
+    "total_score": 74.0
   },
   {
-    "stock_code": "003550",
-    "corp_name": "LG",
+    "stock_code": "403550",
+    "corp_name": "쏘카",
+    "sector": "전체",
+    "return_5d": 18.86,
+    "volume_ratio": 6.27,
     "health_score": 50.0,
-    "article_count": 5,
-    "news_label": "호재"
+    "total_score": 73.6
   },
   {
-    "stock_code": "003490",
-    "corp_name": "대한항공",
+    "stock_code": "452260",
+    "corp_name": "한화갤러리아",
+    "sector": "전체",
+    "return_5d": 18.95,
+    "volume_ratio": 5.37,
     "health_score": 50.0,
-    "article_count": 5,
-    "news_label": "호재"
+    "total_score": 73.6
   }
 ]
