@@ -5,8 +5,8 @@
     "sector": "제약",
     "return_5d": 20.71,
     "volume_ratio": 13.02,
-    "health_score": 50.0,
-    "total_score": 74.0
+    "health_score": 30.0,
+    "total_score": 68.0
   },
   {
     "stock_code": "006280",
@@ -27,21 +27,21 @@
     "total_score": 59.9
   },
   {
+    "stock_code": "128940",
+    "corp_name": "한미약품",
+    "sector": "제약",
+    "return_5d": 2.42,
+    "volume_ratio": 1.6,
+    "health_score": 50.0,
+    "total_score": 51.2
+  },
+  {
     "stock_code": "000990",
     "corp_name": "DB하이텍",
     "sector": "반도체와반도체장비",
     "return_5d": 14.57,
     "volume_ratio": 1.23,
-    "health_score": 50.0,
-    "total_score": 54.2
-  },
-  {
-    "stock_code": "005930",
-    "corp_name": "삼성전자",
-    "sector": "반도체와반도체장비",
-    "return_5d": 6.77,
-    "volume_ratio": 1.35,
-    "health_score": 50.0,
-    "total_score": 52.9
+    "health_score": 11.8,
+    "total_score": 42.7
   }
 ]
