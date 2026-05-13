@@ -15,6 +15,9 @@ _HEADERS = {"User-Agent": "Mozilla/5.0"}
 
 # ── 네이버 금융 업종 ──────────────────────────────────────────
 
+_SECTOR_BLACKLIST = {"기타"}
+
+
 def get_sector_rankings(top_n: int = 3) -> list[dict]:
     """네이버 금융 업종 시세에서 당일 등락률 순 섹터 목록 반환."""
     r = requests.get(
@@ -32,6 +35,9 @@ def get_sector_rankings(top_n: int = 3) -> list[dict]:
         a = tds[0].select_one("a")
         if not a:
             continue
+        name = a.get_text(strip=True)
+        if name in _SECTOR_BLACKLIST:
+            continue
         m = re.search(r"no=(\d+)", a.get("href", ""))
         if not m:
             continue
@@ -42,7 +48,7 @@ def get_sector_rankings(top_n: int = 3) -> list[dict]:
             )
         except ValueError:
             continue
-        sectors.append({"name": a.get_text(strip=True), "no": m.group(1), "change_pct": pct})
+        sectors.append({"name": name, "no": m.group(1), "change_pct": pct})
 
     return sorted(sectors, key=lambda x: x["change_pct"], reverse=True)[:top_n]
 
