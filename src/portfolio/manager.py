@@ -187,7 +187,17 @@ class PortfolioManager:
             self._save_state()
             return
 
-        budget_per = TOTAL // MAX_HOLD
+        # 건강검진 점수 비례 예산 배분 (최소: 균등의 50%, 최대: 균등의 150%)
+        scores     = [max(1.0, p.get("health_score") or 50.0) for p in picks]
+        total_sc   = sum(scores)
+        base_per   = TOTAL // MAX_HOLD
+        budgets    = {
+            p["stock_code"]: int(
+                max(base_per * 0.5, min(base_per * 1.5, TOTAL * sc / total_sc))
+            )
+            for p, sc in zip(picks, scores)
+        }
+
         for p in picks:
             code = p["stock_code"]
             if code in holdings:
@@ -210,7 +220,7 @@ class PortfolioManager:
             if not price or price <= 0:
                 print(f"  [스킵] {p['corp_name']}({code}) 가격 없음")
                 continue
-            qty = math.floor(budget_per / price)
+            qty = math.floor(budgets[code] / price)
             if qty <= 0:
                 print(f"  [스킵] {p['corp_name']}({code}) 예산 부족 (주가 {price:,}원)")
                 continue
@@ -219,12 +229,13 @@ class PortfolioManager:
             tp_price = int(price * (1 + tp))
             sl_price = int(price * (1 - sl))
             vol_str  = f"  거래량={today_v/avg_v:.1f}x" if avg_v > 0 else ""
+            bgt_str  = f"{budgets[code]//10000:.0f}만원"
 
             if self.dry_run:
-                print(f"  [DRY-RUN 매수] {p['corp_name']}({code}) RSI={rsi_str}{vol_str}  {qty}주 × {price:,}원"
+                print(f"  [DRY-RUN 매수] {p['corp_name']}({code}) RSI={rsi_str}{vol_str}  예산={bgt_str}  {qty}주 × {price:,}원"
                       f"  → 익절 {tp_price:,}원(+{tp*100:.0f}%)  손절 {sl_price:,}원(-{sl*100:.0f}%)")
             else:
-                print(f"  [매수] {p['corp_name']}({code}) RSI={rsi_str}{vol_str}  {qty}주 × {price:,}원"
+                print(f"  [매수] {p['corp_name']}({code}) RSI={rsi_str}{vol_str}  예산={bgt_str}  {qty}주 × {price:,}원"
                       f"  → 익절 {tp_price:,}원(+{tp*100:.0f}%)  손절 {sl_price:,}원(-{sl*100:.0f}%)")
                 try:
                     self.kis.place_order(code, "buy", qty)
