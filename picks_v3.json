@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "034220",
-    "corp_name": "LG디스플레이",
-    "sector": "디스플레이패널",
-    "return_5d": 11.05,
-    "volume_ratio": 5.45,
+    "stock_code": "039130",
+    "corp_name": "하나투어",
+    "sector": "호텔,레스토랑,레저",
+    "return_5d": -1.95,
+    "volume_ratio": 1.01,
     "health_score": 50.0,
-    "total_score": 65.3
+    "total_score": 55.0
   },
   {
-    "stock_code": "092200",
-    "corp_name": "디아이씨",
-    "sector": "자동차부품",
-    "return_5d": 29.53,
-    "volume_ratio": 7.27,
-    "health_score": 22.3,
-    "total_score": 64.1
+    "stock_code": "034230",
+    "corp_name": "파라다이스",
+    "sector": "호텔,레스토랑,레저",
+    "return_5d": -2.79,
+    "volume_ratio": 1.0,
+    "health_score": 50.0,
+    "total_score": 50.6
   },
   {
-    "stock_code": "012200",
-    "corp_name": "계양전기",
-    "sector": "자동차부품",
-    "return_5d": 81.52,
-    "volume_ratio": 11.79,
-    "health_score": 10.0,
-    "total_score": 63.0
+    "stock_code": "000080",
+    "corp_name": "하이트진로",
+    "sector": "음료",
+    "return_5d": -3.15,
+    "volume_ratio": 1.2,
+    "health_score": 50.0,
+    "total_score": 47.2
   },
   {
-    "stock_code": "012330",
-    "corp_name": "현대모비스",
-    "sector": "자동차부품",
-    "return_5d": 50.06,
-    "volume_ratio": 3.93,
-    "health_score": 27.5,
-    "total_score": 61.6
+    "stock_code": "114090",
+    "corp_name": "GKL",
+    "sector": "호텔,레스토랑,레저",
+    "return_5d": -4.59,
+    "volume_ratio": 1.17,
+    "health_score": 50.0,
+    "total_score": 42.7
   },
   {
-    "stock_code": "403550",
-    "corp_name": "쏘카",
-    "sector": "도로와철도운송",
-    "return_5d": 18.86,
-    "volume_ratio": 6.27,
-    "health_score": 17.9,
-    "total_score": 58.9
+    "stock_code": "035250",
+    "corp_name": "강원랜드",
+    "sector": "호텔,레스토랑,레저",
+    "return_5d": -4.63,
+    "volume_ratio": 1.04,
+    "health_score": 50.0,
+    "total_score": 37.7
   }
 ]
