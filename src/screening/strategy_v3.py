@@ -111,6 +111,57 @@ def fetch_stock_momentum(
     return result
 
 
+# ── 건강검진 ─────────────────────────────────────────────────
+
+def fetch_health_map(
+    codes: list[str],
+    code_to_name: dict[str, str],
+    kis,
+    workers: int = 8,
+) -> dict[str, float]:
+    """종목별 건강검진 점수. DB 캐시 우선, 없으면 KIS 조회 (PER/PBR/배당만)."""
+    from datetime import datetime, timezone
+
+    from src.db.client import get_company_health, save_company_health
+    from src.screening.health_check import score_health
+
+    def _score(code: str) -> tuple[str, float]:
+        cached = get_company_health(code)
+        if cached:
+            return code, score_health(cached)
+        try:
+            val = kis.get_stock_valuation(code)
+            metrics = {
+                "stock_code": code,
+                "corp_name":  code_to_name.get(code, code),
+                "per":        val.get("per"),
+                "pbr":        val.get("pbr"),
+                "div_yield":  val.get("div_yield"),
+                "roe":        None,
+                "roic":       None,
+                "op_margin":  None,
+                "debt_ratio": None,
+                "fetched_at": datetime.now(timezone.utc).isoformat(),
+            }
+            save_company_health(metrics)
+            return code, score_health(metrics)
+        except Exception:
+            return code, 50.0
+
+    result: dict[str, float] = {}
+    done, total = 0, len(codes)
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        futures = {ex.submit(_score, c): c for c in codes}
+        for f in as_completed(futures):
+            done += 1
+            if done % 20 == 0 or done == total:
+                print(f"\r  진행: {done}/{total}", end="", flush=True)
+            code, score = f.result()
+            result[code] = score
+    print()
+    return result
+
+
 # ── 복합 점수 ─────────────────────────────────────────────────
 
 def score_universe(

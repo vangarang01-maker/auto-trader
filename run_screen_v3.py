@@ -23,6 +23,7 @@ from src.screening.strategy_v3 import (
     get_sector_rankings,
     get_sector_stocks,
     fetch_stock_momentum,
+    fetch_health_map,
     score_universe,
 )
 
@@ -123,16 +124,10 @@ def main():
         return
 
     # ── 3단계: 복합 점수 산출 ─────────────────────────────────
+    print("[3단계] 건강검진 조회 중...")
+    health_map = fetch_health_map(list(stock_data.keys()), code_to_name, kis)
+    print(f"  건강검진 완료: {len(health_map)}개\n")
     print("[3단계] 복합 점수 산출...")
-
-    try:
-        from src.db.client import get_company_health
-        from src.screening.health_check import score_health
-        health_fn = lambda code: score_health(h) if (h := get_company_health(code)) else 50.0
-    except Exception:
-        health_fn = lambda code: 50.0
-
-    health_map    = {c: health_fn(c) for c in stock_data}
     news_bonus_map = {
         c: (15.0 if _dominant_label(recs) == "호재" else
             -10.0 if _dominant_label(recs) == "악재" else 0.0)
