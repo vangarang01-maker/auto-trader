@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "012200",
-    "corp_name": "계양전기",
-    "sector": "전체",
-    "return_5d": 81.52,
-    "volume_ratio": 11.79,
-    "health_score": 50.0,
-    "total_score": 74.9
-  },
-  {
-    "stock_code": "092200",
-    "corp_name": "디아이씨",
-    "sector": "전체",
-    "return_5d": 29.53,
-    "volume_ratio": 7.27,
-    "health_score": 50.0,
-    "total_score": 74.6
-  },
-  {
     "stock_code": "005250",
     "corp_name": "녹십자홀딩스",
-    "sector": "전체",
+    "sector": "제약",
     "return_5d": 20.71,
     "volume_ratio": 13.02,
     "health_score": 50.0,
     "total_score": 74.0
   },
   {
-    "stock_code": "403550",
-    "corp_name": "쏘카",
-    "sector": "전체",
-    "return_5d": 18.86,
-    "volume_ratio": 6.27,
+    "stock_code": "006280",
+    "corp_name": "녹십자",
+    "sector": "제약",
+    "return_5d": 1.77,
+    "volume_ratio": 3.61,
     "health_score": 50.0,
-    "total_score": 73.6
+    "total_score": 60.3
   },
   {
-    "stock_code": "452260",
-    "corp_name": "한화갤러리아",
-    "sector": "전체",
-    "return_5d": 18.95,
-    "volume_ratio": 5.37,
+    "stock_code": "000660",
+    "corp_name": "SK하이닉스",
+    "sector": "반도체와반도체장비",
+    "return_5d": 23.42,
+    "volume_ratio": 1.52,
+    "health_score": 52.7,
+    "total_score": 59.9
+  },
+  {
+    "stock_code": "000990",
+    "corp_name": "DB하이텍",
+    "sector": "반도체와반도체장비",
+    "return_5d": 14.57,
+    "volume_ratio": 1.23,
     "health_score": 50.0,
-    "total_score": 73.6
+    "total_score": 54.2
+  },
+  {
+    "stock_code": "005930",
+    "corp_name": "삼성전자",
+    "sector": "반도체와반도체장비",
+    "return_5d": 6.77,
+    "volume_ratio": 1.35,
+    "health_score": 50.0,
+    "total_score": 52.9
   }
 ]
