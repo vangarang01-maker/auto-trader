@@ -1,0 +1,37 @@
+[
+  {
+    "stock_code": "000270",
+    "corp_name": "기아",
+    "health_score": 52.7,
+    "article_count": 5,
+    "news_label": "호재"
+  },
+  {
+    "stock_code": "078930",
+    "corp_name": "GS",
+    "health_score": 50.0,
+    "article_count": 5,
+    "news_label": "호재"
+  },
+  {
+    "stock_code": "000880",
+    "corp_name": "한화",
+    "health_score": 50.0,
+    "article_count": 5,
+    "news_label": "호재"
+  },
+  {
+    "stock_code": "003550",
+    "corp_name": "LG",
+    "health_score": 50.0,
+    "article_count": 5,
+    "news_label": "호재"
+  },
+  {
+    "stock_code": "003490",
+    "corp_name": "대한항공",
+    "health_score": 50.0,
+    "article_count": 5,
+    "news_label": "호재"
+  }
+]
