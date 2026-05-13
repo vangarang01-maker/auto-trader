@@ -8,6 +8,8 @@ on:
 jobs:
   screen_v3:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
