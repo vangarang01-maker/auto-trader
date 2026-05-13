@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "005250",
-    "corp_name": "녹십자홀딩스",
-    "sector": "제약",
-    "return_5d": 20.71,
-    "volume_ratio": 13.02,
-    "health_score": 30.0,
-    "total_score": 68.0
-  },
-  {
-    "stock_code": "006280",
-    "corp_name": "녹십자",
-    "sector": "제약",
-    "return_5d": 1.77,
-    "volume_ratio": 3.61,
+    "stock_code": "034220",
+    "corp_name": "LG디스플레이",
+    "sector": "디스플레이패널",
+    "return_5d": 11.05,
+    "volume_ratio": 5.45,
     "health_score": 50.0,
-    "total_score": 60.3
+    "total_score": 65.3
   },
   {
-    "stock_code": "000660",
-    "corp_name": "SK하이닉스",
-    "sector": "반도체와반도체장비",
-    "return_5d": 23.42,
-    "volume_ratio": 1.52,
-    "health_score": 52.7,
-    "total_score": 59.9
+    "stock_code": "092200",
+    "corp_name": "디아이씨",
+    "sector": "자동차부품",
+    "return_5d": 29.53,
+    "volume_ratio": 7.27,
+    "health_score": 22.3,
+    "total_score": 64.1
   },
   {
-    "stock_code": "128940",
-    "corp_name": "한미약품",
-    "sector": "제약",
-    "return_5d": 2.42,
-    "volume_ratio": 1.6,
-    "health_score": 50.0,
-    "total_score": 51.2
+    "stock_code": "012200",
+    "corp_name": "계양전기",
+    "sector": "자동차부품",
+    "return_5d": 81.52,
+    "volume_ratio": 11.79,
+    "health_score": 10.0,
+    "total_score": 63.0
   },
   {
-    "stock_code": "000990",
-    "corp_name": "DB하이텍",
-    "sector": "반도체와반도체장비",
-    "return_5d": 14.57,
-    "volume_ratio": 1.23,
-    "health_score": 11.8,
-    "total_score": 42.7
+    "stock_code": "012330",
+    "corp_name": "현대모비스",
+    "sector": "자동차부품",
+    "return_5d": 50.06,
+    "volume_ratio": 3.93,
+    "health_score": 27.5,
+    "total_score": 61.6
+  },
+  {
+    "stock_code": "403550",
+    "corp_name": "쏘카",
+    "sector": "도로와철도운송",
+    "return_5d": 18.86,
+    "volume_ratio": 6.27,
+    "health_score": 17.9,
+    "total_score": 58.9
   }
 ]
