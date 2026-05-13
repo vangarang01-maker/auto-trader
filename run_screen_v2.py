@@ -209,6 +209,27 @@ def main():
         print("  선정 종목 없음. 종료.")
         return
 
+    # 외국인 수급 반영 (최종 선정 종목에만)
+    print("[외국인 수급] 순매수 동향 조회...")
+    foreign_tags: dict[str, str] = {}
+    try:
+        from src.indicators.foreign_flow import get_foreign_flow
+        for p in picks:
+            ff = get_foreign_flow(kis, p["stock_code"])
+            foreign_tags[p["stock_code"]] = ff["label"]
+            if ff["score_bonus"] != 0:
+                p["health_score"] = round(
+                    max(0.0, min(100.0, (p.get("health_score") or 0) + ff["score_bonus"])), 1
+                )
+                sign = "+" if ff["score_bonus"] > 0 else ""
+                print(f"  [{ff['label']}] {p['corp_name']} {sign}{ff['score_bonus']}점  (순매수: {ff['net_qty']:,}주)")
+            else:
+                print(f"  [{ff['label']}] {p['corp_name']}  (순매수: {ff['net_qty']:,}주)")
+        picks.sort(key=lambda x: x.get("health_score") or 0, reverse=True)
+    except Exception as e:
+        print(f"  [외국인 수급 오류] {e} — 생략")
+    print()
+
     sort_by = "건강검진 점수" if picks[0].get("health_score") is not None else "배당수익률"
     print(f"\n[선정 종목] {sort_by} 기준 상위 {len(picks)}개")
     for p in picks:
@@ -258,10 +279,12 @@ def main():
         signal  = " ◀매수" if rsi is not None and rsi < 35 else (" ▶매도" if rsi is not None and rsi >= 75 else "")
         hs_str  = f"{p['health_score']:.0f}점" if p.get("health_score") is not None else "-"
         div_str = f"{p.get('div_yield', '-')}%"
-        news_tag = " 📰" if p["stock_code"] in news_codes_set else ""
+        news_tag  = " 📰" if p["stock_code"] in news_codes_set else ""
         sent_records = sentiment_map.get(p["stock_code"], [])
-        sent_tag = f" {_SENT_EMOJI[_dominant_label(sent_records)]}" if sent_records else ""
-        lines.append(f"{p['corp_name']}{sent_tag}{signal}{news_tag} | {rsi_str} | {div_str} | {hs_str}")
+        sent_tag  = f" {_SENT_EMOJI[_dominant_label(sent_records)]}" if sent_records else ""
+        frgn_lbl  = foreign_tags.get(p["stock_code"], "")
+        frgn_tag  = " 📈" if frgn_lbl == "외국인순매수" else (" 📉" if frgn_lbl == "외국인대량순매도" else "")
+        lines.append(f"{p['corp_name']}{sent_tag}{signal}{news_tag}{frgn_tag} | {rsi_str} | {div_str} | {hs_str}")
 
     # 섹션 2: 시장 테마
     lines.append("")
