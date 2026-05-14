@@ -1,21 +1,21 @@
 [
   {
-    "stock_code": "066570",
-    "corp_name": "LG전자",
-    "sector": "전자제품",
-    "return_5d": 45.93,
-    "volume_ratio": 1.98,
-    "health_score": 50.0,
-    "total_score": 59.9
-  },
-  {
     "stock_code": "452260",
     "corp_name": "한화갤러리아",
     "sector": "백화점과일반상점",
     "return_5d": 13.22,
     "volume_ratio": 7.5,
-    "health_score": 20.0,
-    "total_score": 53.5
+    "health_score": 40.0,
+    "total_score": 59.5
+  },
+  {
+    "stock_code": "066570",
+    "corp_name": "LG전자",
+    "sector": "전자제품",
+    "return_5d": 45.93,
+    "volume_ratio": 1.98,
+    "health_score": 38.2,
+    "total_score": 56.4
   },
   {
     "stock_code": "066575",
@@ -27,21 +27,21 @@
     "total_score": 52.2
   },
   {
-    "stock_code": "009450",
-    "corp_name": "경동나비엔",
-    "sector": "가정용기기와용품",
-    "return_5d": 5.37,
-    "volume_ratio": 4.09,
-    "health_score": 50.0,
-    "total_score": 45.4
-  },
-  {
     "stock_code": "007070",
     "corp_name": "GS리테일",
     "sector": "백화점과일반상점",
     "return_5d": 22.29,
     "volume_ratio": 2.5,
-    "health_score": 20.0,
-    "total_score": 43.5
+    "health_score": 40.0,
+    "total_score": 49.5
+  },
+  {
+    "stock_code": "004170",
+    "corp_name": "신세계",
+    "sector": "백화점과일반상점",
+    "return_5d": 23.56,
+    "volume_ratio": 1.98,
+    "health_score": 39.6,
+    "total_score": 49.3
   }
 ]
