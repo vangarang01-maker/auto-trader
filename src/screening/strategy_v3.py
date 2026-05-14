@@ -134,7 +134,10 @@ def fetch_health_map(
     def _score(code: str) -> tuple[str, float]:
         cached = get_company_health(code)
         if cached:
-            return code, score_health(cached)
+            raw = score_health(cached)
+            # DART 데이터 없는 캐시(roe/roic/op_margin/debt_ratio 모두 None)면 정규화
+            dart_missing = all(cached.get(k) is None for k in ("roe", "roic", "op_margin", "debt_ratio"))
+            return code, min(100.0, round(raw * 2.0, 1)) if dart_missing else raw
         try:
             val = kis.get_stock_valuation(code)
             metrics = {
@@ -150,7 +153,9 @@ def fetch_health_map(
                 "fetched_at": datetime.now(timezone.utc).isoformat(),
             }
             save_company_health(metrics)
-            return code, score_health(metrics)
+            # V3는 DART 없이 per/pbr/div_yield만 사용 → 만점 50 → 100점으로 정규화
+            raw = score_health(metrics)
+            return code, min(100.0, round(raw * 2.0, 1))
         except Exception:
             return code, 50.0
 
