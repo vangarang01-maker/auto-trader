@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "039130",
-    "corp_name": "하나투어",
-    "sector": "호텔,레스토랑,레저",
-    "return_5d": -1.95,
-    "volume_ratio": 1.01,
+    "stock_code": "066570",
+    "corp_name": "LG전자",
+    "sector": "전자제품",
+    "return_5d": 45.93,
+    "volume_ratio": 1.98,
     "health_score": 50.0,
-    "total_score": 55.0
+    "total_score": 59.9
   },
   {
-    "stock_code": "034230",
-    "corp_name": "파라다이스",
-    "sector": "호텔,레스토랑,레저",
-    "return_5d": -2.79,
-    "volume_ratio": 1.0,
-    "health_score": 50.0,
-    "total_score": 50.6
+    "stock_code": "452260",
+    "corp_name": "한화갤러리아",
+    "sector": "백화점과일반상점",
+    "return_5d": 13.22,
+    "volume_ratio": 7.5,
+    "health_score": 20.0,
+    "total_score": 53.5
   },
   {
-    "stock_code": "000080",
-    "corp_name": "하이트진로",
-    "sector": "음료",
-    "return_5d": -3.15,
-    "volume_ratio": 1.2,
-    "health_score": 50.0,
-    "total_score": 47.2
+    "stock_code": "066575",
+    "corp_name": "LG전자우",
+    "sector": "전자제품",
+    "return_5d": 29.75,
+    "volume_ratio": 3.94,
+    "health_score": 0.0,
+    "total_score": 52.2
   },
   {
-    "stock_code": "114090",
-    "corp_name": "GKL",
-    "sector": "호텔,레스토랑,레저",
-    "return_5d": -4.59,
-    "volume_ratio": 1.17,
+    "stock_code": "009450",
+    "corp_name": "경동나비엔",
+    "sector": "가정용기기와용품",
+    "return_5d": 5.37,
+    "volume_ratio": 4.09,
     "health_score": 50.0,
-    "total_score": 42.7
+    "total_score": 45.4
   },
   {
-    "stock_code": "035250",
-    "corp_name": "강원랜드",
-    "sector": "호텔,레스토랑,레저",
-    "return_5d": -4.63,
-    "volume_ratio": 1.04,
-    "health_score": 50.0,
-    "total_score": 37.7
+    "stock_code": "007070",
+    "corp_name": "GS리테일",
+    "sector": "백화점과일반상점",
+    "return_5d": 22.29,
+    "volume_ratio": 2.5,
+    "health_score": 20.0,
+    "total_score": 43.5
   }
 ]
