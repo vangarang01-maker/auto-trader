@@ -28,8 +28,8 @@ Python 3.11+, GitHub Actions cron으로 동작.
   3단계 FDR 6개월 모멘텀 (상위 20%)
   건강검진 + 뉴스 감성 가중치(호재+10/악재-10) → 상위 5개 → picks_v2.json
 
-[07:35 KST] run_screen_v3.py   (V3 — 섹터 주도주, news.yml 완료 후)
-  0단계 네이버 금융 업종 시세 → 당일 상승 상위 3개 섹터
+[16:00 KST] run_screen_v3.py   (V3 — 섹터 주도주, 장 마감 후)
+  0단계 네이버 금융 업종 시세 → 당일 실제 상승 상위 3개 섹터
   1단계 해당 섹터 종목 수집 (네이버 업종 상세) → 시총 3,000억↑ 필터
   2단계 5일 수익률·거래량 배율 병렬 계산 (FDR, workers=8)
   3단계 복합 점수 (모멘텀 35% + 거래량 25% + 건강검진 30% + 뉴스감성 10%)
@@ -332,8 +332,8 @@ beautifulsoup4>=4.12.0
 | news.yml      | `25 22 * * 0-4` | 평일 07:25 | `run_news.py`      | `news.json` |
 | screen.yml    | `30 22 * * 0-4` | 평일 07:30 | `run_screen.py`    | `picks_v1.json` |
 | screen_v2.yml | `30 22 * * 0-4` | 평일 07:30 | `run_screen_v2.py` | `picks_v2.json` |
-| screen_v3.yml | `35 22 * * 0-4` | 평일 07:35 | `run_screen_v3.py` | `picks_v3.json` |
+| screen_v3.yml | `0 7 * * 1-5`   | 평일 16:00 | `run_screen_v3.py` | `picks_v3.json` |
 | trade.yml     | `0 0-6 * * 1-5` | 평일 09:00~15:00 | `run_trade.py` | 없음 |
 
 screen.yml·screen_v2.yml은 같은 시각에 독립 실행 (병렬 Actions job).
-screen_v3.yml은 news.yml 완료 후 5분 뒤 실행 (DB 뉴스 감성 데이터 사용).
+screen_v3.yml은 장 마감(15:30) 후 실행 — 당일 실제 섹터 등락률 반영, 결과는 다음날 trading에 사용.
