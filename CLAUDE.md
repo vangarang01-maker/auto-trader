@@ -9,9 +9,10 @@ Python 3.11+, GitHub Actions cron으로 동작.
 
 ```
 [07:25 KST] run_news.py
-  네이버 금융 + 한국경제 크롤링
+  KOSPI 시가총액 상위 100개 + 언급 종목 병렬 크롤링 (workers=10)
   → Gemini 테마 분석 → DB(market_news) + news.json 저장
   → Gemini 감성 분석 → DB(news_sentiment) 저장
+  → 텔레그램 완료/실패 알림
 
 [07:30 KST] run_screen.py   (V1 — 피터 린치)
   0단계 DB 뉴스 + 감성맵 로드
@@ -27,16 +28,24 @@ Python 3.11+, GitHub Actions cron으로 동작.
   3단계 FDR 6개월 모멘텀 (상위 20%)
   건강검진 + 뉴스 감성 가중치(호재+10/악재-10) → 상위 5개 → picks_v2.json
 
-[09:00~15:00 KST, 매 시간] run_trade.py   (V1+V2 통합 매매)
+[07:35 KST] run_screen_v3.py   (V3 — 섹터 주도주, news.yml 완료 후)
+  0단계 네이버 금융 업종 시세 → 당일 상승 상위 3개 섹터
+  1단계 해당 섹터 종목 수집 (네이버 업종 상세) → 시총 3,000억↑ 필터
+  2단계 5일 수익률·거래량 배율 병렬 계산 (FDR, workers=8)
+  3단계 복합 점수 (모멘텀 35% + 거래량 25% + 건강검진 30% + 뉴스감성 10%)
+  → 상위 5개 → RSI + AI요약 → 텔레그램 → picks_v3.json
+
+[09:00~15:00 KST, 매 시간] run_trade.py   (V1+V2+V3 통합 매매)
   picks_v1.json + picks_v2.json 로드
   공통 종목 → health_score + CROSS_BONUS(10점)
   adjusted_score 내림차순 상위 5개 → RSI 매매
 ```
 
-- `run_news.py`: 뉴스 크롤링 + Gemini 테마·감성 분석 → DB 저장
+- `run_news.py`: 뉴스 크롤링 + Gemini 테마·감성 분석 → DB 저장 (각 전략이 DB에서 읽음)
 - `run_screen.py`: V1 스크리닝 → picks_v1.json (health_score 포함)
 - `run_screen_v2.py`: V2 스크리닝 → picks_v2.json (health_score 포함). screen.yml과 동시 실행
-- `run_trade.py`: picks_v1.json + picks_v2.json 통합, CROSS_BONUS=10, adjusted_score 상위 5개 매매
+- `run_screen_v3.py`: V3 섹터 주도주 스크리닝 → picks_v3.json (health_score + total_score 포함)
+- `run_trade.py`: picks_v1+v2+v3.json 통합, CROSS_BONUS=10, adjusted_score 상위 5개 매매
 - `main.py`: 수동 실행용 (스크리닝+매매 통합, 개발/테스트용)
 
 ---
@@ -46,12 +55,14 @@ Python 3.11+, GitHub Actions cron으로 동작.
 ```
 auto-trader/
 ├── run_news.py                # 07:25 뉴스 크롤링 + 테마·감성 분석 → DB 저장
-├── run_screen.py              # 07:30 V1 스크리닝 → picks.json
+├── run_screen.py              # 07:30 V1 스크리닝 → picks_v1.json
 ├── run_screen_v2.py           # 07:30 V2 스크리닝 → picks_v2.json (병렬 실행)
-├── run_trade.py               # 매 시간 RSI 매매 (picks.json 소비)
+├── run_screen_v3.py           # 07:35 V3 섹터 주도주 스크리닝 → picks_v3.json
+├── run_trade.py               # 매 시간 RSI 매매 (picks_v1+v2+v3.json 소비)
 ├── main.py                    # 수동 실행용
 ├── picks_v1.json              # V1 당일 선정 종목 (stock_code, corp_name, peg, health_score)
 ├── picks_v2.json              # V2 당일 선정 종목 (stock_code, corp_name, div_yield, health_score)
+├── picks_v3.json              # V3 당일 선정 종목 (stock_code, corp_name, sector, health_score, total_score)
 ├── portfolio.json             # 보유 종목 상태
 ├── docs/
 │   ├── strategy_v1.md         # V1 전략 설계 문서
@@ -61,21 +72,27 @@ auto-trader/
 │   ├── screening/
 │   │   ├── fundamental.py     # FundamentalScreener: V1 (피터 린치·PEG·KOSPI 필터)
 │   │   ├── strategy_v2.py     # ValueDividendScreener: V2 (ROE·PBR·배당·모멘텀)
+│   │   ├── strategy_v3.py     # V3 섹터 주도주 (업종순위·모멘텀·거래량·건강검진)
 │   │   └── health_check.py    # 건강검진 7개 지표 점수화 + DB 7일 캐시 (공통)
-│   ├── broker/kis_client.py   # KISClient: 시세·잔고·주문·밸류에이션
-│   ├── portfolio/manager.py   # PortfolioManager: RSI 계산·매매 실행
-│   ├── indicators/rsi.py      # calc_rsi(): Wilder 방식 RSI-14
+│   ├── broker/kis_client.py   # KISClient: 시세·잔고·주문·밸류에이션·OHLCV
+│   ├── portfolio/manager.py   # PortfolioManager: RSI·ATR·외국인수급·매매 실행
+│   ├── indicators/
+│   │   ├── rsi.py             # calc_rsi(): Wilder 방식 RSI-14
+│   │   ├── atr.py             # calc_atr(): Wilder 방식 ATR-14 (TP/SL 계산용)
+│   │   ├── market_regime.py   # get_market_regime(): KOSPI 200MA 기반 강세/약세장 판단
+│   │   └── foreign_flow.py    # get_foreign_flow(): KIS 외국인 순매수 조회
 │   ├── notify/
 │   │   ├── telegram.py        # 텔레그램 전송
 │   │   └── ai_summary.py      # Gemini 종목 요약·시장 테마·뉴스 감성 분석
 │   ├── db/client.py           # Supabase (news, market_news, company_health, news_sentiment, screening_history)
 │   └── news/
-│       ├── crawler.py         # 종목별 뉴스 크롤러
+│       ├── crawler.py         # 종목별 뉴스 크롤러 (24시간 필터 적용)
 │       └── market_news.py     # 시장 뉴스 크롤러 (네이버 금융 + 한국경제)
 └── .github/workflows/
     ├── news.yml               # cron: "25 22 * * 0-4" = KST 07:25 평일
     ├── screen.yml             # cron: "30 22 * * 0-4" = KST 07:30 평일 (V1)
     ├── screen_v2.yml          # cron: "30 22 * * 0-4" = KST 07:30 평일 (V2)
+    ├── screen_v3.yml          # cron: "35 22 * * 0-4" = KST 07:35 평일 (V3)
     └── trade.yml              # cron: "0 0-6 * * 1-5" = KST 09:00~15:00 평일
 ```
 
@@ -313,9 +330,10 @@ beautifulsoup4>=4.12.0
 | 워크플로우 | cron (UTC) | KST | 실행 스크립트 | 커밋 파일 |
 |-----------|------------|-----|--------------|---------|
 | news.yml      | `25 22 * * 0-4` | 평일 07:25 | `run_news.py`      | `news.json` |
-| screen.yml    | `30 22 * * 0-4` | 평일 07:30 | `run_screen.py`    | `picks.json` |
+| screen.yml    | `30 22 * * 0-4` | 평일 07:30 | `run_screen.py`    | `picks_v1.json` |
 | screen_v2.yml | `30 22 * * 0-4` | 평일 07:30 | `run_screen_v2.py` | `picks_v2.json` |
+| screen_v3.yml | `35 22 * * 0-4` | 평일 07:35 | `run_screen_v3.py` | `picks_v3.json` |
 | trade.yml     | `0 0-6 * * 1-5` | 평일 09:00~15:00 | `run_trade.py` | 없음 |
 
 screen.yml·screen_v2.yml은 같은 시각에 독립 실행 (병렬 Actions job).
-추후 A 방식(통합)으로 전환 시 `run_screen.py`에서 두 전략 결과를 병합.
+screen_v3.yml은 news.yml 완료 후 5분 뒤 실행 (DB 뉴스 감성 데이터 사용).

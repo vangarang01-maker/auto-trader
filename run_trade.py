@@ -91,7 +91,7 @@ def main():
 
     print("\n  [통합 후보]")
     for p in picks_raw:
-        star = " ★" if p["strategies"] == "V1+V2" else ""
+        star = " ★" if "+" in p["strategies"] else ""
         print(f"    [{p['strategies']}]{star} {p['corp_name']}({p['stock_code']})  score={p['adjusted_score']}")
 
     # 현재가 재조회
