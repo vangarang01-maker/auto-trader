@@ -20,13 +20,13 @@
   {
     "stock_code": "009140",
     "corp_name": "경인전자",
-    "peg": 0.25,
+    "peg": 0.23,
     "health_score": 52.5
   },
   {
     "stock_code": "483650",
     "corp_name": "달바글로벌",
-    "peg": 0.09,
+    "peg": 0.1,
     "health_score": 40.8
   }
 ]
