@@ -8,13 +8,13 @@
   {
     "stock_code": "025560",
     "corp_name": "미래산업",
-    "peg": 0.2,
-    "health_score": 61.4
+    "peg": 0.21,
+    "health_score": 61.1
   },
   {
     "stock_code": "017550",
     "corp_name": "수산세보틱스",
-    "peg": 0.15,
+    "peg": 0.14,
     "health_score": 58.4
   },
   {
@@ -27,6 +27,6 @@
     "stock_code": "483650",
     "corp_name": "달바글로벌",
     "peg": 0.08,
-    "health_score": 40.3
+    "health_score": 50.3
   }
 ]
