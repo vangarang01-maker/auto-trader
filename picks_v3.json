@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "009150",
-    "corp_name": "삼성전기",
-    "sector": "전자장비와기기",
-    "return_5d": 3.11,
-    "volume_ratio": 2.06,
+    "stock_code": "066575",
+    "corp_name": "LG전자우",
+    "sector": "전자제품",
+    "return_5d": 3.24,
+    "volume_ratio": 2.32,
     "health_score": 50.0,
+    "total_score": 60.1
+  },
+  {
+    "stock_code": "012330",
+    "corp_name": "현대모비스",
+    "sector": "자동차부품",
+    "return_5d": 3.08,
+    "volume_ratio": 1.86,
+    "health_score": 54.4,
     "total_score": 57.7
   },
   {
-    "stock_code": "011070",
-    "corp_name": "LG이노텍",
-    "sector": "전자장비와기기",
-    "return_5d": 0.93,
-    "volume_ratio": 1.35,
-    "health_score": 50.0,
-    "total_score": 52.9
-  },
-  {
-    "stock_code": "017900",
-    "corp_name": "광전자",
-    "sector": "전자장비와기기",
-    "return_5d": 10.67,
-    "volume_ratio": 1.78,
-    "health_score": 24.0,
-    "total_score": 51.1
-  },
-  {
-    "stock_code": "090460",
-    "corp_name": "비에이치",
-    "sector": "전자장비와기기",
-    "return_5d": 6.97,
-    "volume_ratio": 0.75,
-    "health_score": 43.2,
-    "total_score": 50.4
-  },
-  {
-    "stock_code": "012510",
-    "corp_name": "더존비즈온",
-    "sector": "소프트웨어",
+    "stock_code": "064960",
+    "corp_name": "SNT모티브",
+    "sector": "자동차부품",
     "return_5d": 0.76,
-    "volume_ratio": 0.21,
+    "volume_ratio": 1.81,
+    "health_score": 58.8,
+    "total_score": 54.4
+  },
+  {
+    "stock_code": "066570",
+    "corp_name": "LG전자",
+    "sector": "전자제품",
+    "return_5d": 8.29,
+    "volume_ratio": 1.7,
+    "health_score": 35.2,
+    "total_score": 54.1
+  },
+  {
+    "stock_code": "200880",
+    "corp_name": "서연이화",
+    "sector": "자동차부품",
+    "return_5d": 3.02,
+    "volume_ratio": 1.33,
     "health_score": 50.0,
-    "total_score": 45.9
+    "total_score": 52.3
   }
 ]
