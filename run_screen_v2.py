@@ -45,7 +45,7 @@ def _get_news_context(stock_code: str, corp_name: str) -> str:
 
 def main():
     ts    = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M")
-    today = str(date.today())
+    today = str(datetime.now(timezone(timedelta(hours=9))).date())
     print(f"\n{'='*50}")
     print(f"[{ts}] [V2] 스크리닝 시작 (기준연도: {YEAR})")
     print(f"{'='*50}\n")

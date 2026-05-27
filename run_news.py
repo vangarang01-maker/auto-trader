@@ -17,7 +17,7 @@ NEWS_FILE = "news.json"
 
 def main():
     ts = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M")
-    today = str(date.today())
+    today = str(datetime.now(timezone(timedelta(hours=9))).date())
     print(f"\n[{ts}] 시장 뉴스 크롤링 시작")
     print("=" * 50)
 

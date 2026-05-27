@@ -44,7 +44,7 @@ def _dominant_label(records: list[dict]) -> str:
 
 def main():
     ts    = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M")
-    today = str(date.today())
+    today = str(datetime.now(timezone(timedelta(hours=9))).date())
     print(f"\n{'='*50}")
     print(f"[{ts}] [V3] 섹터 주도주 스크리닝 시작")
     print(f"{'='*50}\n")
