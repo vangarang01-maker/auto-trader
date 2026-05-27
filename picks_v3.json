@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "009150",
-    "corp_name": "삼성전기",
-    "sector": "전자장비와기기",
-    "return_5d": 32.67,
-    "volume_ratio": 1.36,
+    "stock_code": "018260",
+    "corp_name": "삼성에스디에스",
+    "sector": "IT서비스",
+    "return_5d": 52.92,
+    "volume_ratio": 5.97,
     "health_score": 50.0,
-    "total_score": 56.8
+    "total_score": 75.0
   },
   {
-    "stock_code": "034730",
-    "corp_name": "SK",
-    "sector": "석유와가스",
-    "return_5d": 27.63,
-    "volume_ratio": 1.39,
-    "health_score": 46.4,
-    "total_score": 53.9
+    "stock_code": "064400",
+    "corp_name": "LG씨엔에스",
+    "sector": "IT서비스",
+    "return_5d": 26.47,
+    "volume_ratio": 2.32,
+    "health_score": 50.0,
+    "total_score": 54.2
   },
   {
-    "stock_code": "090460",
-    "corp_name": "비에이치",
-    "sector": "전자장비와기기",
-    "return_5d": 19.0,
-    "volume_ratio": 2.17,
-    "health_score": 43.2,
-    "total_score": 51.0
+    "stock_code": "000660",
+    "corp_name": "SK하이닉스",
+    "sector": "반도체와반도체장비",
+    "return_5d": 28.54,
+    "volume_ratio": 1.36,
+    "health_score": 51.9,
+    "total_score": 53.7
   },
   {
-    "stock_code": "008060",
-    "corp_name": "대덕",
-    "sector": "전자장비와기기",
-    "return_5d": 19.34,
-    "volume_ratio": 0.95,
-    "health_score": 39.2,
-    "total_score": 45.7
+    "stock_code": "012030",
+    "corp_name": "DB",
+    "sector": "IT서비스",
+    "return_5d": 18.27,
+    "volume_ratio": 1.25,
+    "health_score": 60.0,
+    "total_score": 50.0
   },
   {
-    "stock_code": "017900",
-    "corp_name": "광전자",
-    "sector": "전자장비와기기",
-    "return_5d": 22.71,
-    "volume_ratio": 1.37,
-    "health_score": 24.0,
-    "total_score": 45.2
+    "stock_code": "307950",
+    "corp_name": "현대오토에버",
+    "sector": "IT서비스",
+    "return_5d": 42.72,
+    "volume_ratio": 1.87,
+    "health_score": 0.0,
+    "total_score": 42.5
   }
 ]
