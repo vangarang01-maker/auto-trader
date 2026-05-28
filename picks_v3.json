@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "018260",
-    "corp_name": "삼성에스디에스",
-    "sector": "IT서비스",
-    "return_5d": 52.92,
-    "volume_ratio": 5.97,
+    "stock_code": "001820",
+    "corp_name": "삼화콘덴서",
+    "sector": "전기제품",
+    "return_5d": 98.73,
+    "volume_ratio": 6.78,
     "health_score": 50.0,
     "total_score": 75.0
   },
   {
-    "stock_code": "064400",
-    "corp_name": "LG씨엔에스",
-    "sector": "IT서비스",
-    "return_5d": 26.47,
-    "volume_ratio": 2.32,
+    "stock_code": "066970",
+    "corp_name": "엘앤에프",
+    "sector": "전기제품",
+    "return_5d": 13.94,
+    "volume_ratio": 3.15,
     "health_score": 50.0,
-    "total_score": 54.2
+    "total_score": 51.2
   },
   {
-    "stock_code": "000660",
-    "corp_name": "SK하이닉스",
-    "sector": "반도체와반도체장비",
-    "return_5d": 28.54,
-    "volume_ratio": 1.36,
-    "health_score": 51.9,
-    "total_score": 53.7
+    "stock_code": "006400",
+    "corp_name": "삼성SDI",
+    "sector": "전기제품",
+    "return_5d": 18.6,
+    "volume_ratio": 2.0,
+    "health_score": 50.0,
+    "total_score": 48.3
   },
   {
-    "stock_code": "012030",
-    "corp_name": "DB",
-    "sector": "IT서비스",
-    "return_5d": 18.27,
-    "volume_ratio": 1.25,
-    "health_score": 60.0,
-    "total_score": 50.0
+    "stock_code": "336260",
+    "corp_name": "두산퓨얼셀",
+    "sector": "전기제품",
+    "return_5d": 27.26,
+    "volume_ratio": 0.73,
+    "health_score": 50.0,
+    "total_score": 47.8
   },
   {
-    "stock_code": "307950",
-    "corp_name": "현대오토에버",
-    "sector": "IT서비스",
-    "return_5d": 42.72,
-    "volume_ratio": 1.87,
-    "health_score": 0.0,
-    "total_score": 42.5
+    "stock_code": "373220",
+    "corp_name": "LG에너지솔루션",
+    "sector": "전기제품",
+    "return_5d": 14.95,
+    "volume_ratio": 3.75,
+    "health_score": 20.0,
+    "total_score": 46.6
   }
 ]
