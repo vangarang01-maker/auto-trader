@@ -1,26 +1,14 @@
 [
   {
-    "stock_code": "009970",
-    "corp_name": "영원무역홀딩스",
-    "div_yield": 3.43,
-    "health_score": 58.6
-  },
-  {
     "stock_code": "069730",
     "corp_name": "DSR제강",
-    "div_yield": 8.38,
+    "div_yield": 8.53,
     "health_score": 57.6
-  },
-  {
-    "stock_code": "000270",
-    "corp_name": "기아",
-    "div_yield": 4.02,
-    "health_score": 52.8
   },
   {
     "stock_code": "002380",
     "corp_name": "케이씨씨",
-    "div_yield": 2.73,
+    "div_yield": 2.71,
     "health_score": 48.8
   },
   {
@@ -28,5 +16,17 @@
     "corp_name": "두올",
     "div_yield": 2.62,
     "health_score": 47.9
+  },
+  {
+    "stock_code": "015360",
+    "corp_name": "INVENI",
+    "div_yield": 7.3,
+    "health_score": 44.2
+  },
+  {
+    "stock_code": "000270",
+    "corp_name": "기아",
+    "div_yield": 4.0,
+    "health_score": 42.8
   }
 ]
