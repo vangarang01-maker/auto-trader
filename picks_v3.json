@@ -1,47 +1,47 @@
 [
   {
+    "stock_code": "064400",
+    "corp_name": "LG씨엔에스",
+    "sector": "IT서비스",
+    "return_5d": 72.72,
+    "volume_ratio": 3.81,
+    "health_score": 50.0,
+    "total_score": 66.4
+  },
+  {
     "stock_code": "018260",
     "corp_name": "삼성에스디에스",
     "sector": "IT서비스",
-    "return_5d": 61.36,
-    "volume_ratio": 5.38,
+    "return_5d": 85.93,
+    "volume_ratio": 3.24,
     "health_score": 50.0,
-    "total_score": 70.6
+    "total_score": 66.2
   },
   {
     "stock_code": "181710",
     "corp_name": "NHN",
     "sector": "IT서비스",
-    "return_5d": 33.25,
-    "volume_ratio": 10.72,
-    "health_score": 50.0,
-    "total_score": 66.2
+    "return_5d": 49.0,
+    "volume_ratio": 6.29,
+    "health_score": 37.4,
+    "total_score": 60.5
   },
   {
-    "stock_code": "064400",
-    "corp_name": "LG씨엔에스",
+    "stock_code": "035420",
+    "corp_name": "NAVER",
+    "sector": "양방향미디어와서비스",
+    "return_5d": 33.74,
+    "volume_ratio": 10.7,
+    "health_score": 49.4,
+    "total_score": 58.7
+  },
+  {
+    "stock_code": "286940",
+    "corp_name": "롯데이노베이트",
     "sector": "IT서비스",
-    "return_5d": 41.9,
-    "volume_ratio": 3.41,
-    "health_score": 50.0,
-    "total_score": 59.8
-  },
-  {
-    "stock_code": "066575",
-    "corp_name": "LG전자우",
-    "sector": "전자제품",
-    "return_5d": 11.28,
-    "volume_ratio": 4.55,
-    "health_score": 50.0,
-    "total_score": 58.2
-  },
-  {
-    "stock_code": "336370",
-    "corp_name": "솔루스첨단소재",
-    "sector": "전자장비와기기",
-    "return_5d": 8.85,
-    "volume_ratio": 4.08,
-    "health_score": 57.8,
-    "total_score": 56.7
+    "return_5d": 10.56,
+    "volume_ratio": 5.66,
+    "health_score": 48.0,
+    "total_score": 52.9
   }
 ]
