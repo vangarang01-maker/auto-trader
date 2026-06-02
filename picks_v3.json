@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "064400",
-    "corp_name": "LG씨엔에스",
-    "sector": "IT서비스",
-    "return_5d": 72.72,
-    "volume_ratio": 3.81,
+    "stock_code": "017670",
+    "corp_name": "SK텔레콤",
+    "sector": "무선통신서비스",
+    "return_5d": 22.62,
+    "volume_ratio": 6.15,
     "health_score": 50.0,
-    "total_score": 66.4
+    "total_score": 70.0
   },
   {
-    "stock_code": "018260",
-    "corp_name": "삼성에스디에스",
-    "sector": "IT서비스",
-    "return_5d": 85.93,
-    "volume_ratio": 3.24,
+    "stock_code": "085620",
+    "corp_name": "미래에셋생명",
+    "sector": "생명보험",
+    "return_5d": 11.62,
+    "volume_ratio": 8.62,
     "health_score": 50.0,
-    "total_score": 66.2
+    "total_score": 65.0
   },
   {
-    "stock_code": "181710",
-    "corp_name": "NHN",
-    "sector": "IT서비스",
-    "return_5d": 49.0,
-    "volume_ratio": 6.29,
-    "health_score": 37.4,
-    "total_score": 60.5
+    "stock_code": "032830",
+    "corp_name": "삼성생명",
+    "sector": "생명보험",
+    "return_5d": 37.93,
+    "volume_ratio": 1.32,
+    "health_score": 40.4,
+    "total_score": 53.7
   },
   {
-    "stock_code": "035420",
-    "corp_name": "NAVER",
-    "sector": "양방향미디어와서비스",
-    "return_5d": 33.74,
-    "volume_ratio": 10.7,
-    "health_score": 49.4,
-    "total_score": 58.7
+    "stock_code": "034220",
+    "corp_name": "LG디스플레이",
+    "sector": "디스플레이패널",
+    "return_5d": 6.78,
+    "volume_ratio": 3.32,
+    "health_score": 50.0,
+    "total_score": 51.6
   },
   {
-    "stock_code": "286940",
-    "corp_name": "롯데이노베이트",
-    "sector": "IT서비스",
-    "return_5d": 10.56,
-    "volume_ratio": 5.66,
-    "health_score": 48.0,
-    "total_score": 52.9
+    "stock_code": "032640",
+    "corp_name": "LG유플러스",
+    "sector": "무선통신서비스",
+    "return_5d": 4.13,
+    "volume_ratio": 2.09,
+    "health_score": 50.0,
+    "total_score": 40.4
   }
 ]
