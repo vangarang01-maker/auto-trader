@@ -3,30 +3,30 @@
     "stock_code": "000660",
     "corp_name": "SK하이닉스",
     "peg": 0.34,
-    "health_score": 61.9
+    "health_score": 60.6
   },
   {
     "stock_code": "017550",
     "corp_name": "수산세보틱스",
     "peg": 0.14,
-    "health_score": 58.2
+    "health_score": 58.4
   },
   {
     "stock_code": "025560",
     "corp_name": "미래산업",
-    "peg": 0.26,
+    "peg": 0.22,
     "health_score": 57.8
   },
   {
     "stock_code": "009140",
     "corp_name": "경인전자",
     "peg": 0.22,
-    "health_score": 52.7
+    "health_score": 52.8
   },
   {
     "stock_code": "483650",
     "corp_name": "달바글로벌",
     "peg": 0.07,
-    "health_score": 50.9
+    "health_score": 51.9
   }
 ]
