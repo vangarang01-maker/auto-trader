@@ -1,21 +1,21 @@
 [
   {
-    "stock_code": "017670",
-    "corp_name": "SK텔레콤",
-    "sector": "무선통신서비스",
-    "return_5d": 22.62,
-    "volume_ratio": 6.15,
-    "health_score": 50.0,
-    "total_score": 70.0
-  },
-  {
     "stock_code": "085620",
     "corp_name": "미래에셋생명",
     "sector": "생명보험",
     "return_5d": 11.62,
     "volume_ratio": 8.62,
-    "health_score": 50.0,
-    "total_score": 65.0
+    "health_score": 52.0,
+    "total_score": 65.6
+  },
+  {
+    "stock_code": "017670",
+    "corp_name": "SK텔레콤",
+    "sector": "무선통신서비스",
+    "return_5d": 22.62,
+    "volume_ratio": 6.15,
+    "health_score": 29.4,
+    "total_score": 63.8
   },
   {
     "stock_code": "032830",
@@ -32,8 +32,8 @@
     "sector": "디스플레이패널",
     "return_5d": 6.78,
     "volume_ratio": 3.32,
-    "health_score": 50.0,
-    "total_score": 51.6
+    "health_score": 44.0,
+    "total_score": 49.8
   },
   {
     "stock_code": "032640",
@@ -41,7 +41,7 @@
     "sector": "무선통신서비스",
     "return_5d": 4.13,
     "volume_ratio": 2.09,
-    "health_score": 50.0,
-    "total_score": 40.4
+    "health_score": 58.4,
+    "total_score": 43.0
   }
 ]
