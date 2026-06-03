@@ -2,13 +2,13 @@
   {
     "stock_code": "069730",
     "corp_name": "DSR제강",
-    "div_yield": 8.53,
+    "div_yield": 8.37,
     "health_score": 57.6
   },
   {
     "stock_code": "002380",
     "corp_name": "케이씨씨",
-    "div_yield": 2.71,
+    "div_yield": 2.68,
     "health_score": 48.8
   },
   {
@@ -20,13 +20,13 @@
   {
     "stock_code": "015360",
     "corp_name": "INVENI",
-    "div_yield": 7.3,
+    "div_yield": 7.34,
     "health_score": 44.2
   },
   {
     "stock_code": "000270",
     "corp_name": "기아",
-    "div_yield": 4.0,
+    "div_yield": 4.03,
     "health_score": 42.8
   }
 ]
