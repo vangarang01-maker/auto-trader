@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "085620",
-    "corp_name": "미래에셋생명",
-    "sector": "생명보험",
-    "return_5d": 11.62,
-    "volume_ratio": 8.62,
-    "health_score": 52.0,
-    "total_score": 65.6
+    "stock_code": "069960",
+    "corp_name": "현대백화점",
+    "sector": "백화점과일반상점",
+    "return_5d": 33.14,
+    "volume_ratio": 3.52,
+    "health_score": 50.0,
+    "total_score": 67.6
   },
   {
-    "stock_code": "017670",
-    "corp_name": "SK텔레콤",
-    "sector": "무선통신서비스",
-    "return_5d": 22.62,
-    "volume_ratio": 6.15,
-    "health_score": 29.4,
-    "total_score": 63.8
+    "stock_code": "489790",
+    "corp_name": "한화비전",
+    "sector": "통신장비",
+    "return_5d": 16.74,
+    "volume_ratio": 3.15,
+    "health_score": 50.0,
+    "total_score": 59.9
   },
   {
-    "stock_code": "032830",
-    "corp_name": "삼성생명",
-    "sector": "생명보험",
-    "return_5d": 37.93,
-    "volume_ratio": 1.32,
-    "health_score": 40.4,
-    "total_score": 53.7
+    "stock_code": "000810",
+    "corp_name": "삼성화재",
+    "sector": "손해보험",
+    "return_5d": 26.52,
+    "volume_ratio": 2.0,
+    "health_score": 50.0,
+    "total_score": 58.1
   },
   {
-    "stock_code": "034220",
-    "corp_name": "LG디스플레이",
-    "sector": "디스플레이패널",
-    "return_5d": 6.78,
+    "stock_code": "000815",
+    "corp_name": "삼성화재우",
+    "sector": "손해보험",
+    "return_5d": 7.86,
     "volume_ratio": 3.32,
-    "health_score": 44.0,
-    "total_score": 49.8
+    "health_score": 50.0,
+    "total_score": 56.9
   },
   {
-    "stock_code": "032640",
-    "corp_name": "LG유플러스",
-    "sector": "무선통신서비스",
-    "return_5d": 4.13,
-    "volume_ratio": 2.09,
-    "health_score": 58.4,
-    "total_score": 43.0
+    "stock_code": "004170",
+    "corp_name": "신세계",
+    "sector": "백화점과일반상점",
+    "return_5d": 25.05,
+    "volume_ratio": 1.65,
+    "health_score": 50.0,
+    "total_score": 54.4
   }
 ]
