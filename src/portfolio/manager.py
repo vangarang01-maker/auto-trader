@@ -97,7 +97,7 @@ class PortfolioManager:
 
     def rebalance(self, picks: list[dict], bear_market: bool = False):
         """매도: 후보 제외 | RSI ≥ 75 | 익절(ATR기반) | 손절(ATR기반) | 횡보 제한(30일)
-        매수: RSI < 35 AND 거래량 급증(1.5x) | bear_market=True 시 전면 차단
+        매수: RSI < 45 AND 거래량 급증(1.5x) | bear_market=True 시 전면 차단
         """
         new_codes      = {p["stock_code"] for p in picks}
         pick_price_map = {p["stock_code"]: p["current_price"] for p in picks}
@@ -205,8 +205,8 @@ class PortfolioManager:
             rsi     = rsi_map.get(code, float("nan"))
             rsi_str = f"{rsi:.1f}" if rsi == rsi else "N/A"
 
-            if rsi != rsi or rsi >= 35:
-                print(f"  [대기] {p['corp_name']}({code}) RSI={rsi_str}  (매수 신호 없음, 기준 < 35)")
+            if rsi != rsi or rsi >= 45:
+                print(f"  [대기] {p['corp_name']}({code}) RSI={rsi_str}  (매수 신호 없음, 기준 < 45)")
                 continue
 
             # 거래량 급증 확인 (전일 거래량 > 20일 평균 × 1.5)
