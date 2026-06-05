@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "069960",
-    "corp_name": "현대백화점",
-    "sector": "백화점과일반상점",
-    "return_5d": 33.14,
-    "volume_ratio": 3.52,
-    "health_score": 50.0,
-    "total_score": 67.6
+    "stock_code": "055550",
+    "corp_name": "신한지주",
+    "sector": "은행",
+    "return_5d": 15.84,
+    "volume_ratio": 2.02,
+    "health_score": 59.6,
+    "total_score": 63.0
   },
   {
-    "stock_code": "489790",
-    "corp_name": "한화비전",
-    "sector": "통신장비",
-    "return_5d": 16.74,
-    "volume_ratio": 3.15,
+    "stock_code": "006220",
+    "corp_name": "제주은행",
+    "sector": "은행",
+    "return_5d": 3.99,
+    "volume_ratio": 31.96,
     "health_score": 50.0,
-    "total_score": 59.9
+    "total_score": 59.4
   },
   {
-    "stock_code": "000810",
-    "corp_name": "삼성화재",
-    "sector": "손해보험",
-    "return_5d": 26.52,
-    "volume_ratio": 2.0,
-    "health_score": 50.0,
-    "total_score": 58.1
+    "stock_code": "034230",
+    "corp_name": "파라다이스",
+    "sector": "호텔,레스토랑,레저",
+    "return_5d": 11.35,
+    "volume_ratio": 2.61,
+    "health_score": 57.4,
+    "total_score": 59.4
   },
   {
-    "stock_code": "000815",
-    "corp_name": "삼성화재우",
-    "sector": "손해보험",
-    "return_5d": 7.86,
-    "volume_ratio": 3.32,
+    "stock_code": "105560",
+    "corp_name": "KB금융",
+    "sector": "은행",
+    "return_5d": 14.63,
+    "volume_ratio": 2.1,
     "health_score": 50.0,
-    "total_score": 56.9
+    "total_score": 58.6
   },
   {
-    "stock_code": "004170",
-    "corp_name": "신세계",
-    "sector": "백화점과일반상점",
-    "return_5d": 25.05,
-    "volume_ratio": 1.65,
-    "health_score": 50.0,
-    "total_score": 54.4
+    "stock_code": "114090",
+    "corp_name": "GKL",
+    "sector": "호텔,레스토랑,레저",
+    "return_5d": 11.68,
+    "volume_ratio": 0.98,
+    "health_score": 50.6,
+    "total_score": 51.2
   }
 ]
