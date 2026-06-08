@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "055550",
-    "corp_name": "신한지주",
-    "sector": "은행",
-    "return_5d": 15.84,
-    "volume_ratio": 2.02,
-    "health_score": 59.6,
-    "total_score": 63.0
+    "stock_code": "035420",
+    "corp_name": "035420",
+    "sector": "양방향미디어와서비스",
+    "return_5d": 19.23,
+    "volume_ratio": 3.79,
+    "health_score": 49.4,
+    "total_score": 68.8
   },
   {
-    "stock_code": "006220",
-    "corp_name": "제주은행",
-    "sector": "은행",
-    "return_5d": 3.99,
-    "volume_ratio": 31.96,
-    "health_score": 50.0,
-    "total_score": 59.4
+    "stock_code": "036630",
+    "corp_name": "036630",
+    "sector": "다각화된통신서비스",
+    "return_5d": 10.86,
+    "volume_ratio": 3.96,
+    "health_score": 47.8,
+    "total_score": 67.7
   },
   {
-    "stock_code": "034230",
-    "corp_name": "파라다이스",
-    "sector": "호텔,레스토랑,레저",
-    "return_5d": 11.35,
-    "volume_ratio": 2.61,
-    "health_score": 57.4,
-    "total_score": 59.4
+    "stock_code": "017670",
+    "corp_name": "017670",
+    "sector": "무선통신서비스",
+    "return_5d": 6.06,
+    "volume_ratio": 2.42,
+    "health_score": 29.4,
+    "total_score": 53.0
   },
   {
-    "stock_code": "105560",
-    "corp_name": "KB금융",
-    "sector": "은행",
-    "return_5d": 14.63,
-    "volume_ratio": 2.1,
-    "health_score": 50.0,
-    "total_score": 58.6
+    "stock_code": "032640",
+    "corp_name": "032640",
+    "sector": "무선통신서비스",
+    "return_5d": -2.54,
+    "volume_ratio": 1.72,
+    "health_score": 58.4,
+    "total_score": 52.4
   },
   {
-    "stock_code": "114090",
-    "corp_name": "GKL",
-    "sector": "호텔,레스토랑,레저",
-    "return_5d": 11.68,
-    "volume_ratio": 0.98,
-    "health_score": 50.6,
-    "total_score": 51.2
+    "stock_code": "214270",
+    "corp_name": "214270",
+    "sector": "양방향미디어와서비스",
+    "return_5d": 0.0,
+    "volume_ratio": 0.97,
+    "health_score": 60.0,
+    "total_score": 50.6
   }
 ]
