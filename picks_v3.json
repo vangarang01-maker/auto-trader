@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "035420",
-    "corp_name": "035420",
-    "sector": "양방향미디어와서비스",
-    "return_5d": 19.23,
-    "volume_ratio": 3.79,
-    "health_score": 49.4,
-    "total_score": 68.8
+    "stock_code": "007810",
+    "corp_name": "코리아써키트",
+    "sector": "전자장비와기기",
+    "return_5d": 0.59,
+    "volume_ratio": 1.14,
+    "health_score": 50.0,
+    "total_score": 52.7
   },
   {
-    "stock_code": "036630",
-    "corp_name": "036630",
-    "sector": "다각화된통신서비스",
-    "return_5d": 10.86,
-    "volume_ratio": 3.96,
-    "health_score": 47.8,
-    "total_score": 67.7
-  },
-  {
-    "stock_code": "017670",
-    "corp_name": "017670",
-    "sector": "무선통신서비스",
-    "return_5d": 6.06,
-    "volume_ratio": 2.42,
-    "health_score": 29.4,
-    "total_score": 53.0
-  },
-  {
-    "stock_code": "032640",
-    "corp_name": "032640",
-    "sector": "무선통신서비스",
-    "return_5d": -2.54,
-    "volume_ratio": 1.72,
-    "health_score": 58.4,
-    "total_score": 52.4
-  },
-  {
-    "stock_code": "214270",
-    "corp_name": "214270",
-    "sector": "양방향미디어와서비스",
-    "return_5d": 0.0,
-    "volume_ratio": 0.97,
+    "stock_code": "029460",
+    "corp_name": "케이씨",
+    "sector": "반도체와반도체장비",
+    "return_5d": -1.91,
+    "volume_ratio": 0.72,
     "health_score": 60.0,
-    "total_score": 50.6
+    "total_score": 50.5
+  },
+  {
+    "stock_code": "281820",
+    "corp_name": "케이씨텍",
+    "sector": "반도체와반도체장비",
+    "return_5d": 5.06,
+    "volume_ratio": 0.83,
+    "health_score": 37.4,
+    "total_score": 48.8
+  },
+  {
+    "stock_code": "004710",
+    "corp_name": "한솔테크닉스",
+    "sector": "전자장비와기기",
+    "return_5d": -2.43,
+    "volume_ratio": 0.66,
+    "health_score": 59.8,
+    "total_score": 48.6
+  },
+  {
+    "stock_code": "003160",
+    "corp_name": "디아이",
+    "sector": "반도체와반도체장비",
+    "return_5d": 7.88,
+    "volume_ratio": 1.16,
+    "health_score": 5.4,
+    "total_score": 42.4
   }
 ]
