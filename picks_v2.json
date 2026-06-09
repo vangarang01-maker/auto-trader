@@ -2,31 +2,31 @@
   {
     "stock_code": "069730",
     "corp_name": "DSR제강",
-    "div_yield": 8.58,
+    "div_yield": 8.25,
     "health_score": 57.6
   },
   {
-    "stock_code": "003650",
-    "corp_name": "미창석유공업",
-    "div_yield": 2.87,
-    "health_score": 57.6
-  },
-  {
-    "stock_code": "002380",
-    "corp_name": "케이씨씨",
-    "div_yield": 2.59,
-    "health_score": 48.8
-  },
-  {
-    "stock_code": "016740",
-    "corp_name": "두올",
-    "div_yield": 2.62,
-    "health_score": 47.9
+    "stock_code": "005850",
+    "corp_name": "에스엘",
+    "div_yield": 4.25,
+    "health_score": 53.3
   },
   {
     "stock_code": "000270",
     "corp_name": "기아",
     "div_yield": 4.14,
-    "health_score": 42.8
+    "health_score": 52.8
+  },
+  {
+    "stock_code": "004800",
+    "corp_name": "효성",
+    "div_yield": 2.85,
+    "health_score": 52.4
+  },
+  {
+    "stock_code": "007340",
+    "corp_name": "DN오토모티브",
+    "div_yield": 2.51,
+    "health_score": 49.0
   }
 ]
