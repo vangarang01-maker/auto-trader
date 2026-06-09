@@ -18,15 +18,15 @@
     "health_score": 51.9
   },
   {
-    "stock_code": "062040",
-    "corp_name": "산일전기",
-    "peg": 0.58,
-    "health_score": 49.5
-  },
-  {
     "stock_code": "000660",
     "corp_name": "SK하이닉스",
-    "peg": 0.3,
-    "health_score": 40.6
+    "peg": 0.32,
+    "health_score": 50.6
+  },
+  {
+    "stock_code": "062040",
+    "corp_name": "산일전기",
+    "peg": 0.59,
+    "health_score": 49.5
   }
 ]
