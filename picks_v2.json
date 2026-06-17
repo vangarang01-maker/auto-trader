@@ -2,19 +2,19 @@
   {
     "stock_code": "069730",
     "corp_name": "DSR제강",
-    "div_yield": 8.18,
+    "div_yield": 8.11,
     "health_score": 57.6
   },
   {
     "stock_code": "003650",
     "corp_name": "미창석유공업",
-    "div_yield": 2.77,
+    "div_yield": 2.78,
     "health_score": 57.6
   },
   {
     "stock_code": "000270",
     "corp_name": "기아",
-    "div_yield": 4.01,
+    "div_yield": 3.99,
     "health_score": 52.9
   },
   {
@@ -26,7 +26,7 @@
   {
     "stock_code": "016740",
     "corp_name": "두올",
-    "div_yield": 2.68,
+    "div_yield": 2.74,
     "health_score": 47.9
   }
 ]
