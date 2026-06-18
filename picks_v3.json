@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "475150",
-    "corp_name": "SK이터닉스",
-    "sector": "에너지장비및서비스",
-    "return_5d": 63.4,
-    "volume_ratio": 14.61,
+    "stock_code": "004710",
+    "corp_name": "한솔테크닉스",
+    "sector": "전자장비와기기",
+    "return_5d": 19.15,
+    "volume_ratio": 4.63,
+    "health_score": 56.8,
+    "total_score": 65.0
+  },
+  {
+    "stock_code": "009155",
+    "corp_name": "삼성전기우",
+    "sector": "전자장비와기기",
+    "return_5d": 27.37,
+    "volume_ratio": 2.64,
+    "health_score": 0.0,
+    "total_score": 45.3
+  },
+  {
+    "stock_code": "005930",
+    "corp_name": "삼성전자",
+    "sector": "반도체와반도체장비",
+    "return_5d": 21.24,
+    "volume_ratio": 1.04,
+    "health_score": 31.5,
+    "total_score": 45.3
+  },
+  {
+    "stock_code": "402340",
+    "corp_name": "SK스퀘어",
+    "sector": "반도체와반도체장비",
+    "return_5d": 38.44,
+    "volume_ratio": 1.17,
+    "health_score": 12.2,
+    "total_score": 44.5
+  },
+  {
+    "stock_code": "017900",
+    "corp_name": "광전자",
+    "sector": "전자장비와기기",
+    "return_5d": 9.24,
+    "volume_ratio": 1.0,
     "health_score": 50.0,
-    "total_score": 75.0
-  },
-  {
-    "stock_code": "100090",
-    "corp_name": "SK오션플랜트",
-    "sector": "에너지장비및서비스",
-    "return_5d": 47.52,
-    "volume_ratio": 7.94,
-    "health_score": 50.0,
-    "total_score": 73.7
-  },
-  {
-    "stock_code": "112610",
-    "corp_name": "씨에스윈드",
-    "sector": "에너지장비및서비스",
-    "return_5d": 40.77,
-    "volume_ratio": 6.61,
-    "health_score": 50.0,
-    "total_score": 72.3
-  },
-  {
-    "stock_code": "375500",
-    "corp_name": "DL이앤씨",
-    "sector": "건설",
-    "return_5d": 28.45,
-    "volume_ratio": 4.31,
-    "health_score": 60.0,
-    "total_score": 66.5
-  },
-  {
-    "stock_code": "047040",
-    "corp_name": "대우건설",
-    "sector": "건설",
-    "return_5d": 30.4,
-    "volume_ratio": 4.5,
-    "health_score": 36.2,
-    "total_score": 61.6
+    "total_score": 41.9
   }
 ]
