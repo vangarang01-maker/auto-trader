@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "004710",
-    "corp_name": "한솔테크닉스",
-    "sector": "전자장비와기기",
-    "return_5d": 19.15,
-    "volume_ratio": 4.63,
-    "health_score": 56.8,
-    "total_score": 65.0
-  },
-  {
-    "stock_code": "009155",
-    "corp_name": "삼성전기우",
-    "sector": "전자장비와기기",
-    "return_5d": 27.37,
-    "volume_ratio": 2.64,
-    "health_score": 0.0,
-    "total_score": 45.3
-  },
-  {
-    "stock_code": "005930",
-    "corp_name": "삼성전자",
-    "sector": "반도체와반도체장비",
-    "return_5d": 21.24,
-    "volume_ratio": 1.04,
-    "health_score": 31.5,
-    "total_score": 45.3
-  },
-  {
-    "stock_code": "402340",
-    "corp_name": "SK스퀘어",
-    "sector": "반도체와반도체장비",
-    "return_5d": 38.44,
-    "volume_ratio": 1.17,
-    "health_score": 12.2,
-    "total_score": 44.5
-  },
-  {
-    "stock_code": "017900",
-    "corp_name": "광전자",
-    "sector": "전자장비와기기",
-    "return_5d": 9.24,
-    "volume_ratio": 1.0,
+    "stock_code": "032830",
+    "corp_name": "삼성생명",
+    "sector": "생명보험",
+    "return_5d": 28.92,
+    "volume_ratio": 1.22,
     "health_score": 50.0,
-    "total_score": 41.9
+    "total_score": 56.1
+  },
+  {
+    "stock_code": "034730",
+    "corp_name": "SK",
+    "sector": "석유와가스",
+    "return_5d": 22.09,
+    "volume_ratio": 1.74,
+    "health_score": 42.6,
+    "total_score": 53.3
+  },
+  {
+    "stock_code": "086280",
+    "corp_name": "현대글로비스",
+    "sector": "항공화물운송과물류",
+    "return_5d": 6.71,
+    "volume_ratio": 1.57,
+    "health_score": 50.0,
+    "total_score": 48.3
+  },
+  {
+    "stock_code": "085620",
+    "corp_name": "미래에셋생명",
+    "sector": "생명보험",
+    "return_5d": 22.08,
+    "volume_ratio": 1.75,
+    "health_score": 31.6,
+    "total_score": 46.9
+  },
+  {
+    "stock_code": "082640",
+    "corp_name": "동양생명",
+    "sector": "생명보험",
+    "return_5d": -0.39,
+    "volume_ratio": 1.52,
+    "health_score": 60.0,
+    "total_score": 44.7
   }
 ]
