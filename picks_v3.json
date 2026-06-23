@@ -1,47 +1,29 @@
 [
   {
-    "stock_code": "02826K",
-    "corp_name": "삼성물산우B",
-    "sector": "복합기업",
-    "return_5d": 20.24,
-    "volume_ratio": 3.39,
-    "health_score": 0.0,
-    "total_score": 49.5
+    "stock_code": "000080",
+    "corp_name": "하이트진로",
+    "sector": "음료",
+    "return_5d": -6.12,
+    "volume_ratio": 0.87,
+    "health_score": 50.0,
+    "total_score": 54.4
   },
   {
-    "stock_code": "028260",
-    "corp_name": "삼성물산",
-    "sector": "복합기업",
-    "return_5d": 5.05,
-    "volume_ratio": 1.13,
-    "health_score": 39.6,
-    "total_score": 46.5
+    "stock_code": "030200",
+    "corp_name": "KT",
+    "sector": "다각화된통신서비스",
+    "return_5d": -7.42,
+    "volume_ratio": 0.66,
+    "health_score": 50.0,
+    "total_score": 41.6
   },
   {
-    "stock_code": "000990",
-    "corp_name": "DB하이텍",
-    "sector": "반도체와반도체장비",
-    "return_5d": 7.94,
-    "volume_ratio": 1.31,
-    "health_score": 32.2,
-    "total_score": 46.4
-  },
-  {
-    "stock_code": "281820",
-    "corp_name": "케이씨텍",
-    "sector": "반도체와반도체장비",
-    "return_5d": 9.56,
-    "volume_ratio": 1.42,
-    "health_score": 23.4,
-    "total_score": 45.5
-  },
-  {
-    "stock_code": "402340",
-    "corp_name": "SK스퀘어",
-    "sector": "반도체와반도체장비",
-    "return_5d": 39.42,
-    "volume_ratio": 1.35,
-    "health_score": 12.2,
-    "total_score": 45.4
+    "stock_code": "005300",
+    "corp_name": "롯데칠성",
+    "sector": "음료",
+    "return_5d": -9.68,
+    "volume_ratio": 0.93,
+    "health_score": 50.0,
+    "total_score": 31.3
   }
 ]
