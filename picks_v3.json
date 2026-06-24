@@ -1,29 +1,47 @@
 [
   {
-    "stock_code": "000080",
-    "corp_name": "하이트진로",
-    "sector": "음료",
-    "return_5d": -6.12,
-    "volume_ratio": 0.87,
-    "health_score": 50.0,
-    "total_score": 54.4
+    "stock_code": "034940",
+    "corp_name": "034940",
+    "sector": "제약",
+    "return_5d": 42.86,
+    "volume_ratio": 65.77,
+    "health_score": 58.8,
+    "total_score": 77.6
   },
   {
-    "stock_code": "030200",
-    "corp_name": "KT",
-    "sector": "다각화된통신서비스",
-    "return_5d": -7.42,
-    "volume_ratio": 0.66,
-    "health_score": 50.0,
-    "total_score": 41.6
+    "stock_code": "053950",
+    "corp_name": "053950",
+    "sector": "제약",
+    "return_5d": 3.23,
+    "volume_ratio": 41.6,
+    "health_score": 60.0,
+    "total_score": 76.8
   },
   {
-    "stock_code": "005300",
-    "corp_name": "롯데칠성",
-    "sector": "음료",
-    "return_5d": -9.68,
-    "volume_ratio": 0.93,
-    "health_score": 50.0,
-    "total_score": 31.3
+    "stock_code": "014950",
+    "corp_name": "014950",
+    "sector": "제약",
+    "return_5d": 22.16,
+    "volume_ratio": 4.37,
+    "health_score": 58.4,
+    "total_score": 74.1
+  },
+  {
+    "stock_code": "092040",
+    "corp_name": "092040",
+    "sector": "생물공학",
+    "return_5d": 27.95,
+    "volume_ratio": 1.2,
+    "health_score": 60.0,
+    "total_score": 58.9
+  },
+  {
+    "stock_code": "086060",
+    "corp_name": "086060",
+    "sector": "제약",
+    "return_5d": 11.21,
+    "volume_ratio": 0.64,
+    "health_score": 60.0,
+    "total_score": 55.7
   }
 ]
