@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "034940",
-    "corp_name": "034940",
-    "sector": "제약",
-    "return_5d": 42.86,
-    "volume_ratio": 65.77,
-    "health_score": 58.8,
-    "total_score": 77.6
-  },
-  {
-    "stock_code": "053950",
-    "corp_name": "053950",
-    "sector": "제약",
-    "return_5d": 3.23,
-    "volume_ratio": 41.6,
+    "stock_code": "006120",
+    "corp_name": "SK디스커버리",
+    "sector": "석유와가스",
+    "return_5d": 13.78,
+    "volume_ratio": 5.92,
     "health_score": 60.0,
-    "total_score": 76.8
+    "total_score": 76.5
   },
   {
-    "stock_code": "014950",
-    "corp_name": "014950",
-    "sector": "제약",
-    "return_5d": 22.16,
-    "volume_ratio": 4.37,
-    "health_score": 58.4,
-    "total_score": 74.1
+    "stock_code": "034730",
+    "corp_name": "SK",
+    "sector": "석유와가스",
+    "return_5d": 24.89,
+    "volume_ratio": 2.98,
+    "health_score": 42.6,
+    "total_score": 62.7
   },
   {
-    "stock_code": "092040",
-    "corp_name": "092040",
-    "sector": "생물공학",
-    "return_5d": 27.95,
-    "volume_ratio": 1.2,
-    "health_score": 60.0,
-    "total_score": 58.9
+    "stock_code": "003490",
+    "corp_name": "대한항공",
+    "sector": "항공사",
+    "return_5d": 0.87,
+    "volume_ratio": 1.7,
+    "health_score": 58.2,
+    "total_score": 50.3
   },
   {
-    "stock_code": "086060",
-    "corp_name": "086060",
-    "sector": "제약",
-    "return_5d": 11.21,
-    "volume_ratio": 0.64,
-    "health_score": 60.0,
-    "total_score": 55.7
+    "stock_code": "020560",
+    "corp_name": "아시아나항공",
+    "sector": "항공사",
+    "return_5d": 3.77,
+    "volume_ratio": 1.23,
+    "health_score": 48.8,
+    "total_score": 49.7
+  },
+  {
+    "stock_code": "005930",
+    "corp_name": "삼성전자",
+    "sector": "반도체와반도체장비",
+    "return_5d": -1.1,
+    "volume_ratio": 1.04,
+    "health_score": 50.0,
+    "total_score": 44.5
   }
 ]
