@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "006120",
-    "corp_name": "SK디스커버리",
-    "sector": "석유와가스",
-    "return_5d": 13.78,
-    "volume_ratio": 5.92,
-    "health_score": 60.0,
-    "total_score": 76.5
+    "stock_code": "037710",
+    "corp_name": "037710",
+    "sector": "백화점과일반상점",
+    "return_5d": 50.71,
+    "volume_ratio": 21.93,
+    "health_score": 0.0,
+    "total_score": 60.0
   },
   {
-    "stock_code": "034730",
-    "corp_name": "SK",
-    "sector": "석유와가스",
-    "return_5d": 24.89,
-    "volume_ratio": 2.98,
-    "health_score": 42.6,
-    "total_score": 62.7
+    "stock_code": "069960",
+    "corp_name": "069960",
+    "sector": "백화점과일반상점",
+    "return_5d": 2.98,
+    "volume_ratio": 0.79,
+    "health_score": 54.0,
+    "total_score": 49.3
   },
   {
-    "stock_code": "003490",
-    "corp_name": "대한항공",
-    "sector": "항공사",
-    "return_5d": 0.87,
-    "volume_ratio": 1.7,
-    "health_score": 58.2,
-    "total_score": 50.3
-  },
-  {
-    "stock_code": "020560",
-    "corp_name": "아시아나항공",
-    "sector": "항공사",
-    "return_5d": 3.77,
-    "volume_ratio": 1.23,
-    "health_score": 48.8,
-    "total_score": 49.7
-  },
-  {
-    "stock_code": "005930",
-    "corp_name": "삼성전자",
-    "sector": "반도체와반도체장비",
-    "return_5d": -1.1,
-    "volume_ratio": 1.04,
+    "stock_code": "122830",
+    "corp_name": "122830",
+    "sector": "다각화된통신서비스",
+    "return_5d": 11.04,
+    "volume_ratio": 0.04,
     "health_score": 50.0,
-    "total_score": 44.5
+    "total_score": 48.3
+  },
+  {
+    "stock_code": "004170",
+    "corp_name": "004170",
+    "sector": "백화점과일반상점",
+    "return_5d": 4.08,
+    "volume_ratio": 1.01,
+    "health_score": 35.4,
+    "total_score": 46.8
+  },
+  {
+    "stock_code": "080010",
+    "corp_name": "080010",
+    "sector": "다각화된소비자서비스",
+    "return_5d": 0.0,
+    "volume_ratio": 0.36,
+    "health_score": 60.0,
+    "total_score": 45.1
   }
 ]
