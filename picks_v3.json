@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "373220",
-    "corp_name": "LG에너지솔루션",
-    "sector": "전기제품",
-    "return_5d": 3.89,
-    "volume_ratio": 1.51,
-    "health_score": 23.6,
-    "total_score": 49.6
+    "stock_code": "009150",
+    "corp_name": "삼성전기",
+    "sector": "전자장비와기기",
+    "return_5d": 9.75,
+    "volume_ratio": 0.97,
+    "health_score": 50.0,
+    "total_score": 54.8
   },
   {
-    "stock_code": "361610",
-    "corp_name": "SK아이이테크놀로지",
-    "sector": "전기제품",
-    "return_5d": -4.18,
-    "volume_ratio": 1.67,
-    "health_score": 60.0,
-    "total_score": 46.3
+    "stock_code": "062040",
+    "corp_name": "산일전기",
+    "sector": "전기장비",
+    "return_5d": 7.43,
+    "volume_ratio": 1.2,
+    "health_score": 50.0,
+    "total_score": 51.4
   },
   {
-    "stock_code": "006400",
-    "corp_name": "삼성SDI",
-    "sector": "전기제품",
-    "return_5d": -3.94,
-    "volume_ratio": 1.13,
-    "health_score": 51.2,
-    "total_score": 46.0
+    "stock_code": "353200",
+    "corp_name": "대덕전자",
+    "sector": "전자장비와기기",
+    "return_5d": 9.4,
+    "volume_ratio": 1.41,
+    "health_score": 25.2,
+    "total_score": 46.6
   },
   {
-    "stock_code": "006405",
-    "corp_name": "삼성SDI우",
-    "sector": "전기제품",
-    "return_5d": -1.96,
-    "volume_ratio": 0.67,
+    "stock_code": "000500",
+    "corp_name": "가온전선",
+    "sector": "전기장비",
+    "return_5d": 26.76,
+    "volume_ratio": 1.08,
     "health_score": 0.0,
-    "total_score": 33.3
+    "total_score": 40.4
   },
   {
-    "stock_code": "450080",
-    "corp_name": "에코프로머티",
-    "sector": "전기제품",
-    "return_5d": -5.21,
-    "volume_ratio": 1.25,
-    "health_score": 23.6,
-    "total_score": 28.3
+    "stock_code": "011070",
+    "corp_name": "LG이노텍",
+    "sector": "전자장비와기기",
+    "return_5d": -1.01,
+    "volume_ratio": 0.44,
+    "health_score": 50.0,
+    "total_score": 40.0
   }
 ]
