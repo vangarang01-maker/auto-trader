@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "009150",
-    "corp_name": "삼성전기",
-    "sector": "전자장비와기기",
-    "return_5d": 9.75,
-    "volume_ratio": 0.97,
-    "health_score": 50.0,
-    "total_score": 54.8
-  },
-  {
     "stock_code": "062040",
     "corp_name": "산일전기",
     "sector": "전기장비",
-    "return_5d": 7.43,
-    "volume_ratio": 1.2,
+    "return_5d": 17.26,
+    "volume_ratio": 2.2,
     "health_score": 50.0,
-    "total_score": 51.4
+    "total_score": 55.2
   },
   {
-    "stock_code": "353200",
-    "corp_name": "대덕전자",
-    "sector": "전자장비와기기",
-    "return_5d": 9.4,
-    "volume_ratio": 1.41,
-    "health_score": 25.2,
-    "total_score": 46.6
+    "stock_code": "006340",
+    "corp_name": "대원전선",
+    "sector": "전기장비",
+    "return_5d": 19.86,
+    "volume_ratio": 3.73,
+    "health_score": 0.0,
+    "total_score": 51.7
+  },
+  {
+    "stock_code": "006260",
+    "corp_name": "LS",
+    "sector": "전기장비",
+    "return_5d": 12.87,
+    "volume_ratio": 1.25,
+    "health_score": 33.4,
+    "total_score": 43.5
   },
   {
     "stock_code": "000500",
     "corp_name": "가온전선",
     "sector": "전기장비",
-    "return_5d": 26.76,
-    "volume_ratio": 1.08,
+    "return_5d": 73.6,
+    "volume_ratio": 1.65,
     "health_score": 0.0,
-    "total_score": 40.4
+    "total_score": 43.2
   },
   {
-    "stock_code": "011070",
-    "corp_name": "LG이노텍",
-    "sector": "전자장비와기기",
-    "return_5d": -1.01,
-    "volume_ratio": 0.44,
-    "health_score": 50.0,
-    "total_score": 40.0
+    "stock_code": "010120",
+    "corp_name": "LS ELECTRIC",
+    "sector": "전기장비",
+    "return_5d": 17.37,
+    "volume_ratio": 1.82,
+    "health_score": 0.0,
+    "total_score": 40.2
   }
 ]
