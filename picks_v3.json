@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "105630",
-    "corp_name": "한세실업",
-    "sector": "섬유,의류,신발,호화품",
-    "return_5d": 12.23,
-    "volume_ratio": 6.02,
+    "stock_code": "281820",
+    "corp_name": "케이씨텍",
+    "sector": "반도체와반도체장비",
+    "return_5d": 31.32,
+    "volume_ratio": 1.25,
     "health_score": 50.0,
-    "total_score": 72.1
+    "total_score": 56.2
   },
   {
-    "stock_code": "111770",
-    "corp_name": "영원무역",
-    "sector": "섬유,의류,신발,호화품",
-    "return_5d": 14.31,
-    "volume_ratio": 2.61,
-    "health_score": 60.0,
-    "total_score": 64.6
+    "stock_code": "016360",
+    "corp_name": "삼성증권",
+    "sector": "증권",
+    "return_5d": 14.74,
+    "volume_ratio": 1.65,
+    "health_score": 50.0,
+    "total_score": 56.1
   },
   {
-    "stock_code": "081660",
-    "corp_name": "미스토홀딩스",
-    "sector": "섬유,의류,신발,호화품",
-    "return_5d": 17.77,
-    "volume_ratio": 1.36,
-    "health_score": 56.0,
-    "total_score": 58.6
+    "stock_code": "071050",
+    "corp_name": "한국금융지주",
+    "sector": "증권",
+    "return_5d": 21.0,
+    "volume_ratio": 1.29,
+    "health_score": 50.0,
+    "total_score": 55.4
   },
   {
-    "stock_code": "093050",
-    "corp_name": "LF",
-    "sector": "섬유,의류,신발,호화품",
-    "return_5d": 11.9,
-    "volume_ratio": 1.82,
-    "health_score": 60.0,
-    "total_score": 57.7
+    "stock_code": "039490",
+    "corp_name": "키움증권",
+    "sector": "증권",
+    "return_5d": 13.7,
+    "volume_ratio": 1.47,
+    "health_score": 50.0,
+    "total_score": 54.2
   },
   {
-    "stock_code": "138930",
-    "corp_name": "BNK금융지주",
-    "sector": "은행",
-    "return_5d": 11.23,
-    "volume_ratio": 1.09,
-    "health_score": 60.0,
-    "total_score": 52.6
+    "stock_code": "003540",
+    "corp_name": "대신증권",
+    "sector": "증권",
+    "return_5d": 12.48,
+    "volume_ratio": 1.44,
+    "health_score": 50.0,
+    "total_score": 51.9
   }
 ]
