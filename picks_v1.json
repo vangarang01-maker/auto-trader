@@ -8,20 +8,20 @@
   {
     "stock_code": "000660",
     "corp_name": "SK하이닉스",
-    "peg": 0.35,
+    "peg": 0.34,
     "health_score": 60.3
+  },
+  {
+    "stock_code": "025560",
+    "corp_name": "미래산업",
+    "peg": 0.33,
+    "health_score": 57.0
   },
   {
     "stock_code": "010400",
     "corp_name": "우진아이엔에스",
     "peg": 0.03,
     "health_score": 56.3
-  },
-  {
-    "stock_code": "025560",
-    "corp_name": "미래산업",
-    "peg": 0.36,
-    "health_score": 55.6
   },
   {
     "stock_code": "009140",
