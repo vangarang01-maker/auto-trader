@@ -1,47 +1,29 @@
 [
   {
-    "stock_code": "352820",
-    "corp_name": "하이브",
-    "sector": "방송과엔터테인먼트",
-    "return_5d": 20.77,
-    "volume_ratio": 3.1,
-    "health_score": 50.0,
-    "total_score": 65.5
+    "stock_code": "066570",
+    "corp_name": "LG전자",
+    "sector": "전자제품",
+    "return_5d": 1.29,
+    "volume_ratio": 1.63,
+    "health_score": 41.8,
+    "total_score": 44.0
   },
   {
-    "stock_code": "192820",
-    "corp_name": "코스맥스",
-    "sector": "화장품",
-    "return_5d": 18.14,
-    "volume_ratio": 1.6,
-    "health_score": 50.0,
-    "total_score": 52.6
+    "stock_code": "066575",
+    "corp_name": "LG전자우",
+    "sector": "전자제품",
+    "return_5d": 2.84,
+    "volume_ratio": 1.1,
+    "health_score": 0.0,
+    "total_score": 40.5
   },
   {
-    "stock_code": "090430",
-    "corp_name": "아모레퍼시픽",
-    "sector": "화장품",
-    "return_5d": 19.68,
-    "volume_ratio": 1.45,
-    "health_score": 40.4,
-    "total_score": 51.7
-  },
-  {
-    "stock_code": "024720",
-    "corp_name": "콜마홀딩스",
-    "sector": "화장품",
-    "return_5d": 14.19,
-    "volume_ratio": 1.95,
-    "health_score": 58.6,
-    "total_score": 48.9
-  },
-  {
-    "stock_code": "002790",
-    "corp_name": "아모레퍼시픽홀딩스",
-    "sector": "화장품",
-    "return_5d": 15.14,
-    "volume_ratio": 0.89,
-    "health_score": 55.6,
-    "total_score": 45.4
+    "stock_code": "034220",
+    "corp_name": "LG디스플레이",
+    "sector": "디스플레이패널",
+    "return_5d": 0.81,
+    "volume_ratio": 1.63,
+    "health_score": 52.6,
+    "total_score": 35.6
   }
 ]
