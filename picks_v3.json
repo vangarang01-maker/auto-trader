@@ -1,29 +1,20 @@
 [
   {
-    "stock_code": "066570",
-    "corp_name": "LG전자",
-    "sector": "전자제품",
-    "return_5d": 1.29,
-    "volume_ratio": 1.63,
-    "health_score": 41.8,
-    "total_score": 44.0
+    "stock_code": "029780",
+    "corp_name": "삼성카드",
+    "sector": "카드",
+    "return_5d": 7.26,
+    "volume_ratio": 0.71,
+    "health_score": 60.0,
+    "total_score": 56.6
   },
   {
-    "stock_code": "066575",
-    "corp_name": "LG전자우",
-    "sector": "전자제품",
-    "return_5d": 2.84,
-    "volume_ratio": 1.1,
-    "health_score": 0.0,
-    "total_score": 40.5
-  },
-  {
-    "stock_code": "034220",
-    "corp_name": "LG디스플레이",
-    "sector": "디스플레이패널",
-    "return_5d": 0.81,
-    "volume_ratio": 1.63,
-    "health_score": 52.6,
-    "total_score": 35.6
+    "stock_code": "030200",
+    "corp_name": "KT",
+    "sector": "다각화된통신서비스",
+    "return_5d": 6.81,
+    "volume_ratio": 2.16,
+    "health_score": 60.0,
+    "total_score": 46.3
   }
 ]
