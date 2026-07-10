@@ -1,20 +1,38 @@
 [
   {
-    "stock_code": "029780",
-    "corp_name": "삼성카드",
-    "sector": "카드",
-    "return_5d": 7.26,
-    "volume_ratio": 0.71,
-    "health_score": 60.0,
-    "total_score": 56.6
+    "stock_code": "033240",
+    "corp_name": "자화전자",
+    "sector": "통신장비",
+    "return_5d": 2.04,
+    "volume_ratio": 0.42,
+    "health_score": 56.0,
+    "total_score": 53.9
   },
   {
-    "stock_code": "030200",
-    "corp_name": "KT",
-    "sector": "다각화된통신서비스",
-    "return_5d": 6.81,
-    "volume_ratio": 2.16,
+    "stock_code": "097520",
+    "corp_name": "엠씨넥스",
+    "sector": "핸드셋",
+    "return_5d": -5.46,
+    "volume_ratio": 0.78,
     "health_score": 60.0,
-    "total_score": 46.3
+    "total_score": 48.2
+  },
+  {
+    "stock_code": "000670",
+    "corp_name": "영풍",
+    "sector": "핸드셋",
+    "return_5d": -7.89,
+    "volume_ratio": 1.05,
+    "health_score": 60.0,
+    "total_score": 40.8
+  },
+  {
+    "stock_code": "489790",
+    "corp_name": "한화비전",
+    "sector": "통신장비",
+    "return_5d": -11.0,
+    "volume_ratio": 0.59,
+    "health_score": 23.6,
+    "total_score": 18.8
   }
 ]
