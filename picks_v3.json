@@ -1,38 +1,47 @@
 [
   {
-    "stock_code": "033240",
-    "corp_name": "자화전자",
-    "sector": "통신장비",
-    "return_5d": 2.04,
-    "volume_ratio": 0.42,
-    "health_score": 56.0,
-    "total_score": 53.9
+    "stock_code": "057050",
+    "corp_name": "현대홈쇼핑",
+    "sector": "인터넷과카탈로그소매",
+    "return_5d": 0.0,
+    "volume_ratio": 0.0,
+    "health_score": 59.8,
+    "total_score": 52.9
   },
   {
-    "stock_code": "097520",
-    "corp_name": "엠씨넥스",
-    "sector": "핸드셋",
-    "return_5d": -5.46,
-    "volume_ratio": 0.78,
+    "stock_code": "066570",
+    "corp_name": "LG전자",
+    "sector": "전자제품",
+    "return_5d": -0.05,
+    "volume_ratio": 1.42,
+    "health_score": 41.8,
+    "total_score": 49.6
+  },
+  {
+    "stock_code": "009450",
+    "corp_name": "경동나비엔",
+    "sector": "가정용기기와용품",
+    "return_5d": -1.09,
+    "volume_ratio": 0.51,
+    "health_score": 58.0,
+    "total_score": 45.0
+  },
+  {
+    "stock_code": "192400",
+    "corp_name": "쿠쿠홀딩스",
+    "sector": "가정용기기와용품",
+    "return_5d": -1.73,
+    "volume_ratio": 0.51,
     "health_score": 60.0,
-    "total_score": 48.2
+    "total_score": 40.6
   },
   {
-    "stock_code": "000670",
-    "corp_name": "영풍",
-    "sector": "핸드셋",
-    "return_5d": -7.89,
-    "volume_ratio": 1.05,
-    "health_score": 60.0,
-    "total_score": 40.8
-  },
-  {
-    "stock_code": "489790",
-    "corp_name": "한화비전",
-    "sector": "통신장비",
-    "return_5d": -11.0,
-    "volume_ratio": 0.59,
-    "health_score": 23.6,
-    "total_score": 18.8
+    "stock_code": "021240",
+    "corp_name": "코웨이",
+    "sector": "가정용기기와용품",
+    "return_5d": -3.47,
+    "volume_ratio": 0.73,
+    "health_score": 51.6,
+    "total_score": 34.1
   }
 ]
