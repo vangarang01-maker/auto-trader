@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "057050",
-    "corp_name": "현대홈쇼핑",
-    "sector": "인터넷과카탈로그소매",
-    "return_5d": 0.0,
-    "volume_ratio": 0.0,
-    "health_score": 59.8,
-    "total_score": 52.9
-  },
-  {
-    "stock_code": "066570",
-    "corp_name": "LG전자",
-    "sector": "전자제품",
-    "return_5d": -0.05,
-    "volume_ratio": 1.42,
-    "health_score": 41.8,
-    "total_score": 49.6
-  },
-  {
-    "stock_code": "009450",
-    "corp_name": "경동나비엔",
-    "sector": "가정용기기와용품",
-    "return_5d": -1.09,
-    "volume_ratio": 0.51,
-    "health_score": 58.0,
-    "total_score": 45.0
-  },
-  {
-    "stock_code": "192400",
-    "corp_name": "쿠쿠홀딩스",
-    "sector": "가정용기기와용품",
-    "return_5d": -1.73,
-    "volume_ratio": 0.51,
+    "stock_code": "029460",
+    "corp_name": "케이씨",
+    "sector": "반도체와반도체장비",
+    "return_5d": 1.22,
+    "volume_ratio": 0.76,
     "health_score": 60.0,
-    "total_score": 40.6
+    "total_score": 51.0
   },
   {
-    "stock_code": "021240",
-    "corp_name": "코웨이",
-    "sector": "가정용기기와용품",
-    "return_5d": -3.47,
-    "volume_ratio": 0.73,
-    "health_score": 51.6,
-    "total_score": 34.1
+    "stock_code": "195870",
+    "corp_name": "해성디에스",
+    "sector": "반도체와반도체장비",
+    "return_5d": 4.4,
+    "volume_ratio": 0.75,
+    "health_score": 37.6,
+    "total_score": 50.0
+  },
+  {
+    "stock_code": "000990",
+    "corp_name": "DB하이텍",
+    "sector": "반도체와반도체장비",
+    "return_5d": 1.52,
+    "volume_ratio": 0.65,
+    "health_score": 43.6,
+    "total_score": 48.4
+  },
+  {
+    "stock_code": "042700",
+    "corp_name": "한미반도체",
+    "sector": "반도체와반도체장비",
+    "return_5d": -1.43,
+    "volume_ratio": 0.87,
+    "health_score": 50.0,
+    "total_score": 39.8
+  },
+  {
+    "stock_code": "005935",
+    "corp_name": "삼성전자우",
+    "sector": "반도체와반도체장비",
+    "return_5d": -8.58,
+    "volume_ratio": 1.19,
+    "health_score": 50.0,
+    "total_score": 38.4
   }
 ]
