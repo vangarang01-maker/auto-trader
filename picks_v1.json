@@ -1,9 +1,9 @@
 [
   {
-    "stock_code": "000660",
-    "corp_name": "SK하이닉스",
-    "peg": 0.28,
-    "health_score": 62.8
+    "stock_code": "462870",
+    "corp_name": "시프트업",
+    "peg": 0.34,
+    "health_score": 68.0
   },
   {
     "stock_code": "111770",
@@ -24,9 +24,9 @@
     "health_score": 56.3
   },
   {
-    "stock_code": "483650",
-    "corp_name": "달바글로벌",
-    "peg": 0.07,
-    "health_score": 51.5
+    "stock_code": "062040",
+    "corp_name": "산일전기",
+    "peg": 0.47,
+    "health_score": 51.8
   }
 ]
