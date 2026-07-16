@@ -2,19 +2,25 @@
   {
     "stock_code": "069730",
     "corp_name": "DSR제강",
-    "div_yield": 7.68,
+    "div_yield": 7.69,
     "health_score": 57.6
   },
   {
     "stock_code": "453340",
     "corp_name": "현대그린푸드",
-    "div_yield": 3.75,
+    "div_yield": 3.67,
     "health_score": 54.2
   },
   {
     "stock_code": "005850",
     "corp_name": "에스엘",
-    "div_yield": 5.05,
-    "health_score": 54.0
+    "div_yield": 5.09,
+    "health_score": 54.2
+  },
+  {
+    "stock_code": "096760",
+    "corp_name": "JW홀딩스",
+    "div_yield": 5.51,
+    "health_score": 53.1
   }
 ]
