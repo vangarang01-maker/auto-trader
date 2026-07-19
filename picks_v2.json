@@ -12,15 +12,15 @@
     "health_score": 54.2
   },
   {
-    "stock_code": "005850",
-    "corp_name": "에스엘",
-    "div_yield": 5.09,
-    "health_score": 54.2
-  },
-  {
     "stock_code": "096760",
     "corp_name": "JW홀딩스",
     "div_yield": 5.51,
     "health_score": 53.1
+  },
+  {
+    "stock_code": "015360",
+    "corp_name": "INVENI",
+    "div_yield": 7.58,
+    "health_score": 44.2
   }
 ]
