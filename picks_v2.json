@@ -8,19 +8,25 @@
   {
     "stock_code": "453340",
     "corp_name": "현대그린푸드",
-    "div_yield": 3.67,
+    "div_yield": 3.74,
     "health_score": 54.2
   },
   {
     "stock_code": "096760",
     "corp_name": "JW홀딩스",
-    "div_yield": 5.51,
+    "div_yield": 5.73,
     "health_score": 53.1
+  },
+  {
+    "stock_code": "007340",
+    "corp_name": "DN오토모티브",
+    "div_yield": 2.59,
+    "health_score": 49.2
   },
   {
     "stock_code": "015360",
     "corp_name": "INVENI",
-    "div_yield": 7.58,
+    "div_yield": 7.74,
     "health_score": 44.2
   }
 ]
