@@ -1,5 +1,11 @@
 [
   {
+    "stock_code": "000660",
+    "corp_name": "SK하이닉스",
+    "peg": 0.26,
+    "health_score": 63.1
+  },
+  {
     "stock_code": "111770",
     "corp_name": "영원무역",
     "peg": 0.17,
@@ -22,11 +28,5 @@
     "corp_name": "달바글로벌",
     "peg": 0.08,
     "health_score": 51.5
-  },
-  {
-    "stock_code": "003610",
-    "corp_name": "방림",
-    "peg": 0.03,
-    "health_score": 46.4
   }
 ]
