@@ -1,20 +1,47 @@
 [
   {
-    "stock_code": "029780",
-    "corp_name": "삼성카드",
-    "sector": "카드",
-    "return_5d": -1.03,
-    "volume_ratio": 0.8,
+    "stock_code": "281820",
+    "corp_name": "케이씨텍",
+    "sector": "반도체와반도체장비",
+    "return_5d": 11.44,
+    "volume_ratio": 0.64,
     "health_score": 50.0,
-    "total_score": 54.0
+    "total_score": 53.2
   },
   {
-    "stock_code": "030200",
-    "corp_name": "KT",
-    "sector": "다각화된통신서비스",
-    "return_5d": -1.29,
-    "volume_ratio": 0.82,
+    "stock_code": "042700",
+    "corp_name": "한미반도체",
+    "sector": "반도체와반도체장비",
+    "return_5d": 9.0,
+    "volume_ratio": 0.72,
     "health_score": 50.0,
-    "total_score": 36.6
+    "total_score": 52.4
+  },
+  {
+    "stock_code": "402340",
+    "corp_name": "SK스퀘어",
+    "sector": "반도체와반도체장비",
+    "return_5d": 7.92,
+    "volume_ratio": 0.53,
+    "health_score": 50.0,
+    "total_score": 50.2
+  },
+  {
+    "stock_code": "005930",
+    "corp_name": "삼성전자",
+    "sector": "반도체와반도체장비",
+    "return_5d": 1.77,
+    "volume_ratio": 0.64,
+    "health_score": 50.0,
+    "total_score": 49.9
+  },
+  {
+    "stock_code": "088350",
+    "corp_name": "한화생명",
+    "sector": "생명보험",
+    "return_5d": -0.34,
+    "volume_ratio": 0.58,
+    "health_score": 60.0,
+    "total_score": 49.9
   }
 ]
