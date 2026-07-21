@@ -2,7 +2,7 @@
   {
     "stock_code": "000660",
     "corp_name": "SK하이닉스",
-    "peg": 0.26,
+    "peg": 0.27,
     "health_score": 63.1
   },
   {
@@ -26,7 +26,7 @@
   {
     "stock_code": "483650",
     "corp_name": "달바글로벌",
-    "peg": 0.08,
+    "peg": 0.09,
     "health_score": 51.5
   }
 ]
