@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "281820",
-    "corp_name": "케이씨텍",
-    "sector": "반도체와반도체장비",
-    "return_5d": 11.44,
-    "volume_ratio": 0.64,
-    "health_score": 50.0,
-    "total_score": 53.2
+    "stock_code": "017670",
+    "corp_name": "SK텔레콤",
+    "sector": "무선통신서비스",
+    "return_5d": 12.16,
+    "volume_ratio": 1.85,
+    "health_score": 36.4,
+    "total_score": 55.2
   },
   {
-    "stock_code": "042700",
-    "corp_name": "한미반도체",
-    "sector": "반도체와반도체장비",
-    "return_5d": 9.0,
-    "volume_ratio": 0.72,
+    "stock_code": "454910",
+    "corp_name": "두산로보틱스",
+    "sector": "기계",
+    "return_5d": 1.35,
+    "volume_ratio": 3.31,
     "health_score": 50.0,
-    "total_score": 52.4
+    "total_score": 52.6
   },
   {
-    "stock_code": "402340",
-    "corp_name": "SK스퀘어",
-    "sector": "반도체와반도체장비",
-    "return_5d": 7.92,
-    "volume_ratio": 0.53,
+    "stock_code": "267270",
+    "corp_name": "HD건설기계",
+    "sector": "기계",
+    "return_5d": 3.42,
+    "volume_ratio": 0.93,
     "health_score": 50.0,
-    "total_score": 50.2
+    "total_score": 51.2
   },
   {
-    "stock_code": "005930",
-    "corp_name": "삼성전자",
-    "sector": "반도체와반도체장비",
-    "return_5d": 1.77,
-    "volume_ratio": 0.64,
-    "health_score": 50.0,
-    "total_score": 49.9
+    "stock_code": "032640",
+    "corp_name": "LG유플러스",
+    "sector": "무선통신서비스",
+    "return_5d": 2.74,
+    "volume_ratio": 0.62,
+    "health_score": 59.0,
+    "total_score": 48.8
   },
   {
-    "stock_code": "088350",
-    "corp_name": "한화생명",
-    "sector": "생명보험",
-    "return_5d": -0.34,
-    "volume_ratio": 0.58,
-    "health_score": 60.0,
-    "total_score": 49.9
+    "stock_code": "241560",
+    "corp_name": "두산밥캣",
+    "sector": "기계",
+    "return_5d": 0.79,
+    "volume_ratio": 0.65,
+    "health_score": 50.0,
+    "total_score": 35.8
   }
 ]
