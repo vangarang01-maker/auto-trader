@@ -20,13 +20,13 @@
   {
     "stock_code": "010400",
     "corp_name": "우진아이엔에스",
-    "peg": 0.03,
+    "peg": 0.04,
     "health_score": 56.3
   },
   {
     "stock_code": "483650",
     "corp_name": "달바글로벌",
-    "peg": 0.09,
-    "health_score": 51.5
+    "peg": 0.08,
+    "health_score": 50.6
   }
 ]
