@@ -2,31 +2,31 @@
   {
     "stock_code": "069730",
     "corp_name": "DSR제강",
-    "div_yield": 7.62,
+    "div_yield": 7.44,
     "health_score": 57.6
   },
   {
     "stock_code": "453340",
     "corp_name": "현대그린푸드",
-    "div_yield": 3.73,
+    "div_yield": 3.65,
     "health_score": 54.2
   },
   {
     "stock_code": "096760",
     "corp_name": "JW홀딩스",
-    "div_yield": 5.66,
-    "health_score": 53.1
-  },
-  {
-    "stock_code": "007340",
-    "corp_name": "DN오토모티브",
-    "div_yield": 2.61,
-    "health_score": 49.2
+    "div_yield": 5.62,
+    "health_score": 53.2
   },
   {
     "stock_code": "015360",
     "corp_name": "INVENI",
-    "div_yield": 7.71,
+    "div_yield": 7.46,
     "health_score": 44.2
+  },
+  {
+    "stock_code": "004800",
+    "corp_name": "효성",
+    "div_yield": 3.11,
+    "health_score": 30.0
   }
 ]
