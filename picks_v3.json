@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "317400",
-    "corp_name": "자이에스앤디",
-    "sector": "건설",
-    "return_5d": 65.0,
-    "volume_ratio": 11.64,
-    "health_score": 59.4,
-    "total_score": 77.8
+    "stock_code": "016590",
+    "corp_name": "신대양제지",
+    "sector": "포장재",
+    "return_5d": 8.91,
+    "volume_ratio": 2.01,
+    "health_score": 56.0,
+    "total_score": 61.8
   },
   {
-    "stock_code": "005090",
-    "corp_name": "SGC에너지",
-    "sector": "에너지장비및서비스",
-    "return_5d": 37.09,
-    "volume_ratio": 7.25,
-    "health_score": 58.8,
-    "total_score": 74.3
+    "stock_code": "000640",
+    "corp_name": "동아쏘시오홀딩스",
+    "sector": "제약",
+    "return_5d": 2.2,
+    "volume_ratio": 3.04,
+    "health_score": 60.0,
+    "total_score": 60.4
   },
   {
-    "stock_code": "322000",
-    "corp_name": "HD현대에너지솔루션",
-    "sector": "에너지장비및서비스",
-    "return_5d": 41.04,
-    "volume_ratio": 4.68,
-    "health_score": 50.0,
-    "total_score": 71.1
+    "stock_code": "207940",
+    "corp_name": "삼성바이오로직스",
+    "sector": "제약",
+    "return_5d": 8.74,
+    "volume_ratio": 3.83,
+    "health_score": 0.0,
+    "total_score": 52.9
   },
   {
-    "stock_code": "100090",
-    "corp_name": "SK오션플랜트",
-    "sector": "에너지장비및서비스",
-    "return_5d": 29.39,
-    "volume_ratio": 10.29,
-    "health_score": 48.0,
-    "total_score": 69.9
+    "stock_code": "030200",
+    "corp_name": "KT",
+    "sector": "다각화된통신서비스",
+    "return_5d": 3.24,
+    "volume_ratio": 0.98,
+    "health_score": 60.0,
+    "total_score": 51.4
   },
   {
-    "stock_code": "475150",
-    "corp_name": "SK이터닉스",
-    "sector": "에너지장비및서비스",
-    "return_5d": 51.22,
-    "volume_ratio": 3.09,
-    "health_score": 50.0,
-    "total_score": 64.3
+    "stock_code": "000100",
+    "corp_name": "유한양행",
+    "sector": "제약",
+    "return_5d": 5.79,
+    "volume_ratio": 1.58,
+    "health_score": 35.0,
+    "total_score": 49.5
   }
 ]
