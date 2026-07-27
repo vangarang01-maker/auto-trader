@@ -1,47 +1,38 @@
 [
   {
-    "stock_code": "016590",
-    "corp_name": "신대양제지",
-    "sector": "포장재",
-    "return_5d": 8.91,
-    "volume_ratio": 2.01,
-    "health_score": 56.0,
-    "total_score": 61.8
+    "stock_code": "035420",
+    "corp_name": "NAVER",
+    "sector": "양방향미디어와서비스",
+    "return_5d": 21.03,
+    "volume_ratio": 2.71,
+    "health_score": 50.0,
+    "total_score": 65.0
   },
   {
-    "stock_code": "000640",
-    "corp_name": "동아쏘시오홀딩스",
-    "sector": "제약",
-    "return_5d": 2.2,
-    "volume_ratio": 3.04,
-    "health_score": 60.0,
-    "total_score": 60.4
+    "stock_code": "079160",
+    "corp_name": "CJ CGV",
+    "sector": "방송과엔터테인먼트",
+    "return_5d": 12.87,
+    "volume_ratio": 1.78,
+    "health_score": 50.0,
+    "total_score": 50.2
   },
   {
-    "stock_code": "207940",
-    "corp_name": "삼성바이오로직스",
-    "sector": "제약",
-    "return_5d": 8.74,
-    "volume_ratio": 3.83,
-    "health_score": 0.0,
-    "total_score": 52.9
+    "stock_code": "352820",
+    "corp_name": "하이브",
+    "sector": "방송과엔터테인먼트",
+    "return_5d": 10.84,
+    "volume_ratio": 0.91,
+    "health_score": 50.0,
+    "total_score": 37.0
   },
   {
-    "stock_code": "030200",
-    "corp_name": "KT",
-    "sector": "다각화된통신서비스",
-    "return_5d": 3.24,
-    "volume_ratio": 0.98,
-    "health_score": 60.0,
-    "total_score": 51.4
-  },
-  {
-    "stock_code": "000100",
-    "corp_name": "유한양행",
-    "sector": "제약",
-    "return_5d": 5.79,
-    "volume_ratio": 1.58,
-    "health_score": 35.0,
-    "total_score": 49.5
+    "stock_code": "035720",
+    "corp_name": "카카오",
+    "sector": "양방향미디어와서비스",
+    "return_5d": 5.71,
+    "volume_ratio": 0.96,
+    "health_score": 43.8,
+    "total_score": 26.7
   }
 ]
