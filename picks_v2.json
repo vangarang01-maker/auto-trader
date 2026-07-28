@@ -2,31 +2,31 @@
   {
     "stock_code": "009970",
     "corp_name": "영원무역홀딩스",
-    "div_yield": 3.23,
+    "div_yield": 3.27,
     "health_score": 58.6
   },
   {
     "stock_code": "069730",
     "corp_name": "DSR제강",
-    "div_yield": 7.44,
+    "div_yield": 7.76,
     "health_score": 57.6
   },
   {
     "stock_code": "453340",
     "corp_name": "현대그린푸드",
-    "div_yield": 3.64,
+    "div_yield": 3.67,
     "health_score": 54.2
   },
   {
     "stock_code": "007340",
     "corp_name": "DN오토모티브",
-    "div_yield": 2.61,
+    "div_yield": 2.73,
     "health_score": 49.2
   },
   {
     "stock_code": "100220",
     "corp_name": "비상교육",
-    "div_yield": 4.19,
+    "div_yield": 4.33,
     "health_score": 48.0
   }
 ]
