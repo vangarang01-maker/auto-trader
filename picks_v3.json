@@ -1,38 +1,47 @@
 [
   {
-    "stock_code": "035420",
-    "corp_name": "NAVER",
-    "sector": "양방향미디어와서비스",
-    "return_5d": 21.03,
-    "volume_ratio": 2.71,
+    "stock_code": "451800",
+    "corp_name": "한화리츠",
+    "sector": "부동산",
+    "return_5d": 7.54,
+    "volume_ratio": 1.87,
     "health_score": 50.0,
-    "total_score": 65.0
+    "total_score": 59.4
   },
   {
-    "stock_code": "079160",
-    "corp_name": "CJ CGV",
-    "sector": "방송과엔터테인먼트",
-    "return_5d": 12.87,
-    "volume_ratio": 1.78,
+    "stock_code": "357120",
+    "corp_name": "코람코라이프인프라리츠",
+    "sector": "부동산",
+    "return_5d": 2.61,
+    "volume_ratio": 2.05,
     "health_score": 50.0,
-    "total_score": 50.2
+    "total_score": 50.7
   },
   {
-    "stock_code": "352820",
-    "corp_name": "하이브",
-    "sector": "방송과엔터테인먼트",
-    "return_5d": 10.84,
-    "volume_ratio": 0.91,
-    "health_score": 50.0,
-    "total_score": 37.0
+    "stock_code": "030200",
+    "corp_name": "KT",
+    "sector": "다각화된통신서비스",
+    "return_5d": 2.28,
+    "volume_ratio": 0.77,
+    "health_score": 60.0,
+    "total_score": 44.1
   },
   {
-    "stock_code": "035720",
-    "corp_name": "카카오",
-    "sector": "양방향미디어와서비스",
-    "return_5d": 5.71,
-    "volume_ratio": 0.96,
-    "health_score": 43.8,
-    "total_score": 26.7
+    "stock_code": "033780",
+    "corp_name": "KT&G",
+    "sector": "담배",
+    "return_5d": 1.96,
+    "volume_ratio": 1.05,
+    "health_score": 50.0,
+    "total_score": 39.3
+  },
+  {
+    "stock_code": "417310",
+    "corp_name": "코람코더원리츠",
+    "sector": "부동산",
+    "return_5d": 5.26,
+    "volume_ratio": 1.41,
+    "health_score": 0.0,
+    "total_score": 38.9
   }
 ]
