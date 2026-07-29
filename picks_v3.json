@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "451800",
-    "corp_name": "한화리츠",
-    "sector": "부동산",
-    "return_5d": 7.54,
-    "volume_ratio": 1.87,
-    "health_score": 50.0,
-    "total_score": 59.4
+    "stock_code": "011200",
+    "corp_name": "HMM",
+    "sector": "해운사",
+    "return_5d": -0.25,
+    "volume_ratio": 1.61,
+    "health_score": 59.8,
+    "total_score": 61.0
   },
   {
-    "stock_code": "357120",
-    "corp_name": "코람코라이프인프라리츠",
-    "sector": "부동산",
-    "return_5d": 2.61,
-    "volume_ratio": 2.05,
-    "health_score": 50.0,
-    "total_score": 50.7
-  },
-  {
-    "stock_code": "030200",
-    "corp_name": "KT",
-    "sector": "다각화된통신서비스",
-    "return_5d": 2.28,
-    "volume_ratio": 0.77,
+    "stock_code": "028670",
+    "corp_name": "팬오션",
+    "sector": "해운사",
+    "return_5d": -2.36,
+    "volume_ratio": 2.23,
     "health_score": 60.0,
-    "total_score": 44.1
+    "total_score": 57.2
   },
   {
-    "stock_code": "033780",
-    "corp_name": "KT&G",
-    "sector": "담배",
-    "return_5d": 1.96,
-    "volume_ratio": 1.05,
-    "health_score": 50.0,
-    "total_score": 39.3
+    "stock_code": "071320",
+    "corp_name": "지역난방공사",
+    "sector": "복합유틸리티",
+    "return_5d": -2.5,
+    "volume_ratio": 1.8,
+    "health_score": 60.0,
+    "total_score": 48.0
   },
   {
-    "stock_code": "417310",
-    "corp_name": "코람코더원리츠",
-    "sector": "부동산",
-    "return_5d": 5.26,
-    "volume_ratio": 1.41,
-    "health_score": 0.0,
-    "total_score": 38.9
+    "stock_code": "005880",
+    "corp_name": "대한해운",
+    "sector": "해운사",
+    "return_5d": -7.08,
+    "volume_ratio": 1.04,
+    "health_score": 60.0,
+    "total_score": 37.2
+  },
+  {
+    "stock_code": "003280",
+    "corp_name": "흥아해운",
+    "sector": "해운사",
+    "return_5d": -22.27,
+    "volume_ratio": 0.67,
+    "health_score": 54.6,
+    "total_score": 26.7
   }
 ]
