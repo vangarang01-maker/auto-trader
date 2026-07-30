@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "011200",
-    "corp_name": "HMM",
-    "sector": "해운사",
-    "return_5d": -0.25,
-    "volume_ratio": 1.61,
-    "health_score": 59.8,
-    "total_score": 61.0
-  },
-  {
-    "stock_code": "028670",
-    "corp_name": "팬오션",
-    "sector": "해운사",
-    "return_5d": -2.36,
-    "volume_ratio": 2.23,
-    "health_score": 60.0,
-    "total_score": 57.2
-  },
-  {
     "stock_code": "071320",
     "corp_name": "지역난방공사",
     "sector": "복합유틸리티",
-    "return_5d": -2.5,
-    "volume_ratio": 1.8,
+    "return_5d": 1.22,
+    "volume_ratio": 2.32,
     "health_score": 60.0,
-    "total_score": 48.0
+    "total_score": 64.6
   },
   {
-    "stock_code": "005880",
-    "corp_name": "대한해운",
-    "sector": "해운사",
-    "return_5d": -7.08,
-    "volume_ratio": 1.04,
+    "stock_code": "001450",
+    "corp_name": "현대해상",
+    "sector": "손해보험",
+    "return_5d": 0.39,
+    "volume_ratio": 1.87,
     "health_score": 60.0,
-    "total_score": 37.2
+    "total_score": 60.7
   },
   {
-    "stock_code": "003280",
-    "corp_name": "흥아해운",
-    "sector": "해운사",
-    "return_5d": -22.27,
-    "volume_ratio": 0.67,
-    "health_score": 54.6,
-    "total_score": 26.7
+    "stock_code": "439260",
+    "corp_name": "대한조선",
+    "sector": "조선",
+    "return_5d": 0.31,
+    "volume_ratio": 1.93,
+    "health_score": 50.0,
+    "total_score": 56.3
+  },
+  {
+    "stock_code": "005830",
+    "corp_name": "DB손해보험",
+    "sector": "손해보험",
+    "return_5d": -1.51,
+    "volume_ratio": 1.67,
+    "health_score": 60.0,
+    "total_score": 54.7
+  },
+  {
+    "stock_code": "000370",
+    "corp_name": "한화손해보험",
+    "sector": "손해보험",
+    "return_5d": -2.08,
+    "volume_ratio": 2.04,
+    "health_score": 60.0,
+    "total_score": 53.2
   }
 ]
