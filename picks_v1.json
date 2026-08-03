@@ -18,15 +18,15 @@
     "health_score": 56.3
   },
   {
+    "stock_code": "000660",
+    "corp_name": "SK하이닉스",
+    "peg": 0.23,
+    "health_score": 52.9
+  },
+  {
     "stock_code": "483650",
     "corp_name": "달바글로벌",
     "peg": 0.08,
     "health_score": 50.1
-  },
-  {
-    "stock_code": "000660",
-    "corp_name": "SK하이닉스",
-    "peg": 0.25,
-    "health_score": 42.9
   }
 ]
