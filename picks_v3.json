@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "012450",
-    "corp_name": "한화에어로스페이스",
-    "sector": "우주항공과국방",
-    "return_5d": 14.74,
-    "volume_ratio": 1.01,
-    "health_score": 50.0,
+    "stock_code": "017900",
+    "corp_name": "광전자",
+    "sector": "전자장비와기기",
+    "return_5d": 56.89,
+    "volume_ratio": 8.82,
+    "health_score": 39.2,
+    "total_score": 71.8
+  },
+  {
+    "stock_code": "033240",
+    "corp_name": "자화전자",
+    "sector": "통신장비",
+    "return_5d": 33.33,
+    "volume_ratio": 1.48,
+    "health_score": 58.4,
+    "total_score": 51.5
+  },
+  {
+    "stock_code": "004710",
+    "corp_name": "한솔테크닉스",
+    "sector": "전자장비와기기",
+    "return_5d": 32.14,
+    "volume_ratio": 1.19,
+    "health_score": 60.0,
     "total_score": 49.2
   },
   {
-    "stock_code": "064350",
-    "corp_name": "현대로템",
-    "sector": "우주항공과국방",
-    "return_5d": 14.11,
-    "volume_ratio": 0.69,
-    "health_score": 50.0,
-    "total_score": 41.8
+    "stock_code": "006260",
+    "corp_name": "LS",
+    "sector": "전기장비",
+    "return_5d": 35.11,
+    "volume_ratio": 1.15,
+    "health_score": 44.6,
+    "total_score": 48.5
   },
   {
-    "stock_code": "079550",
-    "corp_name": "LIG디펜스앤에어로스페이스",
-    "sector": "우주항공과국방",
-    "return_5d": 14.92,
-    "volume_ratio": 1.17,
+    "stock_code": "006340",
+    "corp_name": "대원전선",
+    "sector": "전기장비",
+    "return_5d": 39.82,
+    "volume_ratio": 3.27,
     "health_score": 0.0,
-    "total_score": 40.8
-  },
-  {
-    "stock_code": "484870",
-    "corp_name": "엠앤씨솔루션",
-    "sector": "우주항공과국방",
-    "return_5d": 0.0,
-    "volume_ratio": 0.9,
-    "health_score": 50.0,
-    "total_score": 31.2
-  },
-  {
-    "stock_code": "272210",
-    "corp_name": "한화시스템",
-    "sector": "우주항공과국방",
-    "return_5d": 12.91,
-    "volume_ratio": 0.78,
-    "health_score": 23.4,
-    "total_score": 28.4
+    "total_score": 47.2
   }
 ]
