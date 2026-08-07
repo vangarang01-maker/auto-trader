@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "010130",
-    "corp_name": "고려아연",
-    "sector": "비철금속",
-    "return_5d": 33.41,
-    "volume_ratio": 5.03,
-    "health_score": 50.0,
-    "total_score": 70.6
+    "stock_code": "066970",
+    "corp_name": "엘앤에프",
+    "sector": "전기제품",
+    "return_5d": 23.06,
+    "volume_ratio": 4.24,
+    "health_score": 20.0,
+    "total_score": 62.2
   },
   {
-    "stock_code": "103140",
-    "corp_name": "풍산",
-    "sector": "비철금속",
-    "return_5d": 39.9,
-    "volume_ratio": 2.3,
+    "stock_code": "006405",
+    "corp_name": "삼성SDI우",
+    "sector": "전기제품",
+    "return_5d": 19.67,
+    "volume_ratio": 1.22,
     "health_score": 50.0,
-    "total_score": 59.3
+    "total_score": 53.6
   },
   {
-    "stock_code": "006110",
-    "corp_name": "삼아알미늄",
-    "sector": "비철금속",
-    "return_5d": 53.41,
-    "volume_ratio": 1.38,
+    "stock_code": "006400",
+    "corp_name": "삼성SDI",
+    "sector": "전기제품",
+    "return_5d": 15.62,
+    "volume_ratio": 1.42,
     "health_score": 50.0,
-    "total_score": 56.9
+    "total_score": 52.1
   },
   {
-    "stock_code": "051900",
-    "corp_name": "LG생활건강",
-    "sector": "화장품",
-    "return_5d": 10.96,
-    "volume_ratio": 3.19,
-    "health_score": 60.0,
-    "total_score": 51.4
+    "stock_code": "066570",
+    "corp_name": "LG전자",
+    "sector": "전자제품",
+    "return_5d": 14.13,
+    "volume_ratio": 1.05,
+    "health_score": 50.0,
+    "total_score": 47.8
   },
   {
-    "stock_code": "005810",
-    "corp_name": "풍산홀딩스",
-    "sector": "비철금속",
-    "return_5d": 12.14,
-    "volume_ratio": 1.35,
+    "stock_code": "361610",
+    "corp_name": "SK아이이테크놀로지",
+    "sector": "전기제품",
+    "return_5d": 12.97,
+    "volume_ratio": 1.01,
     "health_score": 50.0,
-    "total_score": 43.6
+    "total_score": 45.0
   }
 ]
