@@ -1,11 +1,47 @@
 [
   {
-    "stock_code": "071320",
-    "corp_name": "지역난방공사",
-    "sector": "복합유틸리티",
-    "return_5d": 16.98,
-    "volume_ratio": 3.12,
-    "health_score": 60.0,
-    "total_score": 68.6
+    "stock_code": "066570",
+    "corp_name": "LG전자",
+    "sector": "전자제품",
+    "return_5d": 14.21,
+    "volume_ratio": 2.46,
+    "health_score": 40.2,
+    "total_score": 59.4
+  },
+  {
+    "stock_code": "029460",
+    "corp_name": "케이씨",
+    "sector": "반도체와반도체장비",
+    "return_5d": 11.3,
+    "volume_ratio": 0.8,
+    "health_score": 59.6,
+    "total_score": 51.9
+  },
+  {
+    "stock_code": "066575",
+    "corp_name": "LG전자우",
+    "sector": "전자제품",
+    "return_5d": 12.52,
+    "volume_ratio": 2.27,
+    "health_score": 0.0,
+    "total_score": 43.8
+  },
+  {
+    "stock_code": "195870",
+    "corp_name": "해성디에스",
+    "sector": "반도체와반도체장비",
+    "return_5d": 9.96,
+    "volume_ratio": 0.77,
+    "health_score": 37.2,
+    "total_score": 42.5
+  },
+  {
+    "stock_code": "000990",
+    "corp_name": "DB하이텍",
+    "sector": "반도체와반도체장비",
+    "return_5d": 5.67,
+    "volume_ratio": 0.7,
+    "health_score": 48.6,
+    "total_score": 40.6
   }
 ]
