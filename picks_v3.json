@@ -1,47 +1,20 @@
 [
   {
-    "stock_code": "085620",
-    "corp_name": "미래에셋생명",
-    "sector": "생명보험",
-    "return_5d": 22.06,
-    "volume_ratio": 2.63,
-    "health_score": 50.0,
-    "total_score": 63.2
+    "stock_code": "089860",
+    "corp_name": "롯데렌탈",
+    "sector": "도로와철도운송",
+    "return_5d": 4.11,
+    "volume_ratio": 1.64,
+    "health_score": 57.4,
+    "total_score": 60.4
   },
   {
-    "stock_code": "088350",
-    "corp_name": "한화생명",
-    "sector": "생명보험",
-    "return_5d": 19.74,
-    "volume_ratio": 2.38,
-    "health_score": 60.0,
-    "total_score": 60.5
-  },
-  {
-    "stock_code": "003280",
-    "corp_name": "흥아해운",
-    "sector": "해운사",
-    "return_5d": 14.37,
-    "volume_ratio": 3.79,
-    "health_score": 50.0,
-    "total_score": 60.2
-  },
-  {
-    "stock_code": "011200",
-    "corp_name": "HMM",
-    "sector": "해운사",
-    "return_5d": 5.59,
-    "volume_ratio": 4.27,
-    "health_score": 50.0,
-    "total_score": 53.8
-  },
-  {
-    "stock_code": "032830",
-    "corp_name": "삼성생명",
-    "sector": "생명보험",
-    "return_5d": 10.7,
-    "volume_ratio": 1.11,
-    "health_score": 50.0,
-    "total_score": 42.4
+    "stock_code": "403550",
+    "corp_name": "쏘카",
+    "sector": "도로와철도운송",
+    "return_5d": -7.07,
+    "volume_ratio": 0.87,
+    "health_score": 49.2,
+    "total_score": 36.6
   }
 ]
