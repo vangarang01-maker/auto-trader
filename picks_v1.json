@@ -2,13 +2,19 @@
   {
     "stock_code": "462870",
     "corp_name": "시프트업",
-    "peg": 0.33,
-    "health_score": 69.1
+    "peg": 0.34,
+    "health_score": 68.7
+  },
+  {
+    "stock_code": "026890",
+    "corp_name": "스틱인베스트먼트",
+    "peg": 0.39,
+    "health_score": 67.6
   },
   {
     "stock_code": "000660",
     "corp_name": "SK하이닉스",
-    "peg": 0.22,
+    "peg": 0.25,
     "health_score": 64.3
   },
   {
@@ -22,11 +28,5 @@
     "corp_name": "미래산업",
     "peg": 0.34,
     "health_score": 54.4
-  },
-  {
-    "stock_code": "483650",
-    "corp_name": "달바글로벌",
-    "peg": 0.08,
-    "health_score": 40.7
   }
 ]
