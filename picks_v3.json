@@ -3,45 +3,45 @@
     "stock_code": "085620",
     "corp_name": "미래에셋생명",
     "sector": "생명보험",
-    "return_5d": 39.63,
-    "volume_ratio": 4.38,
+    "return_5d": 26.36,
+    "volume_ratio": 2.11,
     "health_score": 40.6,
-    "total_score": 69.1
+    "total_score": 57.7
+  },
+  {
+    "stock_code": "032830",
+    "corp_name": "삼성생명",
+    "sector": "생명보험",
+    "return_5d": 12.69,
+    "volume_ratio": 2.33,
+    "health_score": 52.2,
+    "total_score": 54.8
+  },
+  {
+    "stock_code": "001450",
+    "corp_name": "현대해상",
+    "sector": "손해보험",
+    "return_5d": 15.83,
+    "volume_ratio": 0.72,
+    "health_score": 60.0,
+    "total_score": 54.1
+  },
+  {
+    "stock_code": "000370",
+    "corp_name": "한화손해보험",
+    "sector": "손해보험",
+    "return_5d": 14.66,
+    "volume_ratio": 1.0,
+    "health_score": 60.0,
+    "total_score": 53.0
   },
   {
     "stock_code": "088350",
     "corp_name": "한화생명",
     "sector": "생명보험",
-    "return_5d": 17.23,
-    "volume_ratio": 0.79,
+    "return_5d": 8.75,
+    "volume_ratio": 0.72,
     "health_score": 60.0,
-    "total_score": 55.3
-  },
-  {
-    "stock_code": "000660",
-    "corp_name": "SK하이닉스",
-    "sector": "반도체와반도체장비",
-    "return_5d": 12.43,
-    "volume_ratio": 0.96,
-    "health_score": 54.3,
-    "total_score": 52.6
-  },
-  {
-    "stock_code": "042700",
-    "corp_name": "한미반도체",
-    "sector": "반도체와반도체장비",
-    "return_5d": 3.68,
-    "volume_ratio": 0.79,
-    "health_score": 50.0,
-    "total_score": 42.3
-  },
-  {
-    "stock_code": "005935",
-    "corp_name": "삼성전자우",
-    "sector": "반도체와반도체장비",
-    "return_5d": 2.74,
-    "volume_ratio": 0.91,
-    "health_score": 50.0,
-    "total_score": 39.6
+    "total_score": 44.1
   }
 ]
