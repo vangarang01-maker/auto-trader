@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "085620",
-    "corp_name": "미래에셋생명",
-    "sector": "생명보험",
-    "return_5d": 26.36,
-    "volume_ratio": 2.11,
-    "health_score": 40.6,
-    "total_score": 57.7
+    "stock_code": "028670",
+    "corp_name": "팬오션",
+    "sector": "해운사",
+    "return_5d": 9.15,
+    "volume_ratio": 2.35,
+    "health_score": 59.6,
+    "total_score": 58.1
   },
   {
-    "stock_code": "032830",
-    "corp_name": "삼성생명",
-    "sector": "생명보험",
-    "return_5d": 12.69,
-    "volume_ratio": 2.33,
-    "health_score": 52.2,
-    "total_score": 54.8
+    "stock_code": "010130",
+    "corp_name": "고려아연",
+    "sector": "비철금속",
+    "return_5d": 12.37,
+    "volume_ratio": 1.96,
+    "health_score": 35.8,
+    "total_score": 55.5
   },
   {
-    "stock_code": "001450",
-    "corp_name": "현대해상",
-    "sector": "손해보험",
-    "return_5d": 15.83,
-    "volume_ratio": 0.72,
-    "health_score": 60.0,
-    "total_score": 54.1
+    "stock_code": "006110",
+    "corp_name": "삼아알미늄",
+    "sector": "비철금속",
+    "return_5d": 10.96,
+    "volume_ratio": 2.39,
+    "health_score": 33.0,
+    "total_score": 54.7
   },
   {
-    "stock_code": "000370",
-    "corp_name": "한화손해보험",
-    "sector": "손해보험",
-    "return_5d": 14.66,
-    "volume_ratio": 1.0,
-    "health_score": 60.0,
-    "total_score": 53.0
+    "stock_code": "011200",
+    "corp_name": "HMM",
+    "sector": "해운사",
+    "return_5d": 7.53,
+    "volume_ratio": 1.86,
+    "health_score": 59.2,
+    "total_score": 53.3
   },
   {
-    "stock_code": "088350",
-    "corp_name": "한화생명",
-    "sector": "생명보험",
-    "return_5d": 8.75,
-    "volume_ratio": 0.72,
-    "health_score": 60.0,
-    "total_score": 44.1
+    "stock_code": "066970",
+    "corp_name": "엘앤에프",
+    "sector": "전기제품",
+    "return_5d": 10.85,
+    "volume_ratio": 2.62,
+    "health_score": 20.0,
+    "total_score": 49.7
   }
 ]
