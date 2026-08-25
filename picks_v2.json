@@ -2,13 +2,13 @@
   {
     "stock_code": "192400",
     "corp_name": "쿠쿠홀딩스",
-    "div_yield": 5.52,
+    "div_yield": 5.56,
     "health_score": 57.8
   },
   {
     "stock_code": "069730",
     "corp_name": "DSR제강",
-    "div_yield": 7.89,
+    "div_yield": 7.79,
     "health_score": 57.6
   },
   {
@@ -20,7 +20,7 @@
   {
     "stock_code": "453340",
     "corp_name": "현대그린푸드",
-    "div_yield": 3.53,
+    "div_yield": 3.63,
     "health_score": 54.2
   }
 ]
