@@ -9,7 +9,13 @@
     "stock_code": "026890",
     "corp_name": "스틱인베스트먼트",
     "peg": 0.39,
-    "health_score": 67.8
+    "health_score": 67.7
+  },
+  {
+    "stock_code": "025560",
+    "corp_name": "미래산업",
+    "peg": 0.29,
+    "health_score": 58.5
   },
   {
     "stock_code": "010400",
@@ -18,15 +24,9 @@
     "health_score": 56.3
   },
   {
-    "stock_code": "025560",
-    "corp_name": "미래산업",
-    "peg": 0.28,
-    "health_score": 54.4
-  },
-  {
-    "stock_code": "483650",
-    "corp_name": "달바글로벌",
-    "peg": 0.09,
-    "health_score": 50.7
+    "stock_code": "000660",
+    "corp_name": "SK하이닉스",
+    "peg": 0.24,
+    "health_score": 54.3
   }
 ]
