@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "000720",
-    "corp_name": "현대건설",
-    "sector": "건설",
-    "return_5d": 10.17,
-    "volume_ratio": 3.68,
-    "health_score": 40.2,
-    "total_score": 61.6
-  },
-  {
     "stock_code": "052690",
     "corp_name": "한전기술",
     "sector": "전기유틸리티",
-    "return_5d": 12.54,
-    "volume_ratio": 13.11,
+    "return_5d": 31.98,
+    "volume_ratio": 10.35,
     "health_score": 0.6,
     "total_score": 60.2
+  },
+  {
+    "stock_code": "015760",
+    "corp_name": "한국전력",
+    "sector": "전기유틸리티",
+    "return_5d": 12.8,
+    "volume_ratio": 3.4,
+    "health_score": 60.0,
+    "total_score": 60.0
   },
   {
     "stock_code": "130660",
     "corp_name": "한전산업",
     "sector": "전기유틸리티",
-    "return_5d": 4.34,
-    "volume_ratio": 8.33,
+    "return_5d": 19.66,
+    "volume_ratio": 46.53,
     "health_score": 12.8,
-    "total_score": 58.0
+    "total_score": 58.8
   },
   {
-    "stock_code": "086280",
-    "corp_name": "현대글로비스",
-    "sector": "항공화물운송과물류",
-    "return_5d": 3.39,
-    "volume_ratio": 1.53,
-    "health_score": 54.4,
-    "total_score": 51.2
+    "stock_code": "272450",
+    "corp_name": "진에어",
+    "sector": "항공사",
+    "return_5d": 16.63,
+    "volume_ratio": 2.05,
+    "health_score": 57.2,
+    "total_score": 54.9
   },
   {
-    "stock_code": "002990",
-    "corp_name": "금호건설",
-    "sector": "건설",
-    "return_5d": 10.25,
-    "volume_ratio": 0.52,
-    "health_score": 50.0,
-    "total_score": 50.7
+    "stock_code": "085620",
+    "corp_name": "미래에셋생명",
+    "sector": "생명보험",
+    "return_5d": 26.25,
+    "volume_ratio": 1.74,
+    "health_score": 40.6,
+    "total_score": 53.4
   }
 ]
