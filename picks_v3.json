@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "000370",
-    "corp_name": "한화손해보험",
-    "sector": "손해보험",
-    "return_5d": 15.78,
-    "volume_ratio": 1.83,
-    "health_score": 60.0,
-    "total_score": 62.2
-  },
-  {
-    "stock_code": "005830",
-    "corp_name": "DB손해보험",
-    "sector": "손해보험",
-    "return_5d": 10.33,
-    "volume_ratio": 1.39,
-    "health_score": 59.2,
-    "total_score": 58.6
-  },
-  {
-    "stock_code": "003690",
-    "corp_name": "코리안리",
-    "sector": "손해보험",
-    "return_5d": 6.69,
-    "volume_ratio": 1.89,
-    "health_score": 60.0,
-    "total_score": 58.1
-  },
-  {
-    "stock_code": "001450",
-    "corp_name": "현대해상",
-    "sector": "손해보험",
-    "return_5d": 9.3,
-    "volume_ratio": 1.08,
-    "health_score": 60.0,
-    "total_score": 56.2
-  },
-  {
-    "stock_code": "010140",
-    "corp_name": "삼성중공업",
-    "sector": "조선",
-    "return_5d": 3.1,
-    "volume_ratio": 2.92,
+    "stock_code": "096770",
+    "corp_name": "SK이노베이션",
+    "sector": "석유와가스",
+    "return_5d": 18.31,
+    "volume_ratio": 1.17,
     "health_score": 50.0,
     "total_score": 55.8
+  },
+  {
+    "stock_code": "180640",
+    "corp_name": "한진칼",
+    "sector": "항공사",
+    "return_5d": 11.2,
+    "volume_ratio": 1.21,
+    "health_score": 50.0,
+    "total_score": 52.6
+  },
+  {
+    "stock_code": "003490",
+    "corp_name": "대한항공",
+    "sector": "항공사",
+    "return_5d": 5.23,
+    "volume_ratio": 1.84,
+    "health_score": 57.6,
+    "total_score": 47.5
+  },
+  {
+    "stock_code": "020560",
+    "corp_name": "아시아나항공",
+    "sector": "항공사",
+    "return_5d": 5.21,
+    "volume_ratio": 3.02,
+    "health_score": 48.8,
+    "total_score": 47.2
+  },
+  {
+    "stock_code": "010950",
+    "corp_name": "S-Oil",
+    "sector": "석유와가스",
+    "return_5d": 5.43,
+    "volume_ratio": 2.54,
+    "health_score": 29.4,
+    "total_score": 46.0
   }
 ]
