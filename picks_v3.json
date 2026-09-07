@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "096770",
-    "corp_name": "SK이노베이션",
-    "sector": "석유와가스",
-    "return_5d": 18.31,
-    "volume_ratio": 1.17,
+    "stock_code": "003160",
+    "corp_name": "디아이",
+    "sector": "반도체와반도체장비",
+    "return_5d": 28.93,
+    "volume_ratio": 1.55,
     "health_score": 50.0,
-    "total_score": 55.8
+    "total_score": 57.8
   },
   {
-    "stock_code": "180640",
-    "corp_name": "한진칼",
-    "sector": "항공사",
-    "return_5d": 11.2,
-    "volume_ratio": 1.21,
+    "stock_code": "000990",
+    "corp_name": "DB하이텍",
+    "sector": "반도체와반도체장비",
+    "return_5d": 6.11,
+    "volume_ratio": 2.42,
+    "health_score": 47.0,
+    "total_score": 52.8
+  },
+  {
+    "stock_code": "000660",
+    "corp_name": "SK하이닉스",
+    "sector": "반도체와반도체장비",
+    "return_5d": 6.51,
+    "volume_ratio": 0.9,
+    "health_score": 53.7,
+    "total_score": 48.6
+  },
+  {
+    "stock_code": "000500",
+    "corp_name": "가온전선",
+    "sector": "전기장비",
+    "return_5d": 11.67,
+    "volume_ratio": 2.63,
+    "health_score": 0.0,
+    "total_score": 46.7
+  },
+  {
+    "stock_code": "005930",
+    "corp_name": "삼성전자",
+    "sector": "반도체와반도체장비",
+    "return_5d": 3.85,
+    "volume_ratio": 0.85,
     "health_score": 50.0,
-    "total_score": 52.6
-  },
-  {
-    "stock_code": "003490",
-    "corp_name": "대한항공",
-    "sector": "항공사",
-    "return_5d": 5.23,
-    "volume_ratio": 1.84,
-    "health_score": 57.6,
-    "total_score": 47.5
-  },
-  {
-    "stock_code": "020560",
-    "corp_name": "아시아나항공",
-    "sector": "항공사",
-    "return_5d": 5.21,
-    "volume_ratio": 3.02,
-    "health_score": 48.8,
-    "total_score": 47.2
-  },
-  {
-    "stock_code": "010950",
-    "corp_name": "S-Oil",
-    "sector": "석유와가스",
-    "return_5d": 5.43,
-    "volume_ratio": 2.54,
-    "health_score": 29.4,
-    "total_score": 46.0
+    "total_score": 43.0
   }
 ]
