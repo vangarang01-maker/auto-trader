@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "003160",
-    "corp_name": "디아이",
-    "sector": "반도체와반도체장비",
-    "return_5d": 28.93,
-    "volume_ratio": 1.55,
+    "stock_code": "052690",
+    "corp_name": "052690",
+    "sector": "전기유틸리티",
+    "return_5d": 29.05,
+    "volume_ratio": 5.92,
     "health_score": 50.0,
-    "total_score": 57.8
+    "total_score": 75.0
   },
   {
-    "stock_code": "000990",
-    "corp_name": "DB하이텍",
-    "sector": "반도체와반도체장비",
-    "return_5d": 6.11,
-    "volume_ratio": 2.42,
-    "health_score": 47.0,
-    "total_score": 52.8
-  },
-  {
-    "stock_code": "000660",
-    "corp_name": "SK하이닉스",
-    "sector": "반도체와반도체장비",
-    "return_5d": 6.51,
-    "volume_ratio": 0.9,
-    "health_score": 53.7,
-    "total_score": 48.6
-  },
-  {
-    "stock_code": "000500",
-    "corp_name": "가온전선",
-    "sector": "전기장비",
-    "return_5d": 11.67,
-    "volume_ratio": 2.63,
-    "health_score": 0.0,
-    "total_score": 46.7
-  },
-  {
-    "stock_code": "005930",
-    "corp_name": "삼성전자",
-    "sector": "반도체와반도체장비",
-    "return_5d": 3.85,
-    "volume_ratio": 0.85,
+    "stock_code": "130660",
+    "corp_name": "130660",
+    "sector": "전기유틸리티",
+    "return_5d": 8.33,
+    "volume_ratio": 6.22,
     "health_score": 50.0,
-    "total_score": 43.0
+    "total_score": 72.8
+  },
+  {
+    "stock_code": "021320",
+    "corp_name": "021320",
+    "sector": "건설",
+    "return_5d": 6.65,
+    "volume_ratio": 5.53,
+    "health_score": 50.0,
+    "total_score": 71.4
+  },
+  {
+    "stock_code": "047040",
+    "corp_name": "047040",
+    "sector": "건설",
+    "return_5d": 18.73,
+    "volume_ratio": 3.96,
+    "health_score": 49.4,
+    "total_score": 69.3
+  },
+  {
+    "stock_code": "011370",
+    "corp_name": "011370",
+    "sector": "건설",
+    "return_5d": 2.48,
+    "volume_ratio": 4.93,
+    "health_score": 50.0,
+    "total_score": 65.3
   }
 ]
