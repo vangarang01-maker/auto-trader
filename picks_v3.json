@@ -1,47 +1,47 @@
 [
   {
-    "stock_code": "052690",
-    "corp_name": "052690",
-    "sector": "전기유틸리티",
-    "return_5d": 29.05,
-    "volume_ratio": 5.92,
-    "health_score": 50.0,
-    "total_score": 75.0
+    "stock_code": "302430",
+    "corp_name": "302430",
+    "sector": "전기제품",
+    "return_5d": 18.89,
+    "volume_ratio": 8.22,
+    "health_score": 55.6,
+    "total_score": 74.7
   },
   {
-    "stock_code": "130660",
-    "corp_name": "130660",
-    "sector": "전기유틸리티",
-    "return_5d": 8.33,
-    "volume_ratio": 6.22,
-    "health_score": 50.0,
-    "total_score": 72.8
+    "stock_code": "288620",
+    "corp_name": "288620",
+    "sector": "전기제품",
+    "return_5d": 11.47,
+    "volume_ratio": 6.89,
+    "health_score": 60.0,
+    "total_score": 72.7
   },
   {
-    "stock_code": "021320",
-    "corp_name": "021320",
-    "sector": "건설",
-    "return_5d": 6.65,
-    "volume_ratio": 5.53,
-    "health_score": 50.0,
-    "total_score": 71.4
+    "stock_code": "224060",
+    "corp_name": "224060",
+    "sector": "전기제품",
+    "return_5d": 103.48,
+    "volume_ratio": 2.77,
+    "health_score": 60.0,
+    "total_score": 66.8
   },
   {
-    "stock_code": "047040",
-    "corp_name": "047040",
-    "sector": "건설",
-    "return_5d": 18.73,
-    "volume_ratio": 3.96,
-    "health_score": 49.4,
-    "total_score": 69.3
+    "stock_code": "189860",
+    "corp_name": "189860",
+    "sector": "전기장비",
+    "return_5d": 37.62,
+    "volume_ratio": 4.53,
+    "health_score": 32.4,
+    "total_score": 66.8
   },
   {
-    "stock_code": "011370",
-    "corp_name": "011370",
-    "sector": "건설",
-    "return_5d": 2.48,
-    "volume_ratio": 4.93,
-    "health_score": 50.0,
-    "total_score": 65.3
+    "stock_code": "046970",
+    "corp_name": "046970",
+    "sector": "컴퓨터와주변기기",
+    "return_5d": 32.73,
+    "volume_ratio": 7.91,
+    "health_score": 20.0,
+    "total_score": 65.2
   }
 ]
