@@ -3,12 +3,12 @@
     "stock_code": "026890",
     "corp_name": "스틱인베스트먼트",
     "peg": 0.37,
-    "health_score": 68.4
+    "health_score": 68.3
   },
   {
     "stock_code": "025560",
     "corp_name": "미래산업",
-    "peg": 0.25,
+    "peg": 0.26,
     "health_score": 60.2
   },
   {
@@ -26,7 +26,7 @@
   {
     "stock_code": "011420",
     "corp_name": "갤럭시아에스엠",
-    "peg": 0.48,
+    "peg": 0.47,
     "health_score": 56.1
   }
 ]
