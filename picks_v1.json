@@ -3,13 +3,19 @@
     "stock_code": "026890",
     "corp_name": "스틱인베스트먼트",
     "peg": 0.37,
-    "health_score": 68.3
+    "health_score": 68.4
+  },
+  {
+    "stock_code": "350520",
+    "corp_name": "이지스레지던스리츠",
+    "peg": 0.03,
+    "health_score": 63.0
   },
   {
     "stock_code": "025560",
     "corp_name": "미래산업",
     "peg": 0.26,
-    "health_score": 60.2
+    "health_score": 59.6
   },
   {
     "stock_code": "017550",
@@ -22,11 +28,5 @@
     "corp_name": "우진아이엔에스",
     "peg": 0.03,
     "health_score": 56.3
-  },
-  {
-    "stock_code": "011420",
-    "corp_name": "갤럭시아에스엠",
-    "peg": 0.47,
-    "health_score": 56.1
   }
 ]
