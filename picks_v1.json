@@ -1,9 +1,21 @@
 [
   {
+    "stock_code": "439260",
+    "corp_name": "대한조선",
+    "peg": 0.14,
+    "health_score": 71.3
+  },
+  {
     "stock_code": "026890",
     "corp_name": "스틱인베스트먼트",
-    "peg": 0.38,
-    "health_score": 68.2
+    "peg": 0.37,
+    "health_score": 68.4
+  },
+  {
+    "stock_code": "009970",
+    "corp_name": "영원무역홀딩스",
+    "peg": 0.27,
+    "health_score": 63.4
   },
   {
     "stock_code": "350520",
@@ -12,21 +24,9 @@
     "health_score": 63.0
   },
   {
-    "stock_code": "025560",
-    "corp_name": "미래산업",
-    "peg": 0.32,
-    "health_score": 59.6
-  },
-  {
-    "stock_code": "017550",
-    "corp_name": "수산세보틱스",
-    "peg": 0.1,
-    "health_score": 58.5
-  },
-  {
-    "stock_code": "010400",
-    "corp_name": "우진아이엔에스",
-    "peg": 0.03,
-    "health_score": 56.3
+    "stock_code": "111770",
+    "corp_name": "영원무역",
+    "peg": 0.14,
+    "health_score": 60.8
   }
 ]
