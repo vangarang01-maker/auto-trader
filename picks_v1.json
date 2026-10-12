@@ -2,20 +2,14 @@
   {
     "stock_code": "439260",
     "corp_name": "대한조선",
-    "peg": 0.14,
+    "peg": 0.13,
     "health_score": 71.2
   },
   {
     "stock_code": "026890",
     "corp_name": "스틱인베스트먼트",
-    "peg": 0.38,
-    "health_score": 68.0
-  },
-  {
-    "stock_code": "350520",
-    "corp_name": "이지스레지던스리츠",
-    "peg": 0.02,
-    "health_score": 63.0
+    "peg": 0.37,
+    "health_score": 68.2
   },
   {
     "stock_code": "017550",
@@ -28,5 +22,11 @@
     "corp_name": "우진아이엔에스",
     "peg": 0.03,
     "health_score": 56.3
+  },
+  {
+    "stock_code": "000660",
+    "corp_name": "SK하이닉스",
+    "peg": 0.24,
+    "health_score": 53.0
   }
 ]
