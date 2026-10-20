@@ -2,13 +2,13 @@
   {
     "stock_code": "439260",
     "corp_name": "대한조선",
-    "peg": 0.13,
+    "peg": 0.12,
     "health_score": 72.1
   },
   {
     "stock_code": "462870",
     "corp_name": "시프트업",
-    "peg": 0.33,
+    "peg": 0.32,
     "health_score": 69.2
   },
   {
@@ -18,15 +18,15 @@
     "health_score": 63.4
   },
   {
-    "stock_code": "350520",
-    "corp_name": "이지스레지던스리츠",
-    "peg": 0.02,
-    "health_score": 63.0
-  },
-  {
     "stock_code": "025560",
     "corp_name": "미래산업",
-    "peg": 0.26,
+    "peg": 0.25,
     "health_score": 58.6
+  },
+  {
+    "stock_code": "017550",
+    "corp_name": "수산세보틱스",
+    "peg": 0.09,
+    "health_score": 58.5
   }
 ]
