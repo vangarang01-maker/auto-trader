@@ -6,12 +6,6 @@
     "health_score": 72.1
   },
   {
-    "stock_code": "462870",
-    "corp_name": "시프트업",
-    "peg": 0.32,
-    "health_score": 69.2
-  },
-  {
     "stock_code": "037270",
     "corp_name": "YG PLUS",
     "peg": 0.01,
@@ -20,7 +14,7 @@
   {
     "stock_code": "025560",
     "corp_name": "미래산업",
-    "peg": 0.25,
+    "peg": 0.27,
     "health_score": 58.6
   },
   {
@@ -28,5 +22,11 @@
     "corp_name": "수산세보틱스",
     "peg": 0.09,
     "health_score": 58.5
+  },
+  {
+    "stock_code": "010400",
+    "corp_name": "우진아이엔에스",
+    "peg": 0.03,
+    "health_score": 56.3
   }
 ]
