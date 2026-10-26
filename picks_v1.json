@@ -2,20 +2,14 @@
   {
     "stock_code": "462870",
     "corp_name": "시프트업",
-    "peg": 0.32,
-    "health_score": 69.2
+    "peg": 0.31,
+    "health_score": 69.7
   },
   {
     "stock_code": "026890",
     "corp_name": "스틱인베스트먼트",
-    "peg": 0.35,
-    "health_score": 69.0
-  },
-  {
-    "stock_code": "037270",
-    "corp_name": "YG PLUS",
-    "peg": 0.01,
-    "health_score": 63.4
+    "peg": 0.34,
+    "health_score": 69.2
   },
   {
     "stock_code": "017550",
@@ -26,7 +20,13 @@
   {
     "stock_code": "025560",
     "corp_name": "미래산업",
-    "peg": 0.27,
+    "peg": 0.29,
     "health_score": 58.1
+  },
+  {
+    "stock_code": "000660",
+    "corp_name": "SK하이닉스",
+    "peg": 0.19,
+    "health_score": 55.1
   }
 ]
