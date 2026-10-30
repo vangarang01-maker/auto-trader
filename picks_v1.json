@@ -1,5 +1,11 @@
 [
   {
+    "stock_code": "026890",
+    "corp_name": "스틱인베스트먼트",
+    "peg": 0.35,
+    "health_score": 68.9
+  },
+  {
     "stock_code": "017550",
     "corp_name": "수산세보틱스",
     "peg": 0.09,
@@ -8,25 +14,19 @@
   {
     "stock_code": "025560",
     "corp_name": "미래산업",
-    "peg": 0.31,
+    "peg": 0.29,
     "health_score": 57.6
   },
   {
     "stock_code": "062040",
     "corp_name": "산일전기",
-    "peg": 0.41,
+    "peg": 0.38,
     "health_score": 52.6
-  },
-  {
-    "stock_code": "005690",
-    "corp_name": "파미셀",
-    "peg": 0.17,
-    "health_score": 49.8
   },
   {
     "stock_code": "000660",
     "corp_name": "SK하이닉스",
-    "peg": 0.22,
+    "peg": 0.2,
     "health_score": 45.1
   }
 ]
