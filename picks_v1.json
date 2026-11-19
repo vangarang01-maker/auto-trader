@@ -1,9 +1,9 @@
 [
   {
-    "stock_code": "026890",
-    "corp_name": "스틱인베스트먼트",
-    "peg": 0.34,
-    "health_score": 69.4
+    "stock_code": "037270",
+    "corp_name": "YG PLUS",
+    "peg": 0.01,
+    "health_score": 63.2
   },
   {
     "stock_code": "017550",
@@ -21,7 +21,7 @@
     "stock_code": "006650",
     "corp_name": "대한유화",
     "peg": 0.02,
-    "health_score": 50.2
+    "health_score": 50.3
   },
   {
     "stock_code": "003000",
