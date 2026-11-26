@@ -6,9 +6,27 @@
     "health_score": 63.2
   },
   {
-    "stock_code": "005930",
-    "corp_name": "삼성전자",
-    "peg": 0.84,
-    "health_score": 49.0
+    "stock_code": "000660",
+    "corp_name": "SK하이닉스",
+    "peg": 0.15,
+    "health_score": 56.2
+  },
+  {
+    "stock_code": "062040",
+    "corp_name": "산일전기",
+    "peg": 0.25,
+    "health_score": 56.0
+  },
+  {
+    "stock_code": "006650",
+    "corp_name": "대한유화",
+    "peg": 0.02,
+    "health_score": 50.8
+  },
+  {
+    "stock_code": "003000",
+    "corp_name": "부광약품",
+    "peg": 0.06,
+    "health_score": 50.0
   }
 ]
